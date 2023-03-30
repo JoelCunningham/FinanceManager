@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <title>Finance Management System</title>
+   <link rel="stylesheet" type="text/css" href="common.css" />
+   <script type="text/javascript" src="src\main\resources\javascript\scripts.js"></script>
+</head>
+
+<body>
+    
+    <div class="topnav">
+        <a href="/"> <img src="/logo.jpg"> </a>
+        
+        <div class="topnav_options">
+
+            <div class="dropdown">
+                <button class="dropbtn"> <img src="/category.png" alt="Categories"> </button>
+                <div class="dropdown-content">
+                    <a href="#">Add Existing</a>
+                    <a href="#">Create Category</a>
+                    <a href="#">Create Header</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn"> <img src="/settings.png" alt="Settings"> </button>
+                <div class="dropdown-content">
+                    <a href="#">Change Theme</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn"> <img src="/profile.png" alt="Profile"> </button>
+                <div class="dropdown-content">
+                    <a href="#">Edit Profile</a>
+                    <a href="#">Log Out</a>
+                </div>
+            </div>
+
+        </div>
+    
+    </div>
+
+    <div class="main">
+
+        <div class="menu">      
+            <div class="menu_options">
+                <a href="#" onclick="showContent('dashboard')">Dashboard</a>
+                <a href="#" onclick="showContent('budget')">Budget</a>
+                <a href="#" onclick="showContent('summary')">Summary</a>
+                <a href="#" onclick="showContent('statement')">Statement</a>
+            </div>
+        
+        </div>    
+
+        <section id="dashboard" class="content active">
+            <h1>Dashboard</h2>
+            <p>We are a company that specializes in web development.</p>
+        </section>
+
+        <section id="budget" class="content">
+            <h1>Budget</h2>
+            <p>We are a company that specializes in web development.</p>
+        </section>
+
+
+    </div>
+
+    <div class="footer">
+        <p th:text="'Finance Management System version ' + ${(VersionNumber)}"></p>
+     </div>
+</body>

@@ -1,0 +1,138 @@
+/*========== General CSS ==========*/
+* {
+   box-sizing: border-box;
+   font-family: Arial, sans-serif;
+}
+
+:root {
+   --short-transition: 0.3s;
+   --long-transition: 4s;
+   --default-colour: #2EB2FF;
+   --default-accent: #b9dcf0;
+}
+
+body {
+   background-color: #f2f2f2;
+}
+
+.header {
+   background-color: var(--default-colour);
+   height: 300px;
+   display: inline-block;
+   width: 100%;
+   padding: 50px 10% 0 10%;
+   align-items: center;
+}
+
+.hidden {
+   display: none;
+}
+
+/*========== Topnav CSS ==========*/
+.topnav img {
+   height: 60px;
+   float: left;
+}
+
+.topnav_options {
+   text-align: right;
+}
+
+.topnav_options img {
+   height: 40px;
+   float: left;
+}
+.topnav button {
+   background-color: #FFFFFF
+}
+
+/*========== Menu CSS ==========*/
+.menu_options a {
+   display: inline-block;
+   padding: 20px;
+   color: #333;
+   font-size: larger;
+   text-decoration: none;
+   margin-right: 10px;
+   background-color: #FFFFFF;
+   transition-duration: var(--short-transition);
+}
+
+.menu_options a:hover {
+   background-color: #d3d1d1;
+}
+
+.content {
+   display:none;
+}
+
+.content.active {
+   display:block;
+}
+
+/*========== Main CSS ==========*/
+h1 {
+   font-family: Verdana, sans-serif;
+   font-size: 40px;
+   text-align: center;
+   color: var(--default-colour);
+}
+
+.main {
+   background-color: #FFFFFF;
+   border-radius: 20px;
+   padding: 20px;
+   margin: 50px auto;
+   width: 80%;
+   box-shadow: 0px 0px 10px #c0c0c0;
+}
+
+/*========== Footer CSS ==========*/
+.footer {
+   background-color: #cccccc;
+   padding: 10px;
+}
+
+/*========== Dropdown Button CSS ==========*/
+.dropbtn {
+   padding: 16px;
+   font-size: 16px;
+   border: none;
+   cursor: pointer;
+ }
+ 
+ .dropdown {
+   position: relative;
+   display: inline-block;
+ }
+ 
+ .dropdown-content {
+   display: none;
+   position: absolute;
+   right: 10px;
+   top: 10px;
+   z-index: 1;
+
+   background-color: #f2f2f2;
+   border-radius: 20px;
+   margin: 50px auto;
+   width: 250%;
+   box-shadow: 0px 0px 10px #c0c0c0;
+   text-align: left;
+ }
+  
+ .dropdown:hover .dropdown-content {
+   display: block;
+ }
+
+ .dropdown-content a {
+   color: black;
+   padding: 12px 16px;
+   text-decoration: none;
+   display: block;
+ }
+
+ .dropdown-content a:hover {
+   border-radius: 20px;
+   background-color: var(--default-accent);
+ }
