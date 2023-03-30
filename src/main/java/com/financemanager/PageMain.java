@@ -13,7 +13,7 @@ import io.javalin.http.Handler;
 */
 public class PageMain implements Handler{
 
-    public  static final String     URL         = "/dashboard";
+    public  static final String     URL         = "/";
     private static final String     TEMPLATE    = "html/main.html";
 
     @Override

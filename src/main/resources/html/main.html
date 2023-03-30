@@ -2,21 +2,38 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
    <title>Finance Management System</title>
-   <link rel="stylesheet" type="text/css" href="common.css" />
-   <script type="text/javascript" src="src\main\resources\javascript\scripts.js"></script>
+   <link rel="stylesheet" type="text/css" href="common.css"></link>
 </head>
+
+<script>
+function showContent(id) {
+    // Open section
+    var contents = document.querySelectorAll('.content');
+    for (var i = 0; i < contents.length; i++) {
+        contents[i].classList.remove('active');
+    }
+    document.getElementById(id).classList.add('active');
+
+    // Colour selected anchor
+    var anchors = document.querySelectorAll(".menu_options a");
+    for (var i = 0; i < anchors.length; i++) {
+        anchors[i].classList.remove("btn_selected");
+    }
+    document.getElementById("btn_" + id).classList.add("btn_selected");
+}
+</script>
 
 <body>
     
     <div class="topnav">
-        <a href="/"> <img src="/logo.jpg"> </a>
+        <a href="/"> <img src="/logo.jpg"></a>
         
         <div class="topnav_options">
 
             <div class="dropdown">
-                <button class="dropbtn"> <img src="/category.png" alt="Categories"> </button>
+                <button class="dropbtn"> <img src="/topnav/category.png" alt="Categories"> </button>
                 <div class="dropdown-content">
                     <a href="#">Add Existing</a>
                     <a href="#">Create Category</a>
@@ -25,14 +42,14 @@
             </div>
 
             <div class="dropdown">
-                <button class="dropbtn"> <img src="/settings.png" alt="Settings"> </button>
+                <button class="dropbtn"> <img src="/topnav/settings.png" alt="Settings"> </button>
                 <div class="dropdown-content">
                     <a href="#">Change Theme</a>
                 </div>
             </div>
 
             <div class="dropdown">
-                <button class="dropbtn"> <img src="/profile.png" alt="Profile"> </button>
+                <button class="dropbtn"> <img src="/topnav/profile.png" alt="Profile"> </button>
                 <div class="dropdown-content">
                     <a href="#">Edit Profile</a>
                     <a href="#">Log Out</a>
@@ -47,10 +64,11 @@
 
         <div class="menu">      
             <div class="menu_options">
-                <a href="#" onclick="showContent('dashboard')">Dashboard</a>
-                <a href="#" onclick="showContent('budget')">Budget</a>
-                <a href="#" onclick="showContent('summary')">Summary</a>
-                <a href="#" onclick="showContent('statement')">Statement</a>
+                <a class="btn_selected" id="btn_dashboard" href="#" onclick="showContent('dashboard');">
+                    <img scr="/topnav/settings.png" alt="Dashboard">Dashboard</a>
+                <a id="btn_budget" href="#" onclick="showContent('budget');">Budget</a>
+                <a id="btn_summary" href="#" onclick="showContent('summary');">Summary</a>
+                <a id="btn_statement" href="#" onclick="showContent('statement');">Statement</a>
             </div>
         
         </div>    
@@ -65,10 +83,20 @@
             <p>We are a company that specializes in web development.</p>
         </section>
 
+        <section id="summary" class="content">
+            <h1>Summary</h2>
+            <p>We are a company that specializes in web development.</p>
+        </section>
+
+        <section id="statement" class="content">
+            <h1>Statement</h2>
+            <p>We are a company that specializes in web development.</p>
+        </section>
 
     </div>
 
     <div class="footer">
         <p th:text="'Finance Management System version ' + ${(VersionNumber)}"></p>
-     </div>
+    </div>
+
 </body>

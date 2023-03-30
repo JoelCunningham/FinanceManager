@@ -5,14 +5,17 @@
 }
 
 :root {
-   --short-transition: 0.3s;
+   --short-transition: 0.1s;
    --long-transition: 4s;
    --default-colour: #2EB2FF;
    --default-accent: #b9dcf0;
+   --background-colour: #f2f2f2;
+
+   --grey_1: #e9e9e9;
 }
 
 body {
-   background-color: #f2f2f2;
+   background-color: var(--background-colour);
 }
 
 .header {
@@ -43,23 +46,23 @@ body {
    float: left;
 }
 .topnav button {
-   background-color: #FFFFFF
+   background-color: var(--background-colour)
 }
 
 /*========== Menu CSS ==========*/
 .menu_options a {
    display: inline-block;
-   padding: 20px;
+   padding: 20px 5px;
    color: #333;
-   font-size: larger;
+   font-size: 24px;
    text-decoration: none;
-   margin-right: 10px;
+   width: 180px;
    background-color: #FFFFFF;
    transition-duration: var(--short-transition);
 }
 
 .menu_options a:hover {
-   background-color: #d3d1d1;
+   background-color: var(--grey_1);
 }
 
 .content {
@@ -68,6 +71,11 @@ body {
 
 .content.active {
    display:block;
+}
+
+.menu_options a.btn_selected {
+   box-shadow: 0 3px 0 var(--default-colour);
+   color: var(--default-colour);
 }
 
 /*========== Main CSS ==========*/
@@ -113,7 +121,7 @@ h1 {
    top: 10px;
    z-index: 1;
 
-   background-color: #f2f2f2;
+   background-color: var(--background-colour);
    border-radius: 20px;
    margin: 50px auto;
    width: 250%;
