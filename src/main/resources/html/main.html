@@ -5,8 +5,26 @@
    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta>
    <title>Finance Management System</title>
    <link rel="stylesheet" type="text/css" href="common.css"></link>
-   <script type="text/javascript" src="script.js"></script>
+   <script type="text/javascript" src="scripts.js"></script>
 </head>
+
+<script>
+    function showContent(id) {
+    // Open section
+    var contents = document.querySelectorAll('.content');
+    for (var i = 0; i < contents.length; i++) {
+        contents[i].classList.remove('active');
+    }
+    document.getElementById(id).classList.add('active');
+
+    // Colour selected anchor
+    var anchors = document.querySelectorAll(".menu_options a");
+    for (var i = 0; i < anchors.length; i++) {
+        anchors[i].classList.remove("btn_selected");
+    }
+    document.getElementById("btn_" + id).classList.add("btn_selected");
+}
+</script>
 
 <body>
     
@@ -46,12 +64,16 @@
     <div class="main">
 
         <div class="menu">      
+            
             <div class="menu_options">
                 <a class="btn_selected" id="btn_dashboard" href="#" onclick="showContent('dashboard');">
-                    <img scr="/topnav/settings.png" alt="Dashboard">Dashboard</a>
-                <a id="btn_budget" href="#" onclick="showContent('budget');">Budget</a>
-                <a id="btn_summary" href="#" onclick="showContent('summary');">Summary</a>
-                <a id="btn_statement" href="#" onclick="showContent('statement');">Statement</a>
+                    <img src="/topnav/settings.png" alt="Dashboard">Dashboard</a>
+                <a id="btn_budget" href="#" onclick="showContent('budget');">
+                    <img src="/topnav/settings.png" alt="Budge">Budget</a>
+                <a id="btn_summary" href="#" onclick="showContent('summary');">
+                    <img src="/topnav/settings.png" alt="Summary">Summary</a>
+                <a id="btn_statement" href="#" onclick="showContent('statement');">
+                    <img src="/topnav/settings.png" alt="Statement">Summary</a>
             </div>
         
         </div>    

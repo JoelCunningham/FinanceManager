@@ -61,6 +61,11 @@ body {
    transition-duration: var(--short-transition);
 }
 
+.menu_options img {
+   height: 20px;
+   padding-right: 5px;
+}
+
 .menu_options a:hover {
    background-color: var(--grey_1);
 }
