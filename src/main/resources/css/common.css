@@ -32,6 +32,11 @@ body {
 }
 
 /*========== Topnav CSS ==========*/
+.topnav {
+   padding: 0px 20px;
+   margin: 0px auto;
+   width: 80%;
+}
 .topnav img {
    height: 60px;
    float: left;
@@ -45,8 +50,39 @@ body {
    height: 40px;
    float: left;
 }
+
 .topnav button {
-   background-color: var(--background-colour)
+   background-color: transparent;
+}
+
+.topnav .material-symbols-outlined {
+   font-variation-settings:
+   'FILL' 0,
+   'wght' 400,
+   'GRAD' 100,
+   'opsz' 48;
+
+   font-size: x-large !important;
+   vertical-align: bottom;
+   margin-bottom: 2px;
+ }
+
+/*========== Main CSS ==========*/
+h1 {
+   font-family: Verdana, sans-serif;
+   font-size: 40px;
+   text-align: center;
+   color: var(--default-colour);
+}
+
+.main {
+   background-color: #FFFFFF;
+   border-radius: 20px;
+   padding: 20px;
+   margin: 0px auto 20px auto;
+   width: 80%;
+   height: calc(100vh - (16px + 58px + 20px + 60px));
+   box-shadow: 0px 0px 10px #c0c0c0;
 }
 
 /*========== Menu CSS ==========*/
@@ -54,15 +90,14 @@ body {
    display: inline-block;
    padding: 20px 5px;
    color: #333;
-   font-size: 24px;
+   font-size: large;
    text-decoration: none;
    width: 180px;
    background-color: #FFFFFF;
    transition-duration: var(--short-transition);
 }
 
-.menu_options img {
-   height: 20px;
+.menu_options span {
    padding-right: 5px;
 }
 
@@ -83,27 +118,24 @@ body {
    color: var(--default-colour);
 }
 
-/*========== Main CSS ==========*/
-h1 {
-   font-family: Verdana, sans-serif;
-   font-size: 40px;
-   text-align: center;
-   color: var(--default-colour);
-}
+.menu_options .material-symbols-outlined {
+   font-variation-settings:
+   'FILL' 0,
+   'wght' 700,
+   'GRAD' 200,
+   'opsz' 48;
 
-.main {
-   background-color: #FFFFFF;
-   border-radius: 20px;
-   padding: 20px;
-   margin: 50px auto;
-   width: 80%;
-   box-shadow: 0px 0px 10px #c0c0c0;
-}
+   font-size: large !important;
+   vertical-align: bottom;
+   margin-bottom: 2px;
+ }
 
 /*========== Footer CSS ==========*/
 .footer {
    background-color: #cccccc;
-   padding: 10px;
+   padding: 6px 10%;
+   width: 100%;
+   height: 60px;
 }
 
 /*========== Dropdown Button CSS ==========*/
@@ -121,15 +153,15 @@ h1 {
  
  .dropdown-content {
    display: none;
-   position: absolute;
-   right: 10px;
+   position: fixed;
+   right: calc(10% + 16px + 20px);
    top: 10px;
    z-index: 1;
 
    background-color: var(--background-colour);
    border-radius: 20px;
    margin: 50px auto;
-   width: 250%;
+   width: 150px;
    box-shadow: 0px 0px 10px #c0c0c0;
    text-align: left;
  }
