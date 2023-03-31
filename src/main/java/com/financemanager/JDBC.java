@@ -8,7 +8,7 @@ package com.financemanager;
 */
 public class JDBC {
  
-    private static final String DATABASE = "jdbc:sqlite:database/Library Database.db";
+    //private static final String DATABASE = "jdbc:sqlite:database/Library Database.db";
 
     // Create a JDBC Object to communicate with the database
     public JDBC() { System.out.println("Created JDBC Connection Object"); }

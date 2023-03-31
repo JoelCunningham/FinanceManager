@@ -1,6 +1,7 @@
 package com.financemanager;
 
 import java.util.HashMap;
+import java.time.LocalDate;
 import java.util.Map;
 
 import io.javalin.http.Context;
@@ -24,7 +25,7 @@ public class PageMain implements Handler{
 
 
 
-        
+        model.put("CurrentYear", LocalDate.now().getYear());
         model.put("VersionNumber", Helper.getGitVersion());
 
         context.render(TEMPLATE, model); //Make Javalin render the webpage

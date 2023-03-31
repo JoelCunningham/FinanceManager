@@ -130,6 +130,46 @@ h1 {
    margin-bottom: 2px;
  }
 
+ /*========== Side Panel CSS ==========*/
+ .panel select {
+   width: 150px;
+   padding: 5px;
+   border: none;
+   border-radius: 15px;
+   background-color: var(--background-colour);
+   outline: none;
+   height: 40px;
+   font-size: medium;
+ }
+
+ .panel button {
+   width: 150px;
+   border-radius: 15px;
+   text-align: left;
+   padding: 0px 20px;
+   height: 50px
+ }
+
+ .panel .dropdown-content {
+   position: absolute;
+   left: 0;
+   top: 0px;
+   width: 150px;
+ }
+
+.panel .material-symbols-outlined {
+   font-variation-settings:
+   'FILL' 0,
+   'wght' 700,
+   'GRAD' 200,
+   'opsz' 48;
+
+   font-size: large !important;
+   vertical-align: bottom;
+   margin-bottom: 2px;
+   padding-left: 55px;
+ }
+
 /*========== Footer CSS ==========*/
 .footer {
    background-color: #cccccc;

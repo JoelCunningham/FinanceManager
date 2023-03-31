@@ -14,6 +14,7 @@ import io.javalin.core.util.RouteOverviewPlugin;
 public class App {
      
     public static final int         JAVALIN_PORT    = 7000;
+    public static final String      JS_DIR          = "js/";
     public static final String      CSS_DIR         = "css/";
     public static final String      IMAGES_DIR      = "images/";
 
@@ -22,6 +23,7 @@ public class App {
         // Create a HTTP server and listen in port 7000
         Javalin app = Javalin.create(config -> {
             config.registerPlugin(new RouteOverviewPlugin("/help/routes"));
+            config.addStaticFiles(JS_DIR);
             config.addStaticFiles(CSS_DIR);
             config.addStaticFiles(IMAGES_DIR);
         }).start(JAVALIN_PORT);

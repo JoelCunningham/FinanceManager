@@ -1,3 +1,4 @@
+// Code for menu selector buttons
 function showContent(id) {
     // Open section
     var contents = document.querySelectorAll('.content');
@@ -12,4 +13,9 @@ function showContent(id) {
         anchors[i].classList.remove("btn_selected");
     }
     document.getElementById("btn_" + id).classList.add("btn_selected");
+}
+
+// Update dropdown box text to match selected option
+function updateDropdown(text) {
+    document.querySelector('.panel .dropbtn span').textContent = text;
 }
