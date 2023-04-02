@@ -46,46 +46,84 @@
 
     <div class="main">
 
-        <div class="menu">      
+        <div class="menu">  
             
             <div class="menu_options">
-                <a class="btn_selected" id="btn_dashboard" href="#" onclick="showContent('dashboard');">
+                <a id="btn_dashboard" th:class="${dashboard_active}" href="#" onclick="showContent('dashboard');">
                     <span class="material-symbols-outlined">dashboard</span>Dashboard</a>
-                <a id="btn_budget" href="#" onclick="showContent('budget');">
+                <a id="btn_budget" th:class="${budget_active}" href="#" onclick="showContent('budget');">
                     <span class="material-symbols-outlined">grid_on</span>Budget</a>
-                <a id="btn_summary" href="#" onclick="showContent('summary');">
+                <a id="btn_summary" th:class="${summary_active}" href="#" onclick="showContent('summary');">
                     <span class="material-symbols-outlined">analytics</span>Summary</a>
-                <a id="btn_statement" href="#" onclick="showContent('statement');">
+                <a id="btn_statement" th:class="${statement_active}" href="#" onclick="showContent('statement')">
                     <span class="material-symbols-outlined">format_list_bulleted</span>Statement</a>
             </div>
-        
+
         </div>    
 
-        <section id="dashboard" class="content active">
+        <section id="dashboard" th:class="'content ' + ${dashboard_active}">
             <h1>Dashboard</h2>
             <p>Text here.</p>
         </section>
 
-        <section id="budget" class="content">
+        <section id="budget" th:class="'content ' + ${budget_active}">
+            
             <div class="panel">
-                
-                <div class="dropdown">
-                    <button class="dropbtn"> <span th:text="${(CurrentYear)}"></span><span class="material-symbols-outlined">expand_more</span></button>
-                    <div class="dropdown-content">
-                        <a href="#" onclick="updateDropdown(this.textContent)">Option 1</a>
-                        <a href="#" onclick="updateDropdown(this.textContent)">Option 2</a>
-                    </div>
-                </div>
 
+                <form action="/" method="post">
+
+                    <select name="year_selector" onchange="this.form.submit()">
+                        <option th:each="year : ${years}" th:text="${year}"></option>
+                    </select>
+                                    
+                </form>
+
+                <div class=buttons>
+                    
+                    <button class="util"> <span>Import</span><span class="material-symbols-outlined">upload</span></button>
+                    <button class="save" onclick="tempChangeText(this, 'Saved!')"><span>Save</span><span class="material-symbols-outlined">save</span></button>
+                
+                </div>
             </div>
+
+            <div class="display">
+
+                <table>
+                    <thead>
+                        <th>Category</th>
+                        <th>Jan</th>
+                        <th>Feb</th>
+                        <th>Mar</th>
+                        <th>Apr</th>
+                        <th>May</th>
+                        <th>Jun</th>
+                        <th>Jul</th>
+                        <th>Aug</th>
+                        <th>Sep</th>
+                        <th>Oct</th>
+                        <th>Nov</th>
+                        <th>Dec</th>
+                        <th>Total</th>
+                    </thead>
+                    <tbody th:each="Category : ${BudgetArray}">
+                        <tr th:each="Month : ${Category}">
+                            <td th:each="Amount : ${Month}"> 
+                            <td th:each="Amount : ${Month}"> 
+                        </tr>
+                    </tbody>
+
+                </table>
+
+            </div>     
+
         </section>
 
-        <section id="summary" class="content">
+        <section id="summary" th:class="'content ' + ${summary_active}">
             <h1>Summary</h2>
             <p>We are a company that specializes in web development.</p>
         </section>
 
-        <section id="statement" class="content">
+        <section id="statement" th:class="'content ' + ${statement_active}">
             <h1>Statement</h2>
             <p>We are a company that specializes in web development.</p>
         </section>
@@ -93,7 +131,7 @@
     </div>
 
     <div class="footer">
-        <p th:text="'Finance Management System version ' + ${(VersionNumber)}"></p>
+        <p th:text="'Finance Management System version ' + ${(version)}"></p>
     </div>
 
 </body>

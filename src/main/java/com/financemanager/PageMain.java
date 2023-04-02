@@ -1,7 +1,6 @@
 package com.financemanager;
 
 import java.util.HashMap;
-import java.time.LocalDate;
 import java.util.Map;
 
 import io.javalin.http.Context;
@@ -23,13 +22,50 @@ public class PageMain implements Handler{
         Map<String, Object> model = new HashMap<String, Object>();
         //JDBC jdbc = new JDBC();
 
+        String year = context.formParam("page");
+        System.out.println(year);
 
+        String[] years = {"2023", "2022", "2021"}; //TODO
+        
 
-        model.put("CurrentYear", LocalDate.now().getYear());
-        model.put("VersionNumber", Helper.getGitVersion());
+        //float[][] budget = createBudget();
+
+        //model.put("BudgetArray", budget);
+
+        model.put("years", years);
+
+        var page_statuses = Map.of(
+            "dashboard_active"  , "active",
+            "budget_active"     , "",
+            "summary_active"    , "",
+            "statement_active"  , ""
+        );
+
+        for (Map.Entry<String, String> page : page_statuses.entrySet()) {
+            model.put(page.getKey(), page.getValue());
+        }
+
+        model.put("version", Helper.getGitVersion());
 
         context.render(TEMPLATE, model); //Make Javalin render the webpage
 
     }
+
+//     public static float[][] createBudget()) {
+        
+//         ;
+//         if (SearchType == null) { SearchType = "Title"; 
+        
+        
+//         for (int i = 0; i < budget.length; i++) {
+//             for (int j = 0; j < budget[i].length; j++) {
+//                 budget[i][j] = (float) Math.random();
+//             }
+//         }
+//         //TODO
+
+//         return budget;
+//     }
+// }
 
 }

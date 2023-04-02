@@ -1,21 +1,21 @@
-// Code for menu selector buttons
+  // Code for menu selector buttons
 function showContent(id) {
     // Open section
-    var contents = document.querySelectorAll('.content');
+    var contents = document.querySelectorAll('.active');
     for (var i = 0; i < contents.length; i++) {
         contents[i].classList.remove('active');
     }
+
     document.getElementById(id).classList.add('active');
-
-    // Colour selected anchor
-    var anchors = document.querySelectorAll(".menu_options a");
-    for (var i = 0; i < anchors.length; i++) {
-        anchors[i].classList.remove("btn_selected");
-    }
-    document.getElementById("btn_" + id).classList.add("btn_selected");
+    document.getElementById("btn_" + id).classList.add('active');
 }
 
-// Update dropdown box text to match selected option
-function updateDropdown(text) {
-    document.querySelector('.panel .dropbtn span').textContent = text;
-}
+function tempChangeText(button, text) {
+    curr_text = button.innerHTML;
+    button.innerHTML = text;
+    button.classList.add('clicked');
+    setTimeout(function() {
+      button.innerHTML = curr_text;
+      button.classList.remove('clicked');
+    }, 2000);
+  }
