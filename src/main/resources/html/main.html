@@ -49,31 +49,31 @@
         <div class="menu">  
             
             <div class="menu_options">
-                <a id="btn_dashboard" th:class="${dashboard_active}" href="#" onclick="showContent('dashboard');">
+                <a id="btn_dashboard" href="#home" onclick="showContent('dashboard');">
                     <span class="material-symbols-outlined">dashboard</span>Dashboard</a>
-                <a id="btn_budget" th:class="${budget_active}" href="#" onclick="showContent('budget');">
+                <a id="btn_budget" href="#budget" onclick="showContent('budget');">
                     <span class="material-symbols-outlined">grid_on</span>Budget</a>
-                <a id="btn_summary" th:class="${summary_active}" href="#" onclick="showContent('summary');">
+                <a id="btn_summary" href="#summary" onclick="showContent('summary');">
                     <span class="material-symbols-outlined">analytics</span>Summary</a>
-                <a id="btn_statement" th:class="${statement_active}" href="#" onclick="showContent('statement')">
+                <a id="btn_statement"  href="#statement" onclick="showContent('statement')">
                     <span class="material-symbols-outlined">format_list_bulleted</span>Statement</a>
             </div>
 
         </div>    
 
-        <section id="dashboard" th:class="'content ' + ${dashboard_active}">
+        <section id="dashboard" class="content active">
             <h1>Dashboard</h2>
             <p>Text here.</p>
         </section>
 
-        <section id="budget" th:class="'content ' + ${budget_active}">
+        <section id="budget" class="content">
             
             <div class="panel">
 
-                <form action="/" method="post">
+                <form action="/#budget" method="post">
 
                     <select name="year_selector" onchange="this.form.submit()">
-                        <option th:each="year : ${years}" th:text="${year}"></option>
+                        <option th:each="year: ${years.keySet()}" th:text="${year}" th:selected="${years.get(year)}"></option>
                     </select>
                                     
                 </form>
@@ -81,49 +81,54 @@
                 <div class=buttons>
                     
                     <button class="util"> <span>Import</span><span class="material-symbols-outlined">upload</span></button>
-                    <button class="save" onclick="tempChangeText(this, 'Saved!')"><span>Save</span><span class="material-symbols-outlined">save</span></button>
+                    <button class="save" type="submit" form="budget_form" onclick="tempChangeText(this, 'Saved!')"><span>Save</span><span class="material-symbols-outlined">save</span></button>
                 
                 </div>
             </div>
 
             <div class="display">
 
-                <table>
-                    <thead>
-                        <th>Category</th>
-                        <th>Jan</th>
-                        <th>Feb</th>
-                        <th>Mar</th>
-                        <th>Apr</th>
-                        <th>May</th>
-                        <th>Jun</th>
-                        <th>Jul</th>
-                        <th>Aug</th>
-                        <th>Sep</th>
-                        <th>Oct</th>
-                        <th>Nov</th>
-                        <th>Dec</th>
-                        <th>Total</th>
-                    </thead>
-                    <tbody th:each="Category : ${BudgetArray}">
-                        <tr th:each="Month : ${Category}">
-                            <td th:each="Amount : ${Month}"> 
-                            <td th:each="Amount : ${Month}"> 
-                        </tr>
-                    </tbody>
+                <form action="/#budget" method="post" id="budget_form">
 
-                </table>
+                    <table>
+                        <thead>
+                            <th>Category</th>
+                            <th>Jan</th>
+                            <th>Feb</th>
+                            <th>Mar</th>
+                            <th>Apr</th>
+                            <th>May</th>
+                            <th>Jun</th>
+                            <th>Jul</th>
+                            <th>Aug</th>
+                            <th>Sep</th>
+                            <th>Oct</th>
+                            <th>Nov</th>
+                            <th>Dec</th>
+                            <th>Total</th>
+                        </thead>
+                        <tbody>
+                            <tr th:each="row : ${budget_table}">
+                                <td th:each="col : ${row}">
+                                    <input name="budget_table" th:value="${col}"></input>
+                                </td>  
+                            </tr>
+                        </tbody>
+
+                    </table>
+                
+                </form>
 
             </div>     
 
         </section>
 
-        <section id="summary" th:class="'content ' + ${summary_active}">
+        <section id="summary" class="content">
             <h1>Summary</h2>
             <p>We are a company that specializes in web development.</p>
         </section>
 
-        <section id="statement" th:class="'content ' + ${statement_active}">
+        <section id="statement" class="content">
             <h1>Statement</h2>
             <p>We are a company that specializes in web development.</p>
         </section>

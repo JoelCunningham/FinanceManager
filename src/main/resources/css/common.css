@@ -237,6 +237,17 @@ table {
    color: white;
  }
 
+ input {
+   width: 100%;
+   border: none;
+   background-color: transparent;
+   padding: none;
+ }
+
+ input:read-only{
+  outline: none;
+ }
+
 /*========== Footer CSS ==========*/
 .footer {
    background-color: #cccccc;
