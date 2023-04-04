@@ -4,8 +4,15 @@ package com.financemanager;
  * The Budget class represents a budget.
  */
 public class Budget {
-    private int year;
-    private BudgetItem[] items;
+    public int year;
+    public BudgetItem[] items;
+
+     /**
+     * Constructs a new Budget object with default values.
+     */
+    public Budget() {
+        this(0, new BudgetItem[]{new BudgetItem()});
+    }
 
     /**
      * Constructs a new Budget object with the given year and items array.
@@ -18,21 +25,18 @@ public class Budget {
         this.items = items;
     }
 
-    /**
-     * Returns the year of the budget.
+     /**
+     * Loads budget form specified year into Budget object. May be replaced
      *
-     * @return The year of the budget.
+     * @param year The year of the budget to load. 
      */
-    public int getYear() {
-        return year;
-    }
+    public void load(int year) {
+        //this.items = jdbc.getBudget('year') TODO
+        this.year = year;
 
-    /**
-     * Returns the items array of the budget.
-     *
-     * @return The items array of the budget.
-     */
-    public BudgetItem[] getItems() {
-        return items;
+        items = new BudgetItem[3];
+        items[0] = new BudgetItem(1, 1, 20);
+        items[1] = new BudgetItem(2, 7, 33);
+        items[2] = new BudgetItem(3, 4, 21);
     }
 }

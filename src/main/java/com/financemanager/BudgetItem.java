@@ -9,6 +9,13 @@ public class BudgetItem {
     private float amount;
 
     /**
+     * Constructs a new BudgetItem object with default values.
+     */
+    public BudgetItem() {
+        this(0, 0, 0);
+    }
+
+    /**
      * Constructs a new BudgetItem object with the given category, year, month and amount.
      *
      * @param category The id of the category of the budget item.
