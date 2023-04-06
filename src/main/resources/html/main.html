@@ -90,32 +90,49 @@
 
                 <form action="/#budget" method="post" id="budget_form">
 
-                    <table>
-                        <thead>
-                            <th>Category</th>
-                            <th>Jan</th>
-                            <th>Feb</th>
-                            <th>Mar</th>
-                            <th>Apr</th>
-                            <th>May</th>
-                            <th>Jun</th>
-                            <th>Jul</th>
-                            <th>Aug</th>
-                            <th>Sep</th>
-                            <th>Oct</th>
-                            <th>Nov</th>
-                            <th>Dec</th>
-                            <th>Total</th>
-                        </thead>
-                        <tbody>
-                            <tr th:each="row : ${budget_table}">
-                                <td th:each="cell : ${row}">
-                                    <input name="budget_table" th:value="${cell.getValue()}" th:class="${cell.getKey()}"></input>
-                                </td>  
-                            </tr>
-                        </tbody>
+                    <div class="table_display">
 
-                    </table>
+                        <div class="type" th:each="type : ${budget_table}">
+
+                            <h2 th:text="${type[0][0][0]}"></h2>
+
+                            <div class="header" th:each="header : ${type}">
+
+                                <h3 th:text="${header[0][1]}"></h3>
+
+                                <table>
+                                    <thead>
+                                        <th>Type</th>
+                                        <th>Header</th>
+                                        <th>Category</th>
+                                        <th>Jan</th>
+                                        <th>Feb</th>
+                                        <th>Mar</th>
+                                        <th>Apr</th>
+                                        <th>May</th>
+                                        <th>Jun</th>
+                                        <th>Jul</th>
+                                        <th>Aug</th>
+                                        <th>Sep</th>
+                                        <th>Oct</th>
+                                        <th>Nov</th>
+                                        <th>Dec</th>
+                                        <th>Total</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="category : ${header}">
+                                            <td th:each="value : ${category}">
+                                                <input name="budget_table" th:value="${value}"></input>
+                                            </td>  
+                                        </tr>
+                                    </tbody>
+            
+                                </table>
+
+                            </div>
+
+                        </div>
+                    </div>
                 
                 </form>
 
