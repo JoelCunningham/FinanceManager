@@ -7,6 +7,7 @@ window.onload = function() {
 
   makeColumnsReadonly();
   makeColumnsHidden();
+  hideTotalHead();
 }
 
 // Code for menu selector buttons

@@ -80,7 +80,7 @@
 
                 <div class=buttons>
                     
-                    <button class="util"> <span>Import</span><span class="material-symbols-outlined">upload</span></button>
+                    <button class="util" type="submit" form="budget_form" onclick="tempChangeText(this, 'Imported!')"><span>Import</span><span class="material-symbols-outlined">upload</span></button>
                     <button class="save" type="submit" form="budget_form" onclick="tempChangeText(this, 'Saved!')"><span>Save</span><span class="material-symbols-outlined">save</span></button>
                 
                 </div>
@@ -90,9 +90,7 @@
 
                 <form action="/#budget" method="post" id="budget_form">
 
-                    <div class="table_display">
-
-                        <div class="type" th:each="type : ${budget_table}">
+                        <div class="type" th:id="type + ${type[0][0][0]}" th:each="type : ${budget_table}">
 
                             <h2 th:text="${type[0][0][0]}"></h2>
 
@@ -132,7 +130,6 @@
                             </div>
 
                         </div>
-                    </div>
                 
                 </form>
 
@@ -150,10 +147,6 @@
             <p>We are a company that specializes in web development.</p>
         </section>
 
-    </div>
-
-    <div class="footer">
-        <p th:text="'Finance Management System version ' + ${(version)}"></p>
     </div>
 
 </body>

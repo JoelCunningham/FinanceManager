@@ -17,10 +17,15 @@
 
 body {
    background-color: var(--background-colour);
+   margin: 0;
 }
 
 .hidden {
    display: none;
+}
+
+.hiddenplus {
+  visibility: collapse;
 }
 
 /*========== Topnav CSS ==========*/
@@ -30,7 +35,7 @@ body {
    width: 80%;
 }
 .topnav img {
-   height: 60px;
+   height: 44px;
    float: left;
 }
 
@@ -40,7 +45,7 @@ body {
 
 .topnav button {
    background-color: transparent;
-   margin: 10px;
+   margin: 5px;
    padding: 5px;
 }
 
@@ -71,17 +76,17 @@ h1 {
 .main {
    background-color: #FFFFFF;
    border-radius: 20px;
-   padding: 20px;
-   margin: 0px auto 20px auto;
+   padding: 15px;
+   margin: 0px auto 15px auto;
    width: 80%;
-   height: calc(100vh - (16px + 58px + 20px + 60px));
+   height: calc(100vh - (60px));
    box-shadow: 0px 0px 10px #c0c0c0;
 }
 
 .content {
    display:none;
    height: calc(96% - 45px);
-   margin: 25px 0px 10px 0px;
+   margin: 18px 0px 10px 0px;
 }
 
 .content.active {
@@ -92,7 +97,7 @@ h1 {
 /*========== Menu CSS ==========*/
 .menu_options a {
    display: inline-block;
-   padding: 20px 5px;
+   padding: 10px 5px;
    color: #333;
    font-size: large;
    text-decoration: none;
@@ -131,26 +136,30 @@ h1 {
  .panel {
    background-color: #FFFFFF;
    border-radius: 10px;
-   padding: 20px;
+   padding: 15px;
    margin: 0px 20px 20px 0px;
-   width: 200px;
-   height: 100%;
+   width: 150px;
+   height: calc(100vh - (149px));
    box-shadow: 0px 0px 10px #c0c0c0;
    float: left;
    position: relative;
  }
 
  .panel button, select {
-   width: 150px;
+   width: 120px;
    border-radius: 15px;
    text-align: left;
-   padding: 0px 20px;
+   padding: 0px 15px;
    height: 50px;
    background-color: var(--background-colour);
    border: 3px solid var(--background-colour);
    font-size: medium;
-   margin: 20px 0px;
+   margin: 0px 0px;
    transition: 0.8s;
+ }
+
+ .panel button {
+  margin: 0px 0px 15px 0px;
  }
 
  .buttons {
@@ -158,7 +167,7 @@ h1 {
    bottom: 0;
    left: 0;
    display: inline-block;
-   margin: 0px 20px;
+   margin: 0px 15px;
  }
 
  .panel button:hover, select:hover {
@@ -178,7 +187,7 @@ h1 {
    transition: 0.5s;
  }
 
- .panel .save.clicked {
+ .panel button.clicked {
    background-color: var(--green_colour);
    border-color: var(--green_colour);
    color: #FFFFFF;
@@ -207,28 +216,38 @@ h1 {
  }
 
 /*========== Budget CSS ==========*/
-.table_display {
-  
-}
-
  .type{
   background-color: #FFFFFF;
   border-radius: 10px;
-  padding: 20px;
-  margin: 0px 0px 20px 0px;
-  width: calc(100% - 220px);
-  height: 100%;
+  padding: 15px;
+  margin: 0px 0px 15px 0px;
+  width: calc(100% - 170px);
+  height: calc(50vh - (177px));
   box-shadow: 0px 0px 10px #c0c0c0;
   float: left;
+  overflow-y: auto;
+}
+
+.type h2{
+  margin: 0px 0px 0px 0px;
+  font-size: medium;
+}
+
+.type h3{
+  margin: 0px 0px 5px 0px;
+  font-size: 14px;
+}
+
+#typeBalance {
+  height: 175px;
 }
 
 .header{
   background-color: #FFFFFF;
   border-radius: 10px;
-  padding: 20px;
-  margin: 0px 0px 20px 0px;
+  padding: 10px;
+  margin: 10px 0px 0px 0px;
   width: calc(100%);
-  height: 100%;
   box-shadow: 0px 0px 10px #c0c0c0;
   float: left;
 }
@@ -237,11 +256,11 @@ h1 {
 table {
    border-collapse: collapse;
    width: 100%;
- 
+   border-radius: 8px;
+   overflow: hidden;
  }
  
  th, td {
-   text-align: left;
    padding: 2px;
  
  }
@@ -249,10 +268,15 @@ table {
  tr:nth-child(even) {
    background-color: #f2f2f2;
  }
+
+ tr:last-child, td:last-child{
+  background-color: var(--default-accent)
+ }
  
  th {
-   background-color: #5ac25d;
+   background-color: var(--default-colour);
    color: white;
+   text-align: center;
  }
 
  input {
@@ -260,19 +284,13 @@ table {
    border: none;
    background-color: transparent;
    padding: none;
+   text-align: center;
+   padding: 0;
  }
 
  input:read-only{
   outline: none;
  }
-
-/*========== Footer CSS ==========*/
-.footer {
-   background-color: #cccccc;
-   padding: 6px 10%;
-   width: 100%;
-   height: 60px;
-}
 
 /*========== Dropdown Button CSS ==========*/
 .dropbtn {
