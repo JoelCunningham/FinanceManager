@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Scanner;
 
+import com.financemanager.Header;
+
 public class Helper {
     
     public static String getGitVersion() throws IOException{
@@ -16,7 +18,14 @@ public class Helper {
         }
     }
 
-    
+    public static int getTableHeight(Header[] headers) {
+        int header_count = headers.length;
+        int category_count = 0;
+        for (Header header : headers) {
+            category_count += header.categories.length;
+        }
+        return 2 * header_count + category_count + 2 * 2;
+    }
 
     @Deprecated
     public static String[][] convertListToArray(List<String> list, int row_count, int col_count) {

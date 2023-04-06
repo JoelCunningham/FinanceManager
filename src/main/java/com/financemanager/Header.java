@@ -6,9 +6,9 @@ import java.util.Arrays;
  * The Header class represents a header for categories.
  */
 public class Header {
-    private String name;
-    private String type;
-    private Category[] categories;
+    public String name;
+    public String type;
+    public Category[] categories;
 
     /**
      * Constructs a new Header object with the given name, type and size.
@@ -37,42 +37,6 @@ public class Header {
     }
 
     /**
-     * Returns the name of the header.
-     *
-     * @return The name of the header.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Returns the type of the header.
-     *
-     * @return The type of the header.
-     */
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * Returns the categories array of the header.
-     *
-     * @return The categories array of the header.
-     */
-    public Category[] getCategories() {
-        return categories;
-    }
-
-    /**
-     * Sets the categories array of the header to a new array.
-     *
-     * @param categories The new categories array to set for the header.
-     */
-    public void setCategories(Category[] categories) {
-        this.categories = categories;
-    }
-
-    /**
      * Adds a new category to the categories array of the header. If there is an empty slot in
      * the array, it will be filled with the new category. Otherwise, a new array will be created
      * with one more slot than the current array and all elements will be copied over along with
@@ -80,8 +44,10 @@ public class Header {
      *
      * @param new_category The new category to add to the categories array of the header.
      */
-    public void addCategory(Category new_category) {
+    public void addCategory(String category_name) {
         
+        Category new_category = new Category(category_name, this.name, this.type);
+
         for (int i = 0; i < categories.length; i++) {
             if (categories[i] == null) {
                 categories[i] = new_category;

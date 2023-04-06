@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.List;
 
 import com.financemanager.Budget;
-import com.financemanager.Category;
 import com.financemanager.Header;
 import com.financemanager.JDBC;
 
@@ -15,7 +14,6 @@ import io.javalin.http.Context;
 public class BudgetPage {
 
     private static final int BUDGET_COLS = 16;
-    private static       int BUDGET_ROWS =  0;
 
     private static String selected_year = Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
     private static String previous_year = Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
@@ -62,9 +60,9 @@ public class BudgetPage {
         headers[0] = new Header("Head1", type, 3);
         headers[1] = new Header("Head2", type, 3);
         for (Header header : headers) {
-            header.addCategory(new Category(1, header.getName() + "Cat1"));
-            header.addCategory(new Category(2, header.getName() + "Cat2"));
-            header.addCategory(new Category(3, header.getName() + "Cat3"));
+            header.addCategory(header.name + "Cat1");
+            header.addCategory(header.name + "Cat2");
+            header.addCategory(header.name + "Cat3");
         }
 
         // Create table
@@ -72,14 +70,14 @@ public class BudgetPage {
 
         for (int i = 0; i < table.length; i++) {
 
-            table[i] = new String[headers[i].getCategories().length][];
+            table[i] = new String[headers[i].categories.length][];
 
             for (int j = 0; j < table[i].length; j++) {
 
                 table[i][j] = new String[BUDGET_COLS];
                 table[i][j][0] = type;
-                table[i][j][1] = headers[i].getName();
-                table[i][j][2] = headers[i].getCategories()[j].getName();
+                table[i][j][1] = headers[i].name;
+                table[i][j][2] = headers[i].categories[j].name;
                 float total = 0;
 
                 for (int k = 3; k < table[i][j].length - 1; k++) {
@@ -98,7 +96,7 @@ public class BudgetPage {
         int header_count = headers.length;
         int category_count = 0;
         for (Header header : headers) {
-            category_count += header.getCategories().length;
+            category_count += header.categories.length;
         }
         return 2 * header_count + category_count + 2 * 2;
     }
