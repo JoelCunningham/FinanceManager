@@ -34,9 +34,35 @@ public class Budget {
         //this.items = jdbc.getBudget('year') TODO
         this.year = year;
 
+        Header[] headers = new Header[2];
+        headers[0] = new Header("Head1", "Income", 3);
+        headers[1] = new Header("Head2", "Expense", 3);
+        for (Header header : headers) {
+            header.addCategory(header.name + "Cat1");
+            header.addCategory(header.name + "Cat2");
+            header.addCategory(header.name + "Cat3");
+        }
         items = new BudgetItem[3];
-        items[0] = new BudgetItem("Head1", "Head1Cat1", 1, 20);
-        items[1] = new BudgetItem("Head1", "Head1Cat2", 7, 33);
-        items[2] = new BudgetItem("Head2", "Head2Cat3", 4, 21);
+        items[0] = new BudgetItem(headers[0].categories[0], 1, 20);
+        items[1] = new BudgetItem(headers[0].categories[1], 7, 33);
+        items[2] = new BudgetItem(headers[1].categories[2], 4, 21);
+    }
+
+    public float findValue(String type, String header_name, String category_name, int month) {
+
+        float value = 0;
+
+        for (BudgetItem item : items) {
+            
+            if (item.month == month &&
+                item.category.type.equals(type) &&
+                item.category.name.equals(category_name) &&
+                item.category.header_name.equals(header_name)) {
+
+                value = item.amount;
+                break;
+            }
+        }
+        return value;
     }
 }

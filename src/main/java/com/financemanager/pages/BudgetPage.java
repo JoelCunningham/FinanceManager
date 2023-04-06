@@ -11,6 +11,7 @@ import com.financemanager.Budget;
 import com.financemanager.Category;
 import com.financemanager.Header;
 import com.financemanager.JDBC;
+import com.financemanager.helper.Helper;
 import com.financemanager.helper.Index;
 
 import io.javalin.http.Context;
@@ -66,13 +67,13 @@ public class BudgetPage {
         headers[0] = new Header("Head1", "Income", 3);
         headers[1] = new Header("Head2", "Expense", 3);
         for (Header header : headers) {
-            header.addCategory(new Category(1, header.getName() + "Cat1"));
-            header.addCategory(new Category(2, header.getName() + "Cat2"));
-            header.addCategory(new Category(3, header.getName() + "Cat3"));
+            header.addCategory(header.name + "Cat1");
+            header.addCategory(header.name + "Cat2");
+            header.addCategory(header.name + "Cat3");
         }
 
         // Determine table dimension
-        BUDGET_ROWS = getTableHeight(headers);
+        BUDGET_ROWS = Helper.getTableHeight(headers);
 
         // Create table
         List<List<Map.Entry<String, String>>> budget_table = new ArrayList<>();
@@ -84,21 +85,15 @@ public class BudgetPage {
             budget_table.add(temp_row);
         }
 
-        fillBudgetTableCategories(budget, budget_table, headers);
+        fillBudgetTableCategories(budget_table, headers);
+        fillBudgetTableValues(budget_table, budget);
+        //fillBudgetTableValues();
+
 
         return budget_table;
     }
 
-    public static int getTableHeight(Header[] headers) {
-        int header_count = headers.length;
-        int category_count = 0;
-        for (Header header : headers) {
-            category_count += header.getCategories().length;
-        }
-        return 2 * header_count + category_count + 2 * 2;
-    }
-
-    public static void fillBudgetTableCategories(Budget budget, List<List<Map.Entry<String, String>>> budget_table, Header[] headers) {
+    public static void fillBudgetTableCategories(List<List<Map.Entry<String, String>>> budget_table, Header[] headers) {
 
         Index current_row = new Index();
 
@@ -106,27 +101,53 @@ public class BudgetPage {
         fillHeaderType(budget_table, headers, current_row, "Expense");
     }
 
-    public static void fillCellByRow(List<List<Map.Entry<String, String>>> table, Index row, AbstractMap.SimpleEntry<String, String> cell) {
-        table.get(row.value()).set(0, cell);
-        row.increment();
-    }
-
     public static void fillHeaderType(List<List<Map.Entry<String, String>>> table, Header[] headers, Index row, String type) {
         fillCellByRow(table, row, new AbstractMap.SimpleEntry<String, String>("type", type));
         for (Header header : headers) {
-            if (header.getType() == type) { 
-                fillHeader(table, header, row); 
+            if (header.type == type) {  
+                fillCellByRow(table, row, new AbstractMap.SimpleEntry<String, String>("header", header.name));
+                for (Category category : header.categories) {
+                    fillCellByRow(table, row, new AbstractMap.SimpleEntry<String, String>("category", category.name));
+                }
+                fillCellByRow(table, row, new AbstractMap.SimpleEntry<String, String>("header total", header.name + " Total"));
             }     
         }
         fillCellByRow(table, row, new AbstractMap.SimpleEntry<String, String>( "type total", type + " Total"));
     }
 
-    public static void fillHeader(List<List<Map.Entry<String, String>>> table, Header header, Index row) {
+    public static void fillBudgetTableValues(List<List<Map.Entry<String, String>>> table, Budget budget){
 
-        fillCellByRow(table, row, new AbstractMap.SimpleEntry<String, String>("header", header.getName()));
-        for (Category category : header.getCategories()) {
-            fillCellByRow(table, row, new AbstractMap.SimpleEntry<String, String>("category", category.getName()));
+        String type = "";
+        String header = "";
+        String category = "";
+
+        for (int i = 0; i < BUDGET_ROWS; i++) {
+            
+            Map.Entry<String,String> head = table.get(i).get(0);
+
+            // Set variables to keep track
+            if (head.getKey() == "type") { type = head.getValue(); }
+            if (head.getKey() == "header") { header = head.getValue(); }
+            if (head.getKey() == "category") { category = head.getValue(); }
+            // Skip to next iteration if row is not a data row
+            else {
+                continue;
+            }
+
+            for (int j = 1; j < BUDGET_COLS - 1; j++) {
+                Map.Entry<String, String> cell = new AbstractMap.SimpleEntry<String, String>("data", String.format("%.2f", budget.findValue(type, header, category, j)));
+                table.get(i).set(j, cell);
+            }
         }
-        fillCellByRow(table, row, new AbstractMap.SimpleEntry<String, String>("header total", header.getName() + " Total"));
+
+
+
+    }
+
+    public static void fillBudgetTableTotals(){}
+
+    public static void fillCellByRow(List<List<Map.Entry<String, String>>> table, Index row, AbstractMap.SimpleEntry<String, String> cell) {
+        table.get(row.value()).set(0, cell);
+        row.increment();
     }
 }
