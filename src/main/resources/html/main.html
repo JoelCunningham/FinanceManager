@@ -73,7 +73,7 @@
                 <form action="/#budget" method="post">
 
                     <select name="year_selector" onchange="this.form.submit()">
-                        <option th:each="year: ${years.keySet()}" th:text="${year}" th:selected="${years.get(year)}"></option>
+                        <option th:each="year: ${years.keySet()}" th:text="${year}" th:value="${year}" th:selected="${years.get(year)}"></option>
                     </select>
                                     
                 </form>
@@ -109,8 +109,8 @@
                         </thead>
                         <tbody>
                             <tr th:each="row : ${budget_table}">
-                                <td th:each="col : ${row}">
-                                    <input name="budget_table" th:value="${col}"></input>
+                                <td th:each="cell : ${row}">
+                                    <input name="budget_table" th:value="${cell.getValue()}" th:class="${cell.getKey()}"></input>
                                 </td>  
                             </tr>
                         </tbody>
