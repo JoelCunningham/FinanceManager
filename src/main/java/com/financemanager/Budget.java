@@ -35,8 +35,8 @@ public class Budget {
         this.year = year;
 
         items = new BudgetItem[3];
-        items[0] = new BudgetItem(1, 1, 20);
-        items[1] = new BudgetItem(2, 7, 33);
-        items[2] = new BudgetItem(3, 4, 21);
+        items[0] = new BudgetItem("Head1", "Head1Cat1", 1, 20);
+        items[1] = new BudgetItem("Head1", "Head1Cat2", 7, 33);
+        items[2] = new BudgetItem("Head2", "Head2Cat3", 4, 21);
     }
 }
