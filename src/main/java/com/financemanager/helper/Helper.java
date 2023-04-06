@@ -1,4 +1,4 @@
-package com.financemanager;
+package com.financemanager.helper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +16,7 @@ public class Helper {
         }
     }
 
+    @Deprecated
     public static String[][] convertListToArray(List<String> list, int row_count, int col_count) {
 
         String[][] array = new String[row_count][col_count];
@@ -36,6 +37,7 @@ public class Helper {
         return array;
     }
 
+    @Deprecated
     public static void print2DArray(String[][] array) {
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[i].length; j++) {
