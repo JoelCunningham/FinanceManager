@@ -226,11 +226,16 @@ h1 {
   box-shadow: 0px 0px 10px #c0c0c0;
   float: left;
   overflow-y: auto;
+  position: relative;
 }
 
 .type h2{
-  margin: 0px 0px 0px 0px;
   font-size: medium;
+  transform-origin: left;
+  left: 0;
+  width: fit-content;
+  transform: rotate(-90deg) translateX(calc((-50vh + 177px)/2)) translateY(calc(10vw + 200px));
+  position: fixed;
 }
 
 .type h3{
@@ -242,11 +247,16 @@ h1 {
   height: 175px;
 }
 
+.headers{
+  float: right;
+  width: calc(100% - 20px);
+}
+
 .header{
   background-color: #FFFFFF;
   border-radius: 10px;
   padding: 10px;
-  margin: 10px 0px 0px 0px;
+  margin: 0px 0px 10px 0px;
   width: calc(100%);
   box-shadow: 0px 0px 10px #c0c0c0;
   float: left;
