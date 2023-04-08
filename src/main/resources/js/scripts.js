@@ -1,13 +1,17 @@
 // On page load, retrieve state from local storage
 window.onload = function() {
-  var active_id = localStorage.getItem('active_id');
-  if (active_id) {
-      showContent(active_id);
+  var active_page = localStorage.getItem('active_page');
+  if (active_page) {
+      showContent(active_page);
+  }
+
+  var active_form = localStorage.getItem('active_form');
+  if (active_form) {
+      showForm(active_form);
   }
 
   makeColumnsReadonly();
   makeColumnsHidden();
-  hideTotalHead();
 }
 
 // Code for menu selector buttons
@@ -21,8 +25,30 @@ function showContent(id) {
     document.getElementById(id).classList.add('active');
     document.getElementById("btn_" + id).classList.add('active');
 
-    localStorage.setItem('active_id', id);
+    localStorage.setItem('active_page', id);
 }
+
+// Code for forms
+function showForm(id) {
+  // Open section
+  document.getElementById(id).classList.add('visible');
+  document.getElementById("page").classList.add('overlay');
+
+  localStorage.setItem('active_form', id);
+}
+
+// Code for forms
+function hideForm() {
+  // Open section
+  var elements = document.querySelectorAll('.util_form');
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].classList.remove('visible');
+  }
+  document.getElementById("page").classList.remove('overlay');
+
+  localStorage.removeItem('active_form');
+}
+
 
 // Code for the save button (RIP)
 function tempChangeText(button, text) {
