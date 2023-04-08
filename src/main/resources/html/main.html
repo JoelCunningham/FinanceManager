@@ -92,7 +92,7 @@
 
                         <div class="type" th:id="type + ${type[0][0][0]}" th:each="type : ${budget_table}">
 
-                            <h2 th:text="${type[0][0][0]}"></h2>
+                            <h2 th:id="${type[0][0][0]}" th:text="${type[0][0][0]}"></h2>
 
                             <div class="headers">
 

@@ -129,6 +129,7 @@ public class BudgetPage {
 
         // Get incomes type totals
         table[0][0][0] = type;
+        table[0][0][1] = "Total";
         table[0][0][2] = "Incomes Total";
         for (int i = 0; i < incomes_table.length; i++) {
             for (int j = 3; j < BUDGET_COLS; j++) {
@@ -138,6 +139,7 @@ public class BudgetPage {
 
         // Get expenses type totals
         table[0][1][0] = type;
+        table[0][1][1] = "Total";
         table[0][1][2] = "Expenses Total";
         for (int i = 0; i < expenses_table.length; i++) {
             for (int j = 3; j < BUDGET_COLS; j++) {
@@ -147,6 +149,7 @@ public class BudgetPage {
 
         // Fill table and calculate balance
         table[0][2][0] = type;
+        table[0][2][1] = "Total";
         table[0][2][2] = type;
         for (int i = 3; i < BUDGET_COLS; i++) {
             table[0][0][i] = String.format("$%.02f", incomes_total[i - 3]);
