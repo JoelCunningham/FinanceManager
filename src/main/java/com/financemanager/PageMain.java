@@ -1,10 +1,11 @@
 package com.financemanager;
 
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.financemanager.helper.Helper;
 import com.financemanager.pages.BudgetPage;
+import com.financemanager.pages.TopnavForms;
 
 import io.javalin.http.Context;
 import io.javalin.http.Handler;
@@ -23,21 +24,11 @@ public class PageMain implements Handler{
         Map<String, Object> model = new HashMap<String, Object>();
         JDBC jdbc = new JDBC();
 
-        verifyDatabase(jdbc);
+        Helper.verifyDatabase(jdbc);
 
         BudgetPage.loadBudgetPage(context, model, jdbc);
+        TopnavForms.loadCreateCategory(context, model, jdbc);
 
         context.render(TEMPLATE, model); //Make Javalin render the webpage
     }
-
-    public static void verifyDatabase(JDBC jdbc) {
-
-        int curr_year = Calendar.getInstance().get(Calendar.YEAR);
-        int max_year = jdbc.getMaxYear();
-
-        if (max_year != curr_year) {
-            jdbc.addYear(Calendar.getInstance().get(Calendar.YEAR));
-        }
-    }
-
 }

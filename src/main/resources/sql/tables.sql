@@ -19,7 +19,7 @@ CREATE TABLE header (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     type INTEGER NOT NULL,
-    FOREIGN KEY (type) REFERENCES types(id)
+    FOREIGN KEY (type) REFERENCES type(id)
     UNIQUE (name, type)
 );
 

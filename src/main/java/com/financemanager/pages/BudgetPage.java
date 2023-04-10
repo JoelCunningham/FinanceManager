@@ -27,29 +27,16 @@ public class BudgetPage {
         String[][][] incomes_table = createBudgetTable(budget, "Incomes");
         String[][][] expenses_table = createBudgetTable(budget, "Expenses");
         String[][][] balance_table = createBalance(budget, "Balance", incomes_table, expenses_table);
+        model.put("budget_table", new String[][][][]{incomes_table, expenses_table, balance_table});
 
         // Save changes to table
         List<String> budget_list = context.formParams("budget_table");
         System.out.println(budget_list);
 
-        model.put("budget_table", new String[][][][]{incomes_table, expenses_table, balance_table});
-
         // Code for year selector
         Map<String, String> year_select = new HashMap<>();
         initializeYearSelect(context, year_select);      
         model.put("years", year_select);
-
-        // Code for type selector
-        List<String> type_select = jdbc.getTypes();  
-        model.put("types", type_select);
-
-        // Code for type selector
-        List<String> income_headers = jdbc.getHeaders("Incomes");  
-        model.put("income_headers", income_headers);
-        List<String> expense_headers = jdbc.getHeaders("Expenses");  
-        model.put("expense_headers", expense_headers);
-        //TODO
-
     }
 
     public static void initializeYearSelect(Context context, Map<String, String> year_select) {

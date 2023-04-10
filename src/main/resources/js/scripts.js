@@ -12,6 +12,7 @@ window.onload = function() {
 
   makeColumnsReadonly();
   makeColumnsHidden();
+  changeHeaderSelector();
 }
 
 // Code for menu selector buttons
@@ -40,15 +41,41 @@ function showForm(id) {
 // Code for forms
 function hideForm() {
   // Open section
-  var elements = document.querySelectorAll('.util_form');
+  var elements = document.querySelectorAll('.util_page');
   for (var i = 0; i < elements.length; i++) {
     elements[i].classList.remove('visible');
   }
+
+  var elements = document.querySelectorAll('.text_input');
+  for (var i = 0; i < elements.length; i++) {
+    elements[i].value = "";
+  }
+
   document.getElementById("page").classList.remove('overlay');
+  document.getElementById("category_error").classList.add('hidden')
 
   localStorage.removeItem('active_form');
 }
 
+// Code for dynamic header selector
+function changeHeaderSelector() {
+  document.getElementById('type_select').addEventListener('change', function() {
+    if (this.value === 'Expenses') {
+        document.getElementById('income_header_select').classList.add('hidden');
+        document.getElementById('expense_header_select').classList.remove('hidden');
+    } else if (this.value === 'Incomes') {
+        document.getElementById('expense_header_select').classList.add('hidden');
+        document.getElementById('income_header_select').classList.remove('hidden');
+    }
+  });
+  document.getElementById("create_category_form").addEventListener("submit", function(event) {
+    var nameInput = document.getElementById("name_input");
+    if (nameInput.value.trim() === "") {
+        alert("Name input cannot be blank");
+        event.preventDefault();
+    }
+});
+}
 
 // Code for the save button (RIP)
 function tempChangeText(button, text) {

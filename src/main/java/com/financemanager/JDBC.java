@@ -70,6 +70,27 @@ public class JDBC {
         }
     }
 
+    public void addCategory(String name, int header_id) {
+        
+        String query = "INSERT INTO category (name, header_id) VALUES (\"" + name + "\", " + header_id + ");";
+        Connection connection = null; 
+
+        try {
+            connection = DriverManager.getConnection(DATABASE); //Connect to JDBC data base         
+            Statement statement = connection.createStatement();  //Prepare a new SQL Query 
+            statement.setQueryTimeout(30);
+
+            statement.executeQuery(query);
+        } 
+        catch (SQLException e) {
+            System.err.println(e.getMessage()); //If there is an error, spring it
+        } 
+        finally {
+            try { if (connection != null) { connection.close(); } }  //Code cleanup
+            catch (SQLException e) { System.err.println(e.getMessage()); }//Connection close failed
+        }
+    }
+
     public List<String> getTypes() {
     
         List<String> types = new ArrayList<>();
@@ -98,11 +119,11 @@ public class JDBC {
         return types;
     }
 
-    public List<String> getHeaders(String type) {
+    public List<String> getHeaders(int type_id) {
     
         List<String> headers = new ArrayList<>();
 
-        String query = "SELECT name FROM header WHERE type = " + type;
+        String query = "SELECT name FROM header WHERE type = " + type_id;
         Connection connection = null; 
 
         try {
@@ -124,5 +145,85 @@ public class JDBC {
             catch (SQLException e) { System.err.println(e.getMessage()); }//Connection close failed
         }
         return headers;
+    }
+
+    public List<String> getCategories(int header_id) {
+    
+        List<String> categories = new ArrayList<>();
+
+        String query = "SELECT name FROM category WHERE header_id = " + header_id;
+        Connection connection = null; 
+
+        try {
+            connection = DriverManager.getConnection(DATABASE); //Connect to JDBC data base         
+            Statement statement = connection.createStatement();  //Prepare a new SQL Query 
+            statement.setQueryTimeout(30);
+ 
+            ResultSet results = statement.executeQuery(query); //Get Result
+
+            while (results.next()) {
+                categories.add(results.getString("name")); 
+            }
+        } 
+        catch (SQLException e) {
+            System.err.println(e.getMessage()); //If there is an error, spring it
+        } 
+        finally {
+            try { if (connection != null) { connection.close(); } }  //Code cleanup
+            catch (SQLException e) { System.err.println(e.getMessage()); }//Connection close failed
+        }
+        return categories;
+    }
+    
+    public int getTypeID(String name) {
+    
+        int id = -1;
+
+        String query = "SELECT id FROM type WHERE name = \"" + name + "\"";
+        Connection connection = null; 
+
+        try {
+            connection = DriverManager.getConnection(DATABASE); //Connect to JDBC data base         
+            Statement statement = connection.createStatement();  //Prepare a new SQL Query 
+            statement.setQueryTimeout(30);
+ 
+            ResultSet results = statement.executeQuery(query); //Get Result
+
+            if (results.next()) { id =  results.getInt(1); }
+        } 
+        catch (SQLException e) {
+            System.err.println(e.getMessage()); //If there is an error, spring it
+        } 
+        finally {
+            try { if (connection != null) { connection.close(); } }  //Code cleanup
+            catch (SQLException e) { System.err.println(e.getMessage()); }//Connection close failed
+        }
+        return id;
+    }
+
+    public int getHeaderID(int type, String name) {
+    
+        int id = -1;
+
+        String query = "SELECT id FROM header WHERE type = " + type + " AND name = \"" + name + "\"";
+        Connection connection = null; 
+
+        try {
+            connection = DriverManager.getConnection(DATABASE); //Connect to JDBC data base         
+            Statement statement = connection.createStatement();  //Prepare a new SQL Query 
+            statement.setQueryTimeout(30);
+ 
+            ResultSet results = statement.executeQuery(query); //Get Result
+
+            if (results.next()) { id =  results.getInt(1); }
+        } 
+        catch (SQLException e) {
+            System.err.println(e.getMessage()); //If there is an error, spring it
+        } 
+        finally {
+            try { if (connection != null) { connection.close(); } }  //Code cleanup
+            catch (SQLException e) { System.err.println(e.getMessage()); }//Connection close failed
+        }
+        return id;
     }
 }

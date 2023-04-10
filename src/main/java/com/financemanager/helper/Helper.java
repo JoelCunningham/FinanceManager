@@ -2,10 +2,12 @@ package com.financemanager.helper;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Scanner;
 
 import com.financemanager.Header;
+import com.financemanager.JDBC;
 
 public class Helper {
     
@@ -25,6 +27,16 @@ public class Helper {
             category_count += header.categories.length;
         }
         return 2 * header_count + category_count + 2 * 2;
+    }
+
+    public static void verifyDatabase(JDBC jdbc) {
+
+        int curr_year = Calendar.getInstance().get(Calendar.YEAR);
+        int max_year = jdbc.getMaxYear();
+
+        if (max_year != curr_year) {
+            jdbc.addYear(Calendar.getInstance().get(Calendar.YEAR));
+        }
     }
 
     @Deprecated
