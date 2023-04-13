@@ -461,11 +461,11 @@ button.clicked {
 }
 
 /*========== Error CSS ==========*/
-#category_error {
+#category_error, #header_error {
 background-color: var(--red-accent);
 }
 
-#category_error h2, #category_error p {
+#category_error h2, #category_error p, #header_error h2, #header_error p {
 border: none;
 padding: 5px;
 }

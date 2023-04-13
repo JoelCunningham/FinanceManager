@@ -32,24 +32,24 @@
 
             <div id="category_error" th:class="${category_exists[0]}">
                 <h2>Error!</h2>
-                <p th:text="'A Category named &quot;' + ${category_exists[1]} + '&quot; already exists in the ' + ${category_exists[3]} + ' header &quot;' + ${category_exists[2]} + '&quot;'"></p>  
+                <p th:text="'A category named &quot;' + ${category_exists[1]} + '&quot; already exists in the ' + ${category_exists[3]} + ' header &quot;' + ${category_exists[2]} + '&quot;'"></p>  
             </div>
         
             <form id="create_category_form" method="post">
                 <label>Name:</label>
-                <input id="name_input" name="name_input" class="text_input" type="text" >
+                <input id="c_name_input" name="c_name_input" class="text_input" type="text" >
     
-                <label for="type_select">Type:</label>
-                <select id="type_select" name="type_select">
-                    <option th:each="type: ${types}" th:text="${type}" th:value="${type}"></option>
+                <label for="c_type_select">Type:</label>
+                <select id="c_type_select" name="c_type_select">
+                    <option th:each="type: ${c_types}" th:text="${type}" th:value="${type}"></option>
                 </select>
 
-                <label for="header_select">Header:</label>
-                <select id="income_header_select" name="income_header_select">
-                    <option th:each="header: ${income_headers}" th:text="${header}" th:value="${header}"></option>
+                <label for="c_header_select">Header:</label>
+                <select id="c_income_header_select" name="c_income_header_select">
+                    <option th:each="header: ${c_income_headers}" th:text="${header}" th:value="${header}"></option>
                 </select>
-                <select id="expense_header_select" name="expense_header_select" class="hidden">
-                    <option th:each="header: ${expense_headers}" th:text="${header}" th:value="${header}"></option>
+                <select id="c_expense_header_select" name="c_expense_header_select" class="hidden">
+                    <option th:each="header: ${c_expense_headers}" th:text="${header}" th:value="${header}"></option>
                 </select>
 
                 <button type="button" class="cancel" onclick="hideForm()">Cancel</button>
@@ -63,9 +63,25 @@
     <div class="util_page" id="create_header">
 
         <div class="util_form">
+
+            <h2>Create Header</h2>
+
+            <div id="header_error" th:class="${header_exists[0]}">
+                <h2>Error!</h2>
+                <p th:text="'An ' + ${header_exists[2]} + ' header named &quot;' + ${header_exists[1]} + '&quot; already exists'"></p>  
+            </div>
         
-            <form>
-                <p>hiiiiiiiiiiiiiiii</p>
+            <form id="create_header_form" method="post">
+                <label>Name:</label>
+                <input id="h_name_input" name="h_name_input" class="text_input" type="text" >
+    
+                <label for="h_type_select">Type:</label>
+                <select id="h_type_select" name="h_type_select">
+                    <option th:each="type: ${h_types}" th:text="${type}" th:value="${type}"></option>
+                </select>
+
+                <button type="button" class="cancel" onclick="hideForm()">Cancel</button>
+                <button type="submit" class="save">Add</button>
             </form>
 
         </div>

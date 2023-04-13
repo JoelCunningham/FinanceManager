@@ -69,6 +69,27 @@ public class JDBC {
             catch (SQLException e) { System.err.println(e.getMessage()); }//Connection close failed
         }
     }
+    
+    public void addHeader(String name, int type_id) {
+        
+        String query = "INSERT INTO header (name, type_id) VALUES (\"" + name + "\", " + type_id + ");";
+        Connection connection = null; 
+
+        try {
+            connection = DriverManager.getConnection(DATABASE); //Connect to JDBC data base         
+            Statement statement = connection.createStatement();  //Prepare a new SQL Query 
+            statement.setQueryTimeout(30);
+
+            statement.executeQuery(query);
+        } 
+        catch (SQLException e) {
+            System.err.println(e.getMessage()); //If there is an error, spring it
+        } 
+        finally {
+            try { if (connection != null) { connection.close(); } }  //Code cleanup
+            catch (SQLException e) { System.err.println(e.getMessage()); }//Connection close failed
+        }
+    }
 
     public void addCategory(String name, int header_id) {
         
@@ -123,7 +144,7 @@ public class JDBC {
     
         List<String> headers = new ArrayList<>();
 
-        String query = "SELECT name FROM header WHERE type = " + type_id;
+        String query = "SELECT name FROM header WHERE type_id = " + type_id;
         Connection connection = null; 
 
         try {
@@ -201,11 +222,11 @@ public class JDBC {
         return id;
     }
 
-    public int getHeaderID(int type, String name) {
+    public int getHeaderID(int type_id, String name) {
     
         int id = -1;
 
-        String query = "SELECT id FROM header WHERE type = " + type + " AND name = \"" + name + "\"";
+        String query = "SELECT id FROM header WHERE type_id = " + type_id + " AND name = \"" + name + "\"";
         Connection connection = null; 
 
         try {

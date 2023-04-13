@@ -31,7 +31,9 @@ function showContent(id) {
 
 // Code for forms
 function showForm(id) {
-  // Open section
+  
+  hideForm();
+
   document.getElementById(id).classList.add('visible');
   document.getElementById("page").classList.add('overlay');
 
@@ -59,23 +61,32 @@ function hideForm() {
 
 // Code for dynamic header selector
 function changeHeaderSelector() {
-  document.getElementById('type_select').addEventListener('change', function() {
+  document.getElementById('c_type_select').addEventListener('change', function() {
     if (this.value === 'Expenses') {
-        document.getElementById('income_header_select').classList.add('hidden');
-        document.getElementById('expense_header_select').classList.remove('hidden');
+        document.getElementById('c_income_header_select').classList.add('hidden');
+        document.getElementById('c_expense_header_select').classList.remove('hidden');
     } else if (this.value === 'Incomes') {
-        document.getElementById('expense_header_select').classList.add('hidden');
-        document.getElementById('income_header_select').classList.remove('hidden');
+        document.getElementById('c_expense_header_select').classList.add('hidden');
+        document.getElementById('c_income_header_select').classList.remove('hidden');
     }
   });
-  document.getElementById("create_category_form").addEventListener("submit", function(event) {
-    var nameInput = document.getElementById("name_input");
-    if (nameInput.value.trim() === "") {
-        alert("Name input cannot be blank");
-        event.preventDefault();
-    }
-});
 }
+
+// Code to validate forms
+document.getElementById("create_category_form").addEventListener("submit", function(event) {
+  var nameInput = document.getElementById("c_name_input");
+  if (nameInput.value.trim() === "") {
+      alert("Name input cannot be blank");
+      event.preventDefault();
+  }
+})
+document.getElementById("create_header_form").addEventListener("submit", function(event) {
+  var nameInput = document.getElementById("h_name_input");
+  if (nameInput.value.trim() === "") {
+      alert("Name input cannot be blank");
+      event.preventDefault();
+  }
+});;
 
 // Code for the save button (RIP)
 function tempChangeText(button, text) {

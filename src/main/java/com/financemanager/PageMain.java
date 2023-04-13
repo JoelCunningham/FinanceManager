@@ -27,7 +27,9 @@ public class PageMain implements Handler{
         Helper.verifyDatabase(jdbc);
 
         BudgetPage.loadBudgetPage(context, model, jdbc);
+
         TopnavForms.loadCreateCategory(context, model, jdbc);
+        TopnavForms.loadCreateHeader(context, model, jdbc);
 
         context.render(TEMPLATE, model); //Make Javalin render the webpage
     }

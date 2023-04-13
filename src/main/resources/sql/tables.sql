@@ -18,9 +18,9 @@ CREATE TABLE type (
 CREATE TABLE header (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    type INTEGER NOT NULL,
-    FOREIGN KEY (type) REFERENCES type(id)
-    UNIQUE (name, type)
+    type_id INTEGER NOT NULL,
+    FOREIGN KEY (type_id) REFERENCES type(id)
+    UNIQUE (name, type_id)
 );
 
 CREATE TABLE category (
