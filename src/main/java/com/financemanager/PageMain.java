@@ -28,6 +28,7 @@ public class PageMain implements Handler{
 
         BudgetPage.loadBudgetPage(context, model, jdbc);
 
+        TopnavForms.loadAddCategory(context, model, jdbc);
         TopnavForms.loadCreateCategory(context, model, jdbc);
         TopnavForms.loadCreateHeader(context, model, jdbc);
 

@@ -283,15 +283,23 @@ table {
  tr:nth-child(even) {
    background-color: #f2f2f2;
  }
-
- tr:last-child, td:last-child{
-  background-color: var(--default-accent)
- }
  
  th {
    background-color: var(--default-colour);
    color: white;
    text-align: center;
+ }
+
+ #budget_table tr:last-child, #budget_table td:last-child{
+  background-color: var(--default-accent)
+ }
+
+ #category_table th {
+  text-align: left;
+ }
+
+ #category_table {
+  margin-bottom: 20px;
  }
 
  input {

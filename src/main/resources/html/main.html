@@ -14,9 +14,36 @@
     <div class="util_page" id="add_category">
 
         <div class="util_form">
-        
-            <form>
-                <p>hiiiiiiiiiiiiiiii</p>
+
+            <h2>Add Category</h2>
+
+            <div id="add_category_error" th:class="${categories_available}">
+                <p>There are no categories not in the current year's budget. Please use the <b>Create Category</b> form to create categories to add here</p>  
+            </div>
+       
+            <form id="add_category_form" method="post">
+                
+                <table id="category_table">
+                    <thead>
+                        <th><input name="select_all" value="0" type="checkbox"></th>
+                        <th>Name</th>
+                        <th>Header</th>
+                        <th>Type</th>
+                        <th>Last Use</th>
+                    </thead>
+                    <tbody>
+                        <tr th:each="category : ${available_categories}">
+                            <td><input type="checkbox" id="c_add_checkbox" name="c_add_checkbox" th:value="${category[0]}"></td>
+                            <td th:text="${category[1]}"></td>
+                            <td th:text="${category[1]}"></td>
+                            <td th:text="${category[3]}"></td>
+                            <td th:text="${category[4]}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <button type="button" class="cancel" onclick="hideForm()">Cancel</button>
+                <button type="submit" class="save">Add</button>
             </form>
 
         </div>
@@ -179,7 +206,7 @@
 
                                         <h3 th:text="${header[0][1]}"></h3>
 
-                                        <table>
+                                        <table class="budget_table">
                                             <thead>
                                                 <th>Type</th>
                                                 <th>Header</th>

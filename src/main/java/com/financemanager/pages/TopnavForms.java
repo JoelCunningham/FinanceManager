@@ -1,5 +1,6 @@
 package com.financemanager.pages;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -8,6 +9,37 @@ import com.financemanager.JDBC;
 import io.javalin.http.Context;
 
 public class TopnavForms {
+
+    public static void loadAddCategory(Context context, Map<String, Object> model, JDBC jdbc) {
+
+        // Code for category table
+        int curr_year = Calendar.getInstance().get(Calendar.YEAR);
+        List<String[]> unused_categories = jdbc.getUnusedCategories(curr_year);
+        model.put("available_categories", unused_categories);
+
+        model.put("categories_available", "hidden");
+
+        // Check if there are any unused categories
+        if (unused_categories.size() == 0) {
+            model.put("categories_available", "visible");
+        }
+
+        List<String> add_categories = context.formParams("c_add_checkbox");
+        for (int i = 0; i < add_categories.size(); i++) {
+            jdbc.addCategoryYear(Integer.parseInt(add_categories.get(i)), curr_year);
+
+            // Refresh table
+            unused_categories = jdbc.getUnusedCategories(curr_year);
+            model.put("available_categories", unused_categories);
+
+            // Check if there are any unused categories
+            if (unused_categories.size() == 0) {
+                model.put("categories_available", "visible");
+            }
+        }
+        
+
+    }
 
     public static void loadCreateCategory(Context context, Map<String, Object> model, JDBC jdbc) {
         
@@ -37,7 +69,7 @@ public class TopnavForms {
             }
 
             int type_id = jdbc.getTypeID(type_name);
-            int header_id = jdbc.getHeaderID(type_id, header_name);
+            int header_id = jdbc.getHeaderID(header_name, type_id);
 
             // Check if category exists
             List<String> categories = jdbc.getCategories(header_id);

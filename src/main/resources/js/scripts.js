@@ -13,6 +13,8 @@ window.onload = function() {
   makeColumnsReadonly();
   makeColumnsHidden();
   changeHeaderSelector();
+  validateForms();
+  toggleCheckboxes();
 }
 
 // Code for menu selector buttons
@@ -73,20 +75,22 @@ function changeHeaderSelector() {
 }
 
 // Code to validate forms
-document.getElementById("create_category_form").addEventListener("submit", function(event) {
-  var nameInput = document.getElementById("c_name_input");
-  if (nameInput.value.trim() === "") {
-      alert("Name input cannot be blank");
-      event.preventDefault();
-  }
-})
-document.getElementById("create_header_form").addEventListener("submit", function(event) {
-  var nameInput = document.getElementById("h_name_input");
-  if (nameInput.value.trim() === "") {
-      alert("Name input cannot be blank");
-      event.preventDefault();
-  }
-});;
+function validateForms() {
+  document.getElementById("create_category_form").addEventListener("submit", function(event) {
+    var nameInput = document.getElementById("c_name_input");
+    if (nameInput.value.trim() === "") {
+        alert("Name input cannot be blank");
+        event.preventDefault();
+    }
+  });
+  document.getElementById("create_header_form").addEventListener("submit", function(event) {
+    var nameInput = document.getElementById("h_name_input");
+    if (nameInput.value.trim() === "") {
+        alert("Name input cannot be blank");
+        event.preventDefault();
+    }
+  });
+}
 
 // Code for the save button (RIP)
 function tempChangeText(button, text) {
@@ -101,7 +105,7 @@ function tempChangeText(button, text) {
 
 // Code to make fist and last table columns read only
 function makeColumnsReadonly() {
-  var tables = document.querySelectorAll('tbody');
+  var tables = document.querySelectorAll('.budget_table tbody');
   for (var t = 0; t < tables.length; t++) {
     var table = tables[t];
     var rows = table.querySelectorAll('tr');
@@ -119,7 +123,7 @@ function makeColumnsReadonly() {
 function makeColumnsHidden() {
   
   // Code to hide the head
-  var table_heads = document.querySelectorAll('thead');
+  var table_heads = document.querySelectorAll('.budget_table thead');
   for (var t = 0; t < table_heads.length; t++) {
     var head = table_heads[t];
     var cell = head.querySelectorAll('th');
@@ -129,7 +133,7 @@ function makeColumnsHidden() {
   }
 
   // Code to hide the data
-  var table_bodies = document.querySelectorAll('tbody');
+  var table_bodies = document.querySelectorAll('.budget_table tbody');
   for (var t = 0; t < table_bodies.length; t++) {
     var body = table_bodies[t];
     var rows = body.querySelectorAll('tr');
@@ -141,4 +145,14 @@ function makeColumnsHidden() {
     }
   }
   
+}
+
+function toggleCheckboxes() {
+  var headerCheckbox = document.querySelector('thead input[name="select_all"]');
+  var bodyCheckboxes = document.querySelectorAll('tbody input[name="select_all"]');
+  headerCheckbox.addEventListener('change', function() {
+    for (var i = 0; i < bodyCheckboxes.length; i++) {
+      bodyCheckboxes[i].checked = headerCheckbox.checked;
+    }
+  });
 }
