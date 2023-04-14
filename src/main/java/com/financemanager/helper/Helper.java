@@ -38,6 +38,14 @@ public class Helper {
             jdbc.addYear(Calendar.getInstance().get(Calendar.YEAR));
         }
     }
+    
+    public static float currencyToFloat(String s) {
+        if (s.charAt(0) == '$') {
+            s = s.substring(1);
+          }
+         
+          return Float.parseFloat(s);
+    }
 
     @Deprecated
     public static String[][] convertListToArray(List<String> list, int row_count, int col_count) {

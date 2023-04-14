@@ -36,6 +36,8 @@ function showForm(id) {
   
   hideForm();
 
+  uncheckAll();
+
   document.getElementById(id).classList.add('visible');
   document.getElementById("page").classList.add('overlay');
 
@@ -57,6 +59,8 @@ function hideForm() {
 
   document.getElementById("page").classList.remove('overlay');
   document.getElementById("category_error").classList.add('hidden')
+
+  uncheckAll();
 
   localStorage.removeItem('active_form');
 }
@@ -149,10 +153,17 @@ function makeColumnsHidden() {
 
 function toggleCheckboxes() {
   var headerCheckbox = document.querySelector('thead input[name="select_all"]');
-  var bodyCheckboxes = document.querySelectorAll('tbody input[name="select_all"]');
+  var bodyCheckboxes = document.querySelectorAll('tbody input[name="c_add_checkbox"]');
   headerCheckbox.addEventListener('change', function() {
     for (var i = 0; i < bodyCheckboxes.length; i++) {
       bodyCheckboxes[i].checked = headerCheckbox.checked;
     }
   });
+}
+
+function uncheckAll() {
+  var checkboxes = document.querySelectorAll('#category_table input[type="checkbox"]');
+  for (var i = 0; i < checkboxes.length; i++) {
+      checkboxes[i].checked = false;
+  }
 }

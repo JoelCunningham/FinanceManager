@@ -5,7 +5,7 @@ package com.financemanager;
  */
 public class BudgetItem {
 
-    public Category category; 
+    public int category_id; 
     public int month;
     public float amount;
 
@@ -13,18 +13,18 @@ public class BudgetItem {
      * Constructs a new BudgetItem object with default values.
      */
     public BudgetItem() {
-        this(new Category(), 0, 0);
+        this(0, 0, 0);
     }
 
     /**
      * Constructs a new BudgetItem object with the given category, year, month and amount.
      *
-     * @param category The category of the budget item.
+     * @param category_id The id of the category of the budget item.
      * @param month The month of the budget item.
      * @param amount The amount of the budget item.
      */
-    public BudgetItem(Category category, int month, float amount) {
-        this.category = category;
+    public BudgetItem(int category_id, int month, float amount) {
+        this.category_id = category_id;
         this.month = month;
         this.amount = amount;
     }

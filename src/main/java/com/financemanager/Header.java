@@ -37,16 +37,14 @@ public class Header {
     }
 
     /**
-     * Adds a new category to the categories array of the header. If there is an empty slot in
-     * the array, it will be filled with the new category. Otherwise, a new array will be created
-     * with one more slot than the current array and all elements will be copied over along with
-     * the new category at the end.
+     * Adds a new category to the categories array of the header. 
      *
-     * @param new_category The new category to add to the categories array of the header.
+     * @param category_id The id of the category to add to the header.
+     * @param category_name The name of the category to add to the header.
      */
-    public void addCategory(String category_name) {
+    public void addCategory(int category_id, String category_name) {
         
-        Category new_category = new Category(category_name, this.name, this.type);
+        Category new_category = new Category(category_id, category_name, this.name, this.type);
 
         for (int i = 0; i < categories.length; i++) {
             if (categories[i] == null) {

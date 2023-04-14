@@ -22,32 +22,6 @@ public class JDBC {
     // Create a JDBC Object to communicate with the database
     public JDBC() {}
 
-    public int getMaxYear() {
-    
-        int year = -1;
-
-        String query = "SELECT MAX(year) FROM year";
-        Connection connection = null; 
-
-        try {
-            connection = DriverManager.getConnection(DATABASE); //Connect to JDBC data base         
-            Statement statement = connection.createStatement();  //Prepare a new SQL Query 
-            statement.setQueryTimeout(30);
- 
-            ResultSet results = statement.executeQuery(query); //Get Result
-
-            if (results.next()) { year =  results.getInt(1); }
-        } 
-        catch (SQLException e) {
-            System.err.println(e.getMessage()); //If there is an error, spring it
-        } 
-        finally {
-            try { if (connection != null) { connection.close(); } }  //Code cleanup
-            catch (SQLException e) { System.err.println(e.getMessage()); }//Connection close failed
-        }
-        return year;
-    }
-
     public void addYear(int year) {
         
         String query = "INSERT INTO year(year) VALUES(?)";
@@ -110,6 +84,34 @@ public class JDBC {
             try { if (connection != null) { connection.close(); } }  //Code cleanup
             catch (SQLException e) { System.err.println(e.getMessage()); }//Connection close failed
         }
+    }
+
+    public List<Integer> getYears() {
+    
+        List<Integer> years = new ArrayList<>();
+
+        String query = "SELECT year FROM year";
+        Connection connection = null; 
+
+        try {
+            connection = DriverManager.getConnection(DATABASE); //Connect to JDBC data base         
+            Statement statement = connection.createStatement();  //Prepare a new SQL Query 
+            statement.setQueryTimeout(30);
+ 
+            ResultSet results = statement.executeQuery(query); //Get Result
+
+            while (results.next()) { 
+                years.add(results.getInt(1)); 
+            }
+        } 
+        catch (SQLException e) {
+            System.err.println(e.getMessage()); //If there is an error, spring it
+        } 
+        finally {
+            try { if (connection != null) { connection.close(); } }  //Code cleanup
+            catch (SQLException e) { System.err.println(e.getMessage()); }//Connection close failed
+        }
+        return years;
     }
 
     public List<String> getTypes() {
@@ -273,20 +275,46 @@ public class JDBC {
         }
         return id;
     }
+    
+    public int getMaxYear() {
+    
+        int year = -1;
+
+        String query = "SELECT MAX(year) FROM year";
+        Connection connection = null; 
+
+        try {
+            connection = DriverManager.getConnection(DATABASE); //Connect to JDBC data base         
+            Statement statement = connection.createStatement();  //Prepare a new SQL Query 
+            statement.setQueryTimeout(30);
+ 
+            ResultSet results = statement.executeQuery(query); //Get Result
+
+            if (results.next()) { year =  results.getInt(1); }
+        } 
+        catch (SQLException e) {
+            System.err.println(e.getMessage()); //If there is an error, spring it
+        } 
+        finally {
+            try { if (connection != null) { connection.close(); } }  //Code cleanup
+            catch (SQLException e) { System.err.println(e.getMessage()); }//Connection close failed
+        }
+        return year;
+    }
 
     public List<String[]> getUnusedCategories(int not_year) {
     
         List<String[]> categories = new ArrayList<>();
 
         String query = """
-            SELECT category.id AS category_id, category.name AS category_name, header.name AS header_name, type.name AS type_name, MAX(category_year.year) AS max_year
-            FROM category
-            JOIN header ON category.header_id = header.id
-            JOIN type ON header.type_id = type.id
-            LEFT JOIN category_year ON category.id = category_year.category_id
+            SELECT category.id AS category_id, category.name AS category_name, header.name AS header_name, type.name AS type_name, MAX(category_year.year) AS max_year 
+            FROM category 
+            JOIN header ON category.header_id = header.id 
+            JOIN type ON header.type_id = type.id 
+            LEFT JOIN category_year ON category.id = category_year.category_id 
             WHERE NOT EXISTS (
-                SELECT 1
-                FROM category_year
+                SELECT 1 
+                FROM category_year 
                 WHERE category_year.category_id = category.id AND category_year.year = 
             """      
             + not_year + 
@@ -294,7 +322,6 @@ public class JDBC {
             )
             GROUP BY category.id;
             """;
-        System.out.println(query);
         Connection connection = null; 
 
         try {
@@ -329,6 +356,133 @@ public class JDBC {
             catch (SQLException e) { System.err.println(e.getMessage()); }//Connection close failed
         }
         return categories;
+    }
+
+    public Header[] getHeaderCategories(int year, String type) {
+    
+        int type_id = getTypeID(type);
+
+        List<Header> headers = new ArrayList<>();
+
+        String query = """
+            SELECT category.id AS category_id, category.name AS category_name, type.name AS type_name, header.name AS header_name 
+            FROM category_year 
+            JOIN category ON category_year.category_id = category.id 
+            JOIN header ON category.header_id = header.id 
+            JOIN type ON header.type_id = type.id 
+            WHERE category_year.year = 
+            """      
+            + year + " " +
+            """
+            AND type.id =
+            """
+            + type_id + " " +
+            """
+            ORDER BY type.name, header.name, category.name;
+            """;
+        Connection connection = null; 
+
+        try {
+            connection = DriverManager.getConnection(DATABASE); //Connect to JDBC data base         
+            Statement statement = connection.createStatement();  //Prepare a new SQL Query 
+            statement.setQueryTimeout(30);
+ 
+            ResultSet results = statement.executeQuery(query); //Get Result
+
+            String curr_header = "";
+            List<Category> categories = new ArrayList<>();
+
+            while (results.next()) {
+
+                int category_id = results.getInt("category_id");
+                String category_name = results.getString("category_name");
+                String header_name = results.getString("header_name");
+                String type_name = results.getString("type_name");
+
+                if (curr_header == "") { curr_header = header_name; }
+
+                if (!curr_header.equals(header_name)) {
+
+                    Category[] categories_array = new Category[categories.size()];
+                    categories_array = categories.toArray(categories_array);
+
+                    headers.add(new Header(header_name, type_name, categories_array));
+                    
+                    categories.clear();
+                    curr_header = header_name;
+                }
+                
+                categories.add(new Category(category_id, category_name, header_name, type_name));
+            }
+
+            if (!categories.isEmpty()) {
+
+                Category[] categories_array = new Category[categories.size()];
+                categories_array = categories.toArray(categories_array);
+
+                headers.add(new Header(curr_header, type, categories_array));
+            }
+
+        } 
+        catch (SQLException e) {
+            System.err.println(e.getMessage()); //If there is an error, spring it
+        } 
+        finally {
+            try { if (connection != null) { connection.close(); } }  //Code cleanup
+            catch (SQLException e) { System.err.println(e.getMessage()); }//Connection close failed
+        }
+
+        Header[] headers_array = new Header[headers.size()];
+        headers_array = headers.toArray(headers_array);
+
+        return headers_array;
+    }
+
+    
+    public BudgetItem[] getBudgetItems(int year) {
+    
+        List<BudgetItem> budget_items = new ArrayList<>();
+
+        String query = """
+            SELECT category_id, month, amount
+            FROM budget
+            WHERE year =
+            """      
+            + year + 
+            """
+            ;
+            """;
+
+        Connection connection = null; 
+
+        try {
+            connection = DriverManager.getConnection(DATABASE); //Connect to JDBC data base         
+            Statement statement = connection.createStatement();  //Prepare a new SQL Query 
+            statement.setQueryTimeout(30);
+ 
+            ResultSet results = statement.executeQuery(query); //Get Result
+
+            while (results.next()) {
+
+                int category_id = results.getInt("category_id");
+                int month = results.getInt("month");
+                float amount = results.getFloat("amount");
+
+                budget_items.add(new BudgetItem(category_id, month, amount));
+            }
+        } 
+        catch (SQLException e) {
+            System.err.println(e.getMessage()); //If there is an error, spring it
+        } 
+        finally {
+            try { if (connection != null) { connection.close(); } }  //Code cleanup
+            catch (SQLException e) { System.err.println(e.getMessage()); }//Connection close failed
+        }
+
+        BudgetItem[] budget_items_array = new BudgetItem[budget_items.size()];
+        budget_items_array = budget_items.toArray(budget_items_array);
+
+        return budget_items_array;
     }
 
     public void addCategoryYear(int category_id, int year) {
