@@ -226,12 +226,12 @@ h2#Balance {
   font-size: 14px;
   left: 0;
   width: fit-content;
-  transform: rotate(-90deg) translateX(calc(-100% - 5px)) translateY(calc(25px));
+  transform: rotate(-90deg) translateX(calc(-50%)) translateY(calc(30px));
   position: absolute;
 }
 
 #typeBalance h3 {
-  transform: rotate(-90deg) translateX(calc(-100% - 5px)) translateY(calc(30px));
+  transform: rotate(-90deg) translateX(calc(-100% - 5px)) translateY(calc(10px));
 }
 
 .type table {
