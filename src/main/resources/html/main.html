@@ -318,7 +318,7 @@
                                         <tbody>
                                             <tr th:each="category : ${header}">
                                                 <td th:each="value : ${category}">
-                                                    <input name="budget_table" th:value="${value}"></input>
+                                                    <input name="budget_table" th:value="${value}" readonly></input>
                                                 </td>  
                                             </tr>
                                         </tbody>

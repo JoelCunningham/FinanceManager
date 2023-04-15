@@ -406,7 +406,7 @@ public class JDBC {
                     Category[] categories_array = new Category[categories.size()];
                     categories_array = categories.toArray(categories_array);
 
-                    headers.add(new Header(header_name, type_name, categories_array));
+                    headers.add(new Header(curr_header, type_name, categories_array));
                     
                     categories.clear();
                     curr_header = header_name;
@@ -437,8 +437,7 @@ public class JDBC {
 
         return headers_array;
     }
-
-    
+ 
     public BudgetItem[] getBudgetItems(int year) {
     
         List<BudgetItem> budget_items = new ArrayList<>();
@@ -483,6 +482,35 @@ public class JDBC {
         budget_items_array = budget_items.toArray(budget_items_array);
 
         return budget_items_array;
+    }
+
+    public void addBudgetItem(BudgetItem item, int year) {
+
+        Connection connection = null;
+
+        try {
+            connection = DriverManager.getConnection(DATABASE);
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+    
+            String checkQuery = "SELECT * FROM budget WHERE year = " + year + " AND month = " + item.month + " AND category_id = " + item.category_id + ";";
+            ResultSet results = statement.executeQuery(checkQuery);
+
+            if (results.next()) {
+                String updateQuery = "UPDATE budget SET amount = " + item.amount + " WHERE year = " + year + " AND month = " + item.month + " AND category_id = " + item.category_id + ";";
+                statement.executeUpdate(updateQuery);
+            } 
+            else {
+                String insertQuery = "INSERT INTO budget (year, month, amount, category_id) VALUES (" + year + ", " + item.month + ", " + item.amount + ", " + item.category_id + ");";
+                statement.executeUpdate(insertQuery);
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            try { if (connection != null) { connection.close(); } } 
+            catch (SQLException e) { System.err.println(e.getMessage()); }
+        }
     }
 
     public void addCategoryYear(int category_id, int year) {

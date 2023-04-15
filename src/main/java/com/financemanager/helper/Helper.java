@@ -6,7 +6,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Scanner;
 
-import com.financemanager.Header;
 import com.financemanager.JDBC;
 
 public class Helper {
@@ -20,13 +19,14 @@ public class Helper {
         }
     }
 
-    public static int getTableHeight(Header[] headers) {
-        int header_count = headers.length;
-        int category_count = 0;
-        for (Header header : headers) {
-            category_count += header.categories.length;
+    public static int countElementsIn3dArray(String[][][] array) {
+        int count = 0;
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array[i].length; j++) {
+                count += array[i][j].length;
+            }
         }
-        return 2 * header_count + category_count + 2 * 2;
+        return count;
     }
 
     public static void verifyDatabase(JDBC jdbc) {

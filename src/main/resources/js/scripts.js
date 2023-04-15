@@ -11,6 +11,7 @@ window.onload = function() {
   }
 
   makeColumnsReadonly();
+  makeLastRowReadonly();
   makeColumnsHidden();
   changeHeaderSelector();
   validateForms();
@@ -120,6 +121,19 @@ function makeColumnsReadonly() {
       }
       cells[15].querySelector('input').setAttribute('readonly', true);
     }
+  }
+}
+
+// Code to make last table row read only
+function makeLastRowReadonly() {
+  var tables = document.querySelectorAll('.budget_table tbody');
+  for (var t = 0; t < tables.length; t++) {
+    var table = tables[t];
+    var row = tables[t].rows[tables[t].rows.length - 1];
+    var cells = row.querySelectorAll('td');
+    for (var j = 0; j < cells.length; j++) {
+      cells[j].querySelector('input').setAttribute('readonly', true);
+    } 
   }
 }
 
