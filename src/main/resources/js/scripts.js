@@ -16,6 +16,8 @@ window.onload = function() {
   changeHeaderSelector();
   validateForms();
   toggleCheckboxes();
+  positionHeaders();
+  
 }
 
 // Code for menu selector buttons
@@ -165,6 +167,7 @@ function makeColumnsHidden() {
   
 }
 
+// Code for checkbox column
 function toggleCheckboxes() {
   var headerCheckbox = document.querySelector('thead input[name="select_all"]');
   var bodyCheckboxes = document.querySelectorAll('tbody input[name="c_add_checkbox"]');
@@ -175,9 +178,21 @@ function toggleCheckboxes() {
   });
 }
 
+// Code to reset checkbox column
 function uncheckAll() {
   var checkboxes = document.querySelectorAll('#category_table input[type="checkbox"]');
   for (var i = 0; i < checkboxes.length; i++) {
       checkboxes[i].checked = false;
   }
+}
+
+// Code to position table titles
+function positionHeaders() {
+  let header = document.querySelectorAll('.header h3');
+    header.forEach(function(header) {
+      let text_length = header.textContent.length;
+      let curr_length = parseInt(getComputedStyle(header).top);
+      header.style.top = (curr_length + text_length * 3) + 'px';
+    }
+  );
 }

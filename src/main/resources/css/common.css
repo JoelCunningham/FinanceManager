@@ -224,14 +224,10 @@ h2#Balance {
 .type h3 {
   margin: 0px;
   font-size: 14px;
-  left: 0;
-  width: fit-content;
-  transform: rotate(-90deg) translateX(calc(-50%)) translateY(calc(10px));
+  width: 0px;
+  transform: rotate(-90deg);
+  top: 50%;
   position: absolute;
-}
-
-#typeBalance h3 {
-  transform: rotate(-90deg) translateX(calc(-100% - 5px)) translateY(calc(30px));
 }
 
 .type table {
@@ -265,6 +261,7 @@ h2#Balance {
   width: calc(100%);
   box-shadow: 0px 0px 10px #c0c0c0;
   float: left;
+  position: relative;
 }
 
 /*========== Table CSS ==========*/
