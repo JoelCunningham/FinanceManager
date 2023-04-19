@@ -17,7 +17,7 @@ window.onload = function() {
   validateForms();
   toggleCheckboxes();
   positionHeaders();
-  
+  categoryToolTips();
 }
 
 // Code for menu selector buttons
@@ -195,4 +195,20 @@ function positionHeaders() {
       header.style.top = (curr_length + text_length * 3) + 'px';
     }
   );
+}
+
+//Code to add tooltips to categories in tables
+function categoryToolTips() {
+  let tables = document.querySelectorAll('.budget_table');
+  for (let t = 0; t < tables.length; t++) {
+      let table = tables[t];
+      let rows = table.rows;
+      for (let i = 0; i < rows.length - 1; i++) {
+          let cell = rows[i].cells[2];
+          let input = cell.querySelector('input');
+          if (input) {
+              cell.title = input.value;
+          }
+      }
+  }
 }
