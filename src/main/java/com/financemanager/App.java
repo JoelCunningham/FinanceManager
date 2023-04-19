@@ -33,9 +33,9 @@ public class App {
     }
 
     public static void configureRoutes(Javalin app) {
-        app.get(PageMain.URL, new PageMain());
+        app.get(Main.URL, new Main());
       
-        app.post(PageMain.URL, new PageMain());
+        app.post(Main.URL, new Main());
     }
     
 }

@@ -1,12 +1,10 @@
-package com.financemanager.helper;
+package com.financemanager;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Scanner;
-
-import com.financemanager.JDBC;
 
 public class Helper {
     

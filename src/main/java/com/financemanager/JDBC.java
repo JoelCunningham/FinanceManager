@@ -9,6 +9,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.financemanager.type.BudgetItem;
+import com.financemanager.type.Header;
+import com.financemanager.type.Category;
 /**
 * Class for managing the JDBC Connection to a SQLLite Database.
 * Allows SQL queries to be used with the SQLLite Database in Java.

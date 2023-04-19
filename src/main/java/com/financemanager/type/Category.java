@@ -1,4 +1,4 @@
-package com.financemanager;
+package com.financemanager.type;
 
 /**
  * The Category class represents a category of incomes or expenses.

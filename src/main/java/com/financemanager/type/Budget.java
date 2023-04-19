@@ -1,4 +1,7 @@
-package com.financemanager;
+package com.financemanager.type;
+
+import com.financemanager.JDBC;
+
 /**
  * The Budget class represents a budget.
  */

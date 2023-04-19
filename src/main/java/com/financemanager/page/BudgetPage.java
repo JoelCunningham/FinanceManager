@@ -1,16 +1,17 @@
-package com.financemanager.pages;
+package com.financemanager.page;
 
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
-import com.financemanager.Budget;
-import com.financemanager.BudgetItem;
-import com.financemanager.Category;
-import com.financemanager.Header;
+import com.financemanager.type.Budget;
+import com.financemanager.type.BudgetItem;
+import com.financemanager.type.Category;
+import com.financemanager.type.Header;
+
+import com.financemanager.Helper;
 import com.financemanager.JDBC;
-import com.financemanager.helper.Helper;
 
 import io.javalin.http.Context;
 

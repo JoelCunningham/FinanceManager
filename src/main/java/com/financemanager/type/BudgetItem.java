@@ -1,4 +1,4 @@
-package com.financemanager;
+package com.financemanager.type;
 
 /**
  * The BudgetItem class represents a entry in a budget.

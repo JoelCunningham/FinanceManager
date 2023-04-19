@@ -1,4 +1,4 @@
-package com.financemanager;
+package com.financemanager.type;
 
 import java.util.Arrays;
 

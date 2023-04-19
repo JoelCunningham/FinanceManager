@@ -1,4 +1,4 @@
-package com.financemanager.pages;
+package com.financemanager.page;
 
 import java.util.Calendar;
 import java.util.List;
