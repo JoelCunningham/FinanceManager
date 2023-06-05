@@ -38,8 +38,7 @@ public class BudgetPage {
     public static void loadBudgetTables(Context context, Map<String, Object> model, JDBC jdbc) {
 
         // Create a budget object
-        Budget budget = new Budget();
-        budget.load(selected_year);
+        Budget budget = new Budget(selected_year);
 
         String[][][] incomes_table = createBudgetTable(jdbc, budget, "Incomes");
         String[][][] expenses_table = createBudgetTable(jdbc, budget, "Expenses");
@@ -150,8 +149,7 @@ public class BudgetPage {
 
     public static void saveBudget(Context context, Map<String, Object> model, JDBC jdbc, List<String> budget_list) {
 
-        Budget budget = new Budget();
-        budget.load(selected_year);
+        Budget budget = new Budget(selected_year);
 
         String[][][] incomes_table = createBudgetTable(jdbc, budget, "Incomes");
         String[][][] expenses_table = createBudgetTable(jdbc, budget, "Expenses");
