@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.financemanager.Helper;
 import com.financemanager.JDBC;
 
 import io.javalin.http.Context;
@@ -33,6 +34,31 @@ public class Generic {
         model.put(name + "_years", year_select);
 
         return selected_year;
+    }
+
+    public static int loadMonthSelector(Context context, Map<String, Object> model, JDBC jdbc, String name, int selected_month) {
+        
+        Map<String, String> month_select = new HashMap<>();
+
+        // Fill dictionary of months
+        String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};        
+        for (String month : months) { month_select.put(month, "False"); }
+
+        // Get selected month
+        int previous_month = selected_month;
+        String month_selector = context.formParam(name + "_month_selector");
+
+        if (month_selector == null) {
+            selected_month = previous_month;
+        }
+        else {
+            selected_month = Helper.monthToInt(month_selector);
+        }
+        
+        month_select.put(months[selected_month - 1], "True");   
+        model.put(name + "_months", month_select);
+
+        return selected_month;
     }
 
 }
