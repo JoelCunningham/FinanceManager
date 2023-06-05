@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.financemanager.page.BudgetPage;
+import com.financemanager.page.StatementPage;
 import com.financemanager.page.TopnavForms;
 
 import io.javalin.http.Context;
@@ -26,6 +27,7 @@ public class Main implements Handler{
         Helper.verifyDatabase(jdbc);
 
         BudgetPage.loadBudgetPage(context, model, jdbc);
+        StatementPage.loadStatementPage(context, model, jdbc);
 
         TopnavForms.loadAddCategory(context, model, jdbc);
         TopnavForms.loadCreateCategory(context, model, jdbc);
