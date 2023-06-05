@@ -2,6 +2,7 @@ package com.financemanager;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -58,8 +59,15 @@ public class Helper {
         if (s.charAt(0) == '$') {
             s = s.substring(1);
           }
-         
           return Float.parseFloat(s);
+    }
+
+    public static LocalDate stringToDate(String date_string) {
+        String[] tokens = date_string.split("-");
+        int year = Integer.parseInt(tokens[0]);
+        int day = Integer.parseInt(tokens[1]);
+        int month = Integer.parseInt(tokens[2]);
+        return LocalDate.of(year, month, day);
     }
 
     public static int monthToInt(String month) {
