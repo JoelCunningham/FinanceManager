@@ -44,7 +44,7 @@ CREATE TABLE budget (
 CREATE TABLE cashflow (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     amount REAL NOT NULL,
-    date TEXT NOT NULL,
+    date DATE NOT NULL,
     details TEXT,
     category_id INTEGER,
     FOREIGN KEY (category_id) REFERENCES category(id)
