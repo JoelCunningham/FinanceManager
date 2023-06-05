@@ -1,7 +1,6 @@
 package com.financemanager.page;
 
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 
@@ -20,12 +19,11 @@ public class BudgetPage {
     private static final int BUDGET_COLS = 16;
 
     private static int selected_year = Calendar.getInstance().get(Calendar.YEAR);
-    private static int previous_year = Calendar.getInstance().get(Calendar.YEAR);
     
     public static void loadBudgetPage(Context context, Map<String, Object> model, JDBC jdbc) {
 
         // Code for year selector
-        loadYearSelector(context, model, jdbc);      
+        selected_year = Generic.loadYearSelector(context, model, jdbc, "budget", selected_year);      
 
         // Code for budget tables
         loadBudgetTables(context, model, jdbc);
@@ -35,29 +33,6 @@ public class BudgetPage {
         if (budget_list.size() != 0) {
             saveBudget(context, model, jdbc, budget_list);
         }
-    }
-
-    public static void loadYearSelector(Context context, Map<String, Object> model, JDBC jdbc) {
-        
-        Map<Integer, String> year_select = new HashMap<>();
-
-        // Fill dictionary of years
-        List<Integer> years = jdbc.getYears();
-        for (int year : years) { year_select.put(year, "False"); }
-
-        // Get selected year
-        previous_year = selected_year;
-        String year_selector = context.formParam("year_selector");
-
-        if (year_selector == null) {
-            selected_year = previous_year;
-        }
-        else {
-            selected_year = Integer.parseInt(year_selector);
-        }
-        
-        year_select.put(selected_year, "True");   
-        model.put("years", year_select);
     }
 
     public static void loadBudgetTables(Context context, Map<String, Object> model, JDBC jdbc) {
