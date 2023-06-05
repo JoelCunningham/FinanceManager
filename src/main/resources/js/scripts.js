@@ -110,7 +110,7 @@ function tempChangeText(button, text) {
   }, 2000);
 }  
 
-// Code to make fist and last table columns read only
+// Code to make first and last table columns read only
 function makeColumnsReadonly() {
   var tables = document.querySelectorAll('.budget_table tbody');
   for (var t = 0; t < tables.length; t++) {
@@ -118,10 +118,10 @@ function makeColumnsReadonly() {
     var rows = table.querySelectorAll('tr');
     for (var i = 0; i < rows.length; i++) {
       var cells = rows[i].querySelectorAll('td');
-      for (var j = 0; j < 3; j++) {
-        cells[j].querySelector('input').setAttribute('readonly', true);
-      }
-      cells[15].querySelector('input').setAttribute('readonly', true);
+      cells[0].querySelector('input').setAttribute('readonly', true);
+      cells[1].querySelector('input').setAttribute('readonly', true);
+      cells[2].querySelector('input').setAttribute('readonly', true);
+      cells[cells.length - 1].querySelector('input').setAttribute('readonly', true);
     }
   }
 }
