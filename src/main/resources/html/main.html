@@ -11,6 +11,8 @@
 
 <body>
 
+    <!-- Utilities -->
+
     <div class="util_page" id="add_category">
 
         <div class="util_form">
@@ -49,7 +51,6 @@
         </div>
 
     </div>
-
 
     <div class="util_page" id="create_category">
 
@@ -115,6 +116,8 @@
         
     </div>
 
+    <!-- Topnav -->
+
     <div class="topnav">
         <a href="/"> <img src="/logo.jpg"></a>
         
@@ -148,6 +151,8 @@
     
     </div>
 
+    <!-- Body -->
+
     <div class="main">
 
         <div class="page" id="page">
@@ -165,12 +170,16 @@
                         <span class="material-symbols-outlined">format_list_bulleted</span>Statement</a>
                 </div>
 
-            </div>    
+            </div>   
+            
+            <!-- Dashboard -->
 
             <section id="dashboard" class="content">
                 <h1>Dashboard</h2>
                 <p>Text here.</p>
             </section>
+
+            <!-- Budget -->
 
             <section id="budget" class="content">
                 
@@ -178,8 +187,8 @@
 
                     <form action="/#budget" method="post">
 
-                        <select name="year_selector" onchange="this.form.submit()">
-                            <option th:each="year: ${years.keySet()}" th:text="${year}" th:value="${year}" th:selected="${years.get(year)}"></option>
+                        <select name="budget_year_selector" onchange="this.form.submit()">
+                            <option th:each="year: ${budget_years.keySet()}" th:text="${year}" th:value="${year}" th:selected="${budget_years.get(year)}"></option>
                         </select>
                                         
                     </form>
@@ -337,14 +346,160 @@
 
             </section>
 
+            <!-- Summary -->
+
             <section id="summary" class="content">
                 <h1>Summary</h2>
                 <p>We are a company that specializes in web development.</p>
             </section>
 
+            <!-- Statement -->
+
             <section id="statement" class="content">
-                <h1>Statement</h2>
-                <p>We are a company that specializes in web development.</p>
+              
+                <div class="panel">
+
+                    <form action="/#statement" method="post">
+
+                        <select name="statement_year_selector" onchange="this.form.submit()">
+                            <option th:each="year: ${statement_years.keySet()}" th:text="${year}" th:value="${year}" th:selected="${statement_years.get(year)}"></option>
+                        </select>
+
+                        <select name="statement_month_selector" onchange="this.form.submit()">
+                            <option th:each="month: ${statement_months.keySet()}" th:text="${month}" th:value="${month}" th:selected="${statement_months.get(month)}"></option>
+                        </select>
+                                        
+                    </form>
+
+                    <div class=buttons>
+                        
+                        <button class="save" type="submit" form="statement_form" onclick="tempChangeText(this, 'Saved!')"><span>Save</span><span class="material-symbols-outlined">save</span></button>
+                    
+                    </div>
+                </div>
+
+                <div class="display">
+
+                    <form action="/#statement" method="post" id="statement_form">
+
+                        <div class="type" th:id="typeIncomes">
+
+                            <h2 th:id="Incomes" th:text="Incomes"></h2>
+
+                            <div class="headers">
+
+                                <div class="header" th:each="header : ${statement_incomes_table}">
+
+                                    <h3 th:text="${header[0][1]}"></h3>
+
+                                    <table class="budget_table">
+                                        <thead>
+                                            <th>Type</th>
+                                            <th>Header</th>
+                                            <th>Category</th>
+                                            <th>Week 1</th>
+                                            <th>Week 2</th>
+                                            <th>Week 3</th>
+                                            <th>Week 4</th>
+                                            <th>Week 5</th>
+                                            <th>Total</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="category : ${header}">
+                                                <td th:each="value : ${category}">
+                                                    <input name="budget_table" th:value="${value}"></input>
+                                                </td>  
+                                            </tr>
+                                        </tbody>
+                
+                                    </table>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="type" th:id="typeExpenses">
+
+                            <h2 th:id="Expenses" th:text="Expenses"></h2>
+
+                            <div class="headers">
+
+                                <div class="header" th:each="header : ${statement_expenses_table}">
+
+                                    <h3 th:text="${header[0][1]}"></h3>
+
+                                    <table class="budget_table">
+                                        <thead>
+                                            <th>Type</th>
+                                            <th>Header</th>
+                                            <th>Category</th>
+                                            <th>Week 1</th>
+                                            <th>Week 2</th>
+                                            <th>Week 3</th>
+                                            <th>Week 4</th>
+                                            <th>Week 5</th>
+                                            <th>Total</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="category : ${header}">
+                                                <td th:each="value : ${category}">
+                                                    <input name="budget_table" th:value="${value}"></input>
+                                                </td>  
+                                            </tr>
+                                        </tbody>
+                
+                                    </table>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="type" th:id="typeBalance">
+
+                            <h2 th:id="Balance" th:text="Balance"></h2>
+
+                            <div class="headers">
+
+                                <div class="header" th:each="header : ${statement_balance_table}">
+
+                                    <h3 th:text="${header[0][1]}"></h3>
+
+                                    <table class="budget_table">
+                                        <thead>
+                                            <th>Type</th>
+                                            <th>Header</th>
+                                            <th>Category</th>
+                                            <th>Week 1</th>
+                                            <th>Week 2</th>
+                                            <th>Week 3</th>
+                                            <th>Week 4</th>
+                                            <th>Week 5</th>
+                                            <th>Total</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="category : ${header}">
+                                                <td th:each="value : ${category}">
+                                                    <input name="budget_table" th:value="${value}" readonly></input>
+                                                </td>  
+                                            </tr>
+                                        </tbody>
+                
+                                    </table>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    
+                    </form>
+
+                </div>    
+
             </section>
 
         </div>
