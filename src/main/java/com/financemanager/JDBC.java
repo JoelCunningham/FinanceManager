@@ -11,6 +11,7 @@ import java.util.List;
 
 import com.financemanager.type.BudgetItem;
 import com.financemanager.type.Header;
+import com.financemanager.type.StatementItem;
 import com.financemanager.type.Category;
 /**
 * Class for managing the JDBC Connection to a SQLLite Database.
@@ -485,6 +486,54 @@ public class JDBC {
         budget_items_array = budget_items.toArray(budget_items_array);
 
         return budget_items_array;
+    }
+
+    public StatementItem[] getStatementItems(int year, int month) {
+        
+        List<StatementItem> statement_items = new ArrayList<>();
+
+        String query = """
+            SELECT amount, date, details, category_id 
+            FROM cashflow 
+            WHERE strftime('%Y', date) = '""" + Integer.toString(year) + "'";
+        
+        if (month != -1) { 
+            query += " AND strftime('%m', date) = '" + String.format("%02d", month + 1) + "'";
+        }
+        
+        query += ";";
+
+        Connection connection = null; 
+
+        try {
+            connection = DriverManager.getConnection(DATABASE); //Connect to JDBC data base         
+            Statement statement = connection.createStatement();  //Prepare a new SQL Query 
+            statement.setQueryTimeout(30);
+ 
+            ResultSet results = statement.executeQuery(query); //Get Result
+
+            while (results.next()) {
+
+                int category_id = results.getInt("category_id");
+                float amount = results.getFloat("amount");
+                String details = results.getString("details");
+                String date = results.getString("date");
+
+                statement_items.add(new StatementItem(category_id, amount, details, date));
+            }
+        } 
+        catch (SQLException e) {
+            System.err.println(e.getMessage()); //If there is an error, spring it
+        } 
+        finally {
+            try { if (connection != null) { connection.close(); } }  //Code cleanup
+            catch (SQLException e) { System.err.println(e.getMessage()); }//Connection close failed
+        }
+
+        StatementItem[] statement_items_array = new StatementItem[statement_items.size()];
+        statement_items_array = statement_items.toArray(statement_items_array);
+
+        return statement_items_array;
     }
 
     public void addBudgetItem(BudgetItem item, int year) {
