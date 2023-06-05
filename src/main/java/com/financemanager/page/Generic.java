@@ -20,13 +20,8 @@ public class Generic {
         for (int year : years) { year_select.put(year, "False"); }
 
         // Get selected year
-        int previous_year = selected_year;
         String year_selector = context.formParam(name + "_year_selector");
-
-        if (year_selector == null) {
-            selected_year = previous_year;
-        }
-        else {
+        if (year_selector != null) {
             selected_year = Integer.parseInt(year_selector);
         }
         
@@ -45,17 +40,12 @@ public class Generic {
         for (String month : months) { month_select.put(month, "False"); }
 
         // Get selected month
-        int previous_month = selected_month;
         String month_selector = context.formParam(name + "_month_selector");
-
-        if (month_selector == null) {
-            selected_month = previous_month;
-        }
-        else {
+        if (month_selector != null) {
             selected_month = Helper.monthToInt(month_selector);
         }
         
-        month_select.put(months[selected_month - 1], "True");   
+        month_select.put(months[selected_month], "True");   
         model.put(name + "_months", month_select);
 
         return selected_month;
