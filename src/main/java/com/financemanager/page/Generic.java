@@ -1,6 +1,6 @@
 package com.financemanager.page;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,7 +13,7 @@ public class Generic {
         
     public static int loadYearSelector(Context context, Map<String, Object> model, JDBC jdbc, String name, int selected_year) {
         
-        Map<Integer, String> year_select = new HashMap<>();
+        Map<Integer, String> year_select = new LinkedHashMap<>();
 
         // Fill dictionary of years
         List<Integer> years = jdbc.getYears();
@@ -33,7 +33,7 @@ public class Generic {
 
     public static int loadMonthSelector(Context context, Map<String, Object> model, JDBC jdbc, String name, int selected_month) {
         
-        Map<String, String> month_select = new HashMap<>();
+        Map<String, String> month_select = new LinkedHashMap<>();
 
         // Fill dictionary of months
         String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};        
