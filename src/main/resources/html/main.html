@@ -407,7 +407,7 @@
                                         <tbody>
                                             <tr th:each="category : ${header}">
                                                 <td th:each="value : ${category}">
-                                                    <input name="budget_table" th:value="${value}"></input>
+                                                    <input name="budget_table" th:value="${value}" readonly></input>
                                                 </td>  
                                             </tr>
                                         </tbody>
@@ -445,7 +445,7 @@
                                         <tbody>
                                             <tr th:each="category : ${header}">
                                                 <td th:each="value : ${category}">
-                                                    <input name="budget_table" th:value="${value}"></input>
+                                                    <input name="budget_table" th:value="${value}" readonly></input>
                                                 </td>  
                                             </tr>
                                         </tbody>
@@ -498,7 +498,42 @@
                     
                     </form>
 
-                </div>    
+                </div>  
+                
+                <div class="display">
+
+                    <div class="headers">
+
+                        <div class="header">
+
+                            <div class="list" th:id="list">
+
+                                <table class="cashflow_table">
+                                    <thead>
+                                        <th>Type</th>
+                                        <th>Header</th>
+                                        <th>Category</th>
+                                        <th>Value</th>
+                                        <th>Details</th>
+                                        <th>Date</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="entry : ${cashflows}">
+                                            <td th:each="field : ${entry}">
+                                                <input name="cashflow_table" th:value="${value}"></input>
+                                            </td>  
+                                        </tr>
+                                    </tbody>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    
+                </div>
 
             </section>
 

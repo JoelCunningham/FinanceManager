@@ -465,6 +465,12 @@ button.clicked {
   text-align: center;
 }
 
+/*========== Statement CSS ==========*/
+#statement .display {
+  width: 60%;
+}
+
+
 /*========== Error CSS ==========*/
 #category_error, #header_error {
 background-color: var(--red-accent);
