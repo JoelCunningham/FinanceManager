@@ -8,7 +8,7 @@ import com.financemanager.JDBC;
 /**
  * The Budget class represents a budget
  */
-public class Statement {
+public class Statement extends CashCollection {
     public int month;
     public int year;
     public StatementItem[] items;
@@ -53,7 +53,7 @@ public class Statement {
      * 
      * @return The total for the category in the given week
      */
-    public float getWeekValue(int category_id, int week) {
+    public float findValue(int category_id, int week) {
         float total = 0;
         for (StatementItem item : items) {
             LocalDate date = Helper.stringToDate(item.date);
@@ -72,7 +72,7 @@ public class Statement {
      * 
      * @return The total for the category in the given month
      */
-    public float getMonthValue(int category_id, int month) {
+    public float findMonthValue(int category_id, int month) {
         float total = 0;
         for (StatementItem item : items) {
             LocalDate date = Helper.stringToDate(item.date);

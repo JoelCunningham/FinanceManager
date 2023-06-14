@@ -5,7 +5,7 @@ import com.financemanager.JDBC;
 /**
  * The Budget class represents a budget
  */
-public class Budget {
+public class Budget extends CashCollection {
     public int year;
     public BudgetItem[] items;
 
