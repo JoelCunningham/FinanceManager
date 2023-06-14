@@ -5,6 +5,9 @@ import java.util.Map;
 
 import com.financemanager.JDBC;
 
+import com.financemanager.item.DropdownYear;
+import com.financemanager.item.DropdownMonth;
+
 import com.financemanager.type.Statement;
 import com.financemanager.type.StatementItem;
 import com.financemanager.type.Category;
@@ -15,17 +18,18 @@ import io.javalin.http.Context;
 public class StatementPage {
 
     private static final int STATEMENT_COLS = 9;
-
+    private static final String PAGE_NAME = "statement";
     private static int selected_year = Calendar.getInstance().get(Calendar.YEAR);
     private static int selected_month = Calendar.getInstance().get(Calendar.MONTH);
     
     public static void loadStatementPage(Context context, Map<String, Object> model, JDBC jdbc) {
 
-        // Code for year selector
-        selected_year = Generic.loadYearSelector(context, model, jdbc, "statement", selected_year);      
+        // Code for selectors
+        DropdownYear year_selector = new DropdownYear(context, model, jdbc, PAGE_NAME, selected_year);
+        DropdownMonth month_selector = new DropdownMonth(context, model, jdbc, PAGE_NAME, selected_month);  
 
-        // Code for month selector
-        selected_month = Generic.loadMonthSelector(context, model, jdbc, "statement", selected_month);      
+        selected_year = year_selector.load();   
+        selected_month = month_selector.load(); 
 
         // Code for statement tables
         loadStatementTables(context, model, jdbc);

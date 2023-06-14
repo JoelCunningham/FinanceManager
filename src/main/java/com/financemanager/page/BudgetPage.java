@@ -11,19 +11,21 @@ import com.financemanager.type.Header;
 
 import com.financemanager.Helper;
 import com.financemanager.JDBC;
+import com.financemanager.item.DropdownYear;
 
 import io.javalin.http.Context;
 
 public class BudgetPage {
 
     private static final int BUDGET_COLS = 16;
-
+    private static final String PAGE_NAME = "budget";
     private static int selected_year = Calendar.getInstance().get(Calendar.YEAR);
     
     public static void loadBudgetPage(Context context, Map<String, Object> model, JDBC jdbc) {
 
-        // Code for year selector
-        selected_year = Generic.loadYearSelector(context, model, jdbc, "budget", selected_year);      
+        // Code for selectors
+        DropdownYear year_selector = new DropdownYear(context, model, jdbc, PAGE_NAME, selected_year);
+        selected_year = year_selector.load();
 
         // Code for budget tables
         loadBudgetTables(context, model, jdbc);
