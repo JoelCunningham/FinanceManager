@@ -9,41 +9,59 @@ import com.financemanager.type.BudgetItem;
 import com.financemanager.type.Category;
 import com.financemanager.type.Header;
 
+import com.financemanager.item.DropdownYear;
+
 import com.financemanager.Helper;
 import com.financemanager.JDBC;
-import com.financemanager.item.DropdownYear;
+
 
 import io.javalin.http.Context;
 
-public class BudgetPage {
+public class BudgetPage extends Page {
 
-    private static final int BUDGET_COLS = 16;
-    private static final String PAGE_NAME = "budget";
-    private static int selected_year = Calendar.getInstance().get(Calendar.YEAR);
+    private final int TABLE_COLS = 16; // Number of columns in the table
+    private final String PAGE_NAME = "budget"; // Name of the page
+
+    private int selected_year; // The year to display data for
+
+    /**
+     * Construct a BudgetPage object with the given context, model and jdbc
+     *
+     * @param context the context of the page
+     * @param model the model of the page
+     * @param jdbc the jdbc of the page
+     */
+    public BudgetPage(Context context, Map<String, Object> model, JDBC jdbc) {
+        super(context, model, jdbc);
+        selected_year = Calendar.getInstance().get(Calendar.YEAR);
+    }
     
-    public static void loadBudgetPage(Context context, Map<String, Object> model, JDBC jdbc) {
+    /**
+     * Load the page; including selectors and tables
+     */
+    public void load() {
 
         // Code for selectors
         DropdownYear year_selector = new DropdownYear(context, model, jdbc, PAGE_NAME, selected_year);
         selected_year = year_selector.load();
 
-        // Code for budget tables
-        loadBudgetTables(context, model, jdbc);
+        // Code for tables
+        loadTables();
 
         // Save changes to table
         List<String> budget_list = context.formParams("budget_table");
         if (budget_list.size() != 0) {
-            saveBudget(context, model, jdbc, budget_list);
+            saveBudget(budget_list);
         }
     }
 
-    public static void loadBudgetTables(Context context, Map<String, Object> model, JDBC jdbc) {
+    private void loadTables() {
 
         // Create a budget object
         Budget budget = new Budget(selected_year);
 
-        String[][][] incomes_table = createBudgetTable(jdbc, budget, "Incomes");
-        String[][][] expenses_table = createBudgetTable(jdbc, budget, "Expenses");
+        String[][][] incomes_table = createBudgetTable(budget, "Incomes");
+        String[][][] expenses_table = createBudgetTable(budget, "Expenses");
         String[][][] balance_table = createBalance(budget, "Balance", incomes_table, expenses_table);
 
         model.put("incomes_table", incomes_table);
@@ -51,19 +69,19 @@ public class BudgetPage {
         model.put("balance_table", balance_table);   
     }
 
-    public static String[][][] createBudgetTable(JDBC jdbc, Budget budget, String type) {
+    private String[][][] createBudgetTable(Budget budget, String type) {
 
         Header[] headers = jdbc.getHeaderCategories(selected_year, type);
 
         // Create table
         String[][][] table = new String[headers.length][][];
-        float[] header_total = new float[BUDGET_COLS - 3];
+        float[] header_total = new float[TABLE_COLS - 3];
 
         // For each header in the table
         for (int i = 0; i < table.length; i++) {
 
             table[i] = new String[headers[i].categories.length + 1][];
-            float[] column_total = new float[BUDGET_COLS - 3];
+            float[] column_total = new float[TABLE_COLS - 3];
 
             // For each category in the header 
             for (int j = 0; j < table[i].length - 1; j++) {
@@ -76,9 +94,9 @@ public class BudgetPage {
         return table;
     }
 
-    public static void fillCellsInRow(Budget budget, String[][][] table, Category category, float[] column_total, float[] header_total, int i, int j) {
+    private void fillCellsInRow(Budget budget, String[][][] table, Category category, float[] column_total, float[] header_total, int i, int j) {
         
-        table[i][j] = new String[BUDGET_COLS];
+        table[i][j] = new String[TABLE_COLS];
 
         // Set row head values
         table[i][j][0] = category.type;
@@ -107,21 +125,21 @@ public class BudgetPage {
             category_total += value;
         }
         // Add category total
-        table[i][j][BUDGET_COLS - 1] = String.format("$%.02f", category_total);
+        table[i][j][TABLE_COLS - 1] = String.format("$%.02f", category_total);
     }
 
-    public static String[][][] createBalance(Budget budget, String type, String[][][] incomes_table, String[][][] expenses_table) {
+    private String[][][] createBalance(Budget budget, String type, String[][][] incomes_table, String[][][] expenses_table) {
 
-        String[][][] table = new String[1][3][BUDGET_COLS];
-        float[] incomes_total = new float[BUDGET_COLS - 3];
-        float[] expenses_total = new float[BUDGET_COLS - 3];
+        String[][][] table = new String[1][3][TABLE_COLS];
+        float[] incomes_total = new float[TABLE_COLS - 3];
+        float[] expenses_total = new float[TABLE_COLS - 3];
 
         // Get incomes type totals
         table[0][0][0] = type;
         table[0][0][1] = "Total";
         table[0][0][2] = "Incomes Total";
         for (int i = 0; i < incomes_table.length; i++) {
-            for (int j = 3; j < BUDGET_COLS; j++) {
+            for (int j = 3; j < TABLE_COLS; j++) {
                 incomes_total[j - 3] += Helper.currencyToFloat(incomes_table[i][incomes_table[i].length - 1][j]);
             }
         }
@@ -131,7 +149,7 @@ public class BudgetPage {
         table[0][1][1] = "Total";
         table[0][1][2] = "Expenses Total";
         for (int i = 0; i < expenses_table.length; i++) {
-            for (int j = 3; j < BUDGET_COLS; j++) {
+            for (int j = 3; j < TABLE_COLS; j++) {
                 expenses_total[j - 3] += Helper.currencyToFloat(expenses_table[i][expenses_table[i].length - 1][j]);
             }
         }
@@ -140,7 +158,7 @@ public class BudgetPage {
         table[0][2][0] = type;
         table[0][2][1] = "Total";
         table[0][2][2] = type;
-        for (int i = 3; i < BUDGET_COLS; i++) {
+        for (int i = 3; i < TABLE_COLS; i++) {
             table[0][0][i] = String.format("$%.02f", incomes_total[i - 3]);
             table[0][1][i] = String.format("$%.02f", expenses_total[i - 3]);
             table[0][2][i] = String.format("$%.02f", Helper.currencyToFloat(table[0][0][i]) - Helper.currencyToFloat(table[0][1][i]));
@@ -149,12 +167,12 @@ public class BudgetPage {
         return table;
     }
 
-    public static void saveBudget(Context context, Map<String, Object> model, JDBC jdbc, List<String> budget_list) {
+    private void saveBudget(List<String> budget_list) {
 
         Budget budget = new Budget(selected_year);
 
-        String[][][] incomes_table = createBudgetTable(jdbc, budget, "Incomes");
-        String[][][] expenses_table = createBudgetTable(jdbc, budget, "Expenses");
+        String[][][] incomes_table = createBudgetTable(budget, "Incomes");
+        String[][][] expenses_table = createBudgetTable(budget, "Expenses");
         
         int incomes_length = Helper.countElementsIn3dArray(incomes_table);
         int expenses_length = Helper.countElementsIn3dArray(expenses_table);
@@ -165,10 +183,10 @@ public class BudgetPage {
         saveType(jdbc, incomes_list, incomes_table, "Incomes");
         saveType(jdbc, expenses_list, expenses_table, "Expenses");
 
-        loadBudgetTables(context, model, jdbc);
+        loadTables();
     }
 
-    public static void saveType(JDBC jdbc, List<String> changes_list, String[][][] reference_table, String type) {
+    private void saveType(JDBC jdbc, List<String> changes_list, String[][][] reference_table, String type) {
 
         int curr_header = 0;
         int curr_category = 0;
@@ -177,16 +195,16 @@ public class BudgetPage {
 
         for (int i = 0; i < changes_list.size(); i++) {
 
-            int column_index = i % BUDGET_COLS;
+            int column_index = i % TABLE_COLS;
 
-            if (column_index == 1 && i > BUDGET_COLS && !changes_list.get(i).equals(changes_list.get(i - BUDGET_COLS))) { 
+            if (column_index == 1 && i > TABLE_COLS && !changes_list.get(i).equals(changes_list.get(i - TABLE_COLS))) { 
                 past_categories += reference_table[curr_header].length;
                 curr_header++; 
             }
             else if (column_index > 2 && column_index < 15) {
                 
-                curr_category = i / (BUDGET_COLS) - past_categories;
-                curr_month    = i % (BUDGET_COLS);
+                curr_category = i / (TABLE_COLS) - past_categories;
+                curr_month    = i % (TABLE_COLS);
 
                 if (Helper.currencyToFloat(changes_list.get(i)) != Helper.currencyToFloat(reference_table[curr_header][curr_category][curr_month])) {
 
@@ -200,10 +218,5 @@ public class BudgetPage {
                 }
             }
         }
-
-
-
-
     }
-
 }

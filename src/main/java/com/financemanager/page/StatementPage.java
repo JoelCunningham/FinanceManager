@@ -15,14 +15,31 @@ import com.financemanager.type.Header;
 
 import io.javalin.http.Context;
 
-public class StatementPage {
+public class StatementPage extends Page {
 
-    private static final int STATEMENT_COLS = 9;
-    private static final String PAGE_NAME = "statement";
-    private static int selected_year = Calendar.getInstance().get(Calendar.YEAR);
-    private static int selected_month = Calendar.getInstance().get(Calendar.MONTH);
-    
-    public static void loadStatementPage(Context context, Map<String, Object> model, JDBC jdbc) {
+    private final int TABLE_COLS = 9; // Number of columns in the table
+    private final String PAGE_NAME = "statement"; // Name of the page
+
+    private static int selected_year; // The year to display data for
+    private static int selected_month; // The month to display data for
+
+    /**
+     * Construct a StatementPage object with the given context, model and jdbc
+     *
+     * @param context the context of the page
+     * @param model the model of the page
+     * @param jdbc the jdbc of the page
+     */
+    public StatementPage(Context context, Map<String, Object> model, JDBC jdbc) {
+        super(context, model, jdbc);
+        selected_year = Calendar.getInstance().get(Calendar.YEAR);
+        selected_month = Calendar.getInstance().get(Calendar.MONTH);
+    }
+
+     /**
+     * Load the page; including selectors and tables
+     */
+    public void load() {
 
         // Code for selectors
         DropdownYear year_selector = new DropdownYear(context, model, jdbc, PAGE_NAME, selected_year);
@@ -31,18 +48,18 @@ public class StatementPage {
         selected_year = year_selector.load();   
         selected_month = month_selector.load(); 
 
-        // Code for statement tables
-        loadStatementTables(context, model, jdbc);
+        // Code for tables
+        loadTables();
     }
 
-    public static void loadStatementTables(Context context, Map<String, Object> model, JDBC jdbc) {
+    private void loadTables() {
 
         // Create a statement object
         Statement statement = new Statement(selected_month, selected_year);
         statement.load();
 
-        String[][][] incomes_table = createStatementTable(jdbc, statement, "Incomes");
-        String[][][] expenses_table = createStatementTable(jdbc, statement, "Expenses");
+        String[][][] incomes_table = createStatementTable(statement, "Incomes");
+        String[][][] expenses_table = createStatementTable(statement, "Expenses");
         //String[][][] balance_table = createBalance(statement, "Balance", incomes_table, expenses_table);
 
         model.put("statement_incomes_table", incomes_table);
@@ -50,19 +67,19 @@ public class StatementPage {
         //model.put("statement_balance_table", balance_table);   
     }
 
-    public static String[][][] createStatementTable(JDBC jdbc, Statement statement, String type) {
+    private String[][][] createStatementTable(Statement statement, String type) {
 
         Header[] headers = jdbc.getHeaderCategories(selected_year, type);
 
         // Create table
         String[][][] table = new String[headers.length][][];
-        float[] header_total = new float[STATEMENT_COLS - 3];
+        float[] header_total = new float[TABLE_COLS - 3];
 
         // For each header in the table
         for (int i = 0; i < table.length; i++) {
 
             table[i] = new String[headers[i].categories.length + 1][];
-            float[] column_total = new float[STATEMENT_COLS - 3];
+            float[] column_total = new float[TABLE_COLS - 3];
 
             // For each category in the header 
             for (int j = 0; j < table[i].length - 1; j++) {
@@ -74,9 +91,9 @@ public class StatementPage {
         return table;
     }
 
-    public static void fillCellsInRow(Statement statement, String[][][] table, Category category, float[] column_total, float[] header_total, int i, int j) {
+    private void fillCellsInRow(Statement statement, String[][][] table, Category category, float[] column_total, float[] header_total, int i, int j) {
         
-        table[i][j] = new String[STATEMENT_COLS];
+        table[i][j] = new String[TABLE_COLS];
 
         // Set row head values
         table[i][j][0] = category.type;
@@ -105,7 +122,7 @@ public class StatementPage {
             category_total += value;
         }
         // Add category total
-        table[i][j][STATEMENT_COLS - 1] = String.format("$%.02f", category_total);
+        table[i][j][TABLE_COLS - 1] = String.format("$%.02f", category_total);
     }
 
 }

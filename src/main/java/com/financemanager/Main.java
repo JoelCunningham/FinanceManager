@@ -26,8 +26,11 @@ public class Main implements Handler{
 
         Helper.verifyDatabase(jdbc);
 
-        BudgetPage.loadBudgetPage(context, model, jdbc);
-        StatementPage.loadStatementPage(context, model, jdbc);
+        BudgetPage budget_page = new BudgetPage(context, model, jdbc);
+        StatementPage statement_page = new StatementPage(context, model, jdbc);
+
+        budget_page.load();
+        statement_page.load();
 
         TopnavForms.loadAddCategory(context, model, jdbc);
         TopnavForms.loadCreateCategory(context, model, jdbc);
