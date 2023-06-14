@@ -211,7 +211,7 @@
 
                             <div class="headers">
 
-                                <div class="header" th:each="header : ${incomes_table}">
+                                <div class="header" th:each="header : ${budget_incomes_table}">
 
                                     <h3 th:text="${header[0][1]}"></h3>
 
@@ -256,7 +256,7 @@
 
                             <div class="headers">
 
-                                <div class="header" th:each="header : ${expenses_table}">
+                                <div class="header" th:each="header : ${budget_expenses_table}">
 
                                     <h3 th:text="${header[0][1]}"></h3>
 
@@ -301,7 +301,7 @@
 
                             <div class="headers">
 
-                                <div class="header" th:each="header : ${balance_table}">
+                                <div class="header" th:each="header : ${budget_balance_table}">
 
                                     <h3 th:text="${header[0][1]}"></h3>
 
