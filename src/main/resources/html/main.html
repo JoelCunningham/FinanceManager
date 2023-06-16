@@ -380,7 +380,7 @@
 
                 <div class="display">
 
-                    <form action="/#statement" method="post" id="statement_form">
+                    <div class="column">
 
                         <div class="type" th:id="typeIncomes">
 
@@ -495,35 +495,39 @@
                             </div>
 
                         </div>
-                    
-                    </form>
 
-                </div>  
-                
-                <div class="display">
+                    </div>
 
-                    <div class="headers">
+                    <form action="/#statement" method="post" id="statement_form">
 
-                        <div class="header">
+                        <div class="type" th:id="typeCashflow">
 
-                            <div class="list" th:id="list">
+                            <div class="headers">
 
-                                <table class="cashflow_table">
-                                    <thead>
-                                        <th>Type</th>
-                                        <th>Header</th>
-                                        <th>Category</th>
-                                        <th>Value</th>
-                                        <th>Details</th>
-                                        <th>Date</th>
-                                    </thead>
-                                    <tbody>
-                                        <tr th:each="entry : ${cashflows}">
-                                            <td th:each="field : ${entry}">
-                                                <input name="cashflow_table" th:value="${value}"></input>
-                                            </td>  
-                                        </tr>
-                                    </tbody>
+                                <div class="header">
+
+                                    <div class="list" th:id="list">
+
+                                        <table class="cashflow_table">
+                                            <thead>
+                                                <th>Type</th>
+                                                <th>Header</th>
+                                                <th>Category</th>
+                                                <th>Value</th>
+                                                <th>Details</th>
+                                                <th>Date</th>
+                                            </thead>
+                                            <tbody>
+                                                <tr th:each="entry : ${cashflows}">
+                                                    <td th:each="field : ${entry}">
+                                                        <input name="cashflow_table" th:value="${value}"></input>
+                                                    </td>  
+                                                </tr>
+                                            </tbody>
+
+                                        </table>
+
+                                    </div>
 
                                 </div>
 
@@ -531,7 +535,7 @@
 
                         </div>
 
-                    </div>
+                    </form>
                     
                 </div>
 

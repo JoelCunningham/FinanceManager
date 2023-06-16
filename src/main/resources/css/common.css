@@ -466,10 +466,28 @@ button.clicked {
 }
 
 /*========== Statement CSS ==========*/
-#statement .display {
-  width: 60%;
+#statement .type {
+  width: 100%;
 }
 
+#statement .column {
+  width: calc((100% - 170px)/1.8 - 25px);
+  margin-right: 25px;
+  float: left;
+}
+
+#statement #typeCashflow {
+  width: calc((100% - 170px)/2.3);
+  height: calc(100vh - (150px));
+}
+
+#statement #typeCashflow table {
+  width: 100%;
+}
+
+#statement #typeCashflow .headers {
+  width: 100%;
+}
 
 /*========== Error CSS ==========*/
 #category_error, #header_error {
