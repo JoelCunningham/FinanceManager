@@ -78,6 +78,44 @@ public class Helper {
         return monthMap.get(month);
     }
 
+    public static String idToName(int id, Header[] headers) {
+        String name = "";
+        for (Header header : headers) {
+            for (Category category : header.categories) {
+                if (category.id == id) {
+                    name = category.name;
+                }
+            }
+        }
+        return name;
+    }
+
+    public static String idToHeader(int id, Header[] headers) {
+        String name = "";
+        for (Header header : headers) {
+            for (Category category : header.categories) {
+                if (category.id == id) {
+                    name = header.name;
+                }
+            }
+        }
+        return name;
+    }
+
+    public static int getCategoryId(String header_name, String category_name, Header[] headers) {
+        int id = -1;
+        for (Header header : headers) {
+            if (header.name.equals(header_name)) {
+                for (Category category : header.categories) {
+                    if (category.name.equals(category_name)) {
+                        id = category.id;
+                    }
+                }
+            }
+        }
+        return id;
+    }
+
     public static <T> T[] combineArrays(T[] array1, T[] array2) {
         int length = array1.length + array2.length;
         T[] result = Arrays.copyOf(array1, length);
