@@ -78,6 +78,14 @@ public class Helper {
         return monthMap.get(month);
     }
 
+    public static <T> T[] combineArrays(T[] array1, T[] array2) {
+        int length = array1.length + array2.length;
+        T[] result = Arrays.copyOf(array1, length);
+        System.arraycopy(array1, 0, result, 0, array1.length);
+        System.arraycopy(array2, 0, result, array1.length, array2.length);
+        return result;
+    }
+
     @Deprecated
     public static String[][] convertListToArray(List<String> list, int row_count, int col_count) {
         String[][] array = new String[row_count][col_count]; 
