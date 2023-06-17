@@ -1,9 +1,11 @@
 package com.financemanager.type;
 
+import com.financemanager.Helper;
+
 /**
  * The StatementItem class represents a entry in a statement
  */
-public class StatementItem {
+public class StatementItem implements Comparable<StatementItem>{
 
     public int category_id; 
     public float amount;
@@ -23,5 +25,9 @@ public class StatementItem {
         this.amount = amount;
         this.details = details;
         this.date = date;
+    }
+
+    public int compareTo(StatementItem other) {
+        return Helper.stringToDate(this.date).compareTo(Helper.stringToDate(other.date));
     }
 }
