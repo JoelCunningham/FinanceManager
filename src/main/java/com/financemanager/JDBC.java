@@ -565,6 +565,29 @@ public class JDBC {
         }
     }
 
+    public void addCashFlowItem(StatementItem item) {
+        
+        Connection connection = null;
+
+        try {
+            connection = DriverManager.getConnection(DATABASE);
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+    
+            String insertQuery = "INSERT INTO cashflow (amount, date, details, category_id) VALUES (" + item.amount + ", '" + item.date + "', '" + item.details + "', " + item.category_id + ");";
+            
+            System.out.println(item.amount + ", '" + item.date + "', '" + item.details + "', " + item.category_id);
+            
+            statement.executeUpdate(insertQuery);
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            try { if (connection != null) { connection.close(); } } 
+            catch (SQLException e) { System.err.println(e.getMessage()); }
+        }
+    }
+
     public void addCategoryYear(int category_id, int year) {
         
         String query = "INSERT INTO category_year (category_id, year) VALUES (" + category_id + ", " + year + ");";
