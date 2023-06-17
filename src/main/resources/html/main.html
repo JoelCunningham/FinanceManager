@@ -72,7 +72,7 @@
                     <option th:each="type: ${c_types}" th:text="${type}" th:value="${type}"></option>
                 </select>
 
-                <label for="c_header_select">Header:</label>
+                <label for="c_income_header_select">Header:</label>
                 <select id="c_income_header_select" name="c_income_header_select">
                     <option th:each="header: ${c_income_headers}" th:text="${header}" th:value="${header}"></option>
                 </select>
@@ -498,19 +498,18 @@
 
                     </div>
 
-                    <form action="/#statement" method="post" id="statement_form">
+                    <div class="type" th:id="typeCashflow">
 
-                        <div class="type" th:id="typeCashflow">
+                        <div class="headers">
 
-                            <div class="headers">
+                            <div class="header">
 
-                                <div class="header">
+                                <div class="list" th:id="list">
 
-                                    <div class="list" th:id="list">
+                                    <form action="/#statement" method="post" id="statement_form">
 
                                         <table class="cashflow_table">
                                             <thead>
-                                                <th>Type</th>
                                                 <th>Header</th>
                                                 <th>Category</th>
                                                 <th>Value</th>
@@ -518,24 +517,69 @@
                                                 <th>Date</th>
                                             </thead>
                                             <tbody>
-                                                <tr th:each="entry : ${cashflows}">
-                                                    <td th:each="field : ${entry}">
-                                                        <input name="cashflow_table" th:value="${value}"></input>
+                                                <tr th:each="entry : ${cashflow_table}">
+                                                    <td >
+                                                        <input name="cashflow_table" th:value="${entry[0]}"></input>
+                                                    </td>  
+                                                    <td>
+                                                        <input name="cashflow_table" th:value="${entry[1]}"></input>
+                                                    </td>  
+                                                    <td>
+                                                        <input name="cashflow_table" th:value="${entry[2]}"></input>
+                                                    </td>  
+                                                    <td>
+                                                        <input name="cashflow_table" th:value="${entry[3]}"></input>
+                                                    </td>  
+                                                    <td>
+                                                        <input name="cashflow_table" th:value="${entry[4]}"></input>
                                                     </td>  
                                                 </tr>
                                             </tbody>
 
                                         </table>
-
-                                    </div>
+                                        
+                                    </form>
 
                                 </div>
 
                             </div>
 
+                            <div class="header" id="cashflow_header">
+
+                                <form action="/#statement" method="post" id="cashflow_form">
+                                    
+                                    <input name="cashflow_header" placeholder="Header" type="text" list="cashflow_headers" id="cashflow_header_input" onblur="validateCashflowHeader()"/>
+                                    <datalist id="cashflow_headers">
+                                        <option th:each="header: ${cashflow_headers}" th:text="${header}" th:value="${header}"></option>
+                                    </datalist>
+
+                                    <input name="cashflow_category" placeholder="Category" type="text" list="cashflow_categories" id="cashflow_category_input" onblur="validateCashflowCategory()"/>
+                                    <datalist id="cashflow_categories">
+                                        <option ></option>
+                                    </datalist>
+
+                                    <script th:inline="javascript">
+                                        /*<![CDATA[*/
+                                        let cashflow_headers = /*[[${cashflow_headers}]]*/ [];
+                                        let cashflow_categories = /*[[${cashflow_categories}]]*/ [];
+                                        /*]]>*/
+                                        window.cashflow_headers = cashflow_headers;
+                                        window.cashflow_categories = cashflow_categories;
+                                    </script>
+
+                                    <input placeholder="Value" name="cashflow_value" id="cashflow_value"></input>  
+                                    <input placeholder="Date" name="cashflow_date" type="date" id="cashflow_date"></input> 
+                                    <input placeholder="Details" name="cashflow_details" id="cashflow_details"></input>  
+
+                                    <button class="save" type="submit" form="cashflow_form" onclick="tempChangeText(this, 'Saved!')"><span>Add</span><span class="material-symbols-outlined">Add</span></button>
+
+                                </form>
+                              
+                            </div>
+
                         </div>
 
-                    </form>
+                    </div>
                     
                 </div>
 

@@ -466,6 +466,10 @@ button.clicked {
 }
 
 /*========== Statement CSS ==========*/
+#statement select {
+  margin-bottom: 10px;
+}
+
 #statement .type {
   width: 100%;
 }
@@ -487,6 +491,72 @@ button.clicked {
 
 #statement #typeCashflow .headers {
   width: 100%;
+}
+
+#cashflow_form select, #cashflow_form input, #cashflow_form button {
+  float: left;
+  width: calc((100% - 30px)/4);
+
+  border-radius: 15px;
+  text-align: left;
+  height: 40px;
+  margin: 0px 10px 10px 0px;
+  background-color: white;
+  border: 2px solid var(--background-colour);
+  transition: 0.8s;
+  overflow: hidden;
+
+  padding: 0px 10px;
+}
+
+#cashflow_form select:hover, #cashflow_form input:hover {
+  background-color: var(--grey_1);
+}
+
+#cashflow_form button:hover {
+  background-color: var(--grey_1);
+  border-color: var(--green-colour);
+}
+
+#cashflow_form input[type="date"] {
+  margin-right: 0px;
+}
+
+#cashflow_form button {
+  width: calc(25% - 10px);
+  margin: 0px;
+  padding: 0px 15px;
+  text-align: left;
+  font-size: medium;
+  border: 3px solid var(--background-colour);
+  background-color: var(--background-colour);
+}
+
+#cashflow_form .material-symbols-outlined {
+  float: right;
+}
+
+#cashflow_form #cashflow_details {
+  width: 75%;
+  margin-bottom: 0px;
+}
+
+#cashflow_header {
+  position: absolute;
+  bottom: 0;
+  width: calc(100% - 30px);
+}
+
+#statement .material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 700,
+  'GRAD' 200,
+  'opsz' 48;
+
+  font-size: large !important;
+  vertical-align: bottom;
+  margin-bottom: 2px;
 }
 
 /*========== Error CSS ==========*/
