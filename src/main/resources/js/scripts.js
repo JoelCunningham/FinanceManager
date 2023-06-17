@@ -18,6 +18,7 @@ window.onload = function() {
   toggleCheckboxes();
   positionHeaders();
   categoryToolTips();
+  clearCashflowForm();
 }
 
 // Code for menu selector buttons
@@ -211,4 +212,74 @@ function categoryToolTips() {
           }
       }
   }
+}
+
+//Code to enforce header dropdowns
+function validateCashflowHeader() {
+  var input = document.getElementById("cashflow_header_input").value;
+  var options = document.getElementById("cashflow_headers").options;
+  var found = false;
+  
+  for (var i = 0; i < options.length; i++) {
+    if (options[i].value === input || input === "") {
+    found = true;
+    }
+  }
+  
+  if (!found) {
+    document.getElementById("cashflow_header_input").value = "";
+    document.getElementById("cashflow_category_input").value = "";
+  }
+}
+
+//Code to enforce header dropdowns
+function validateCashflowCategory() {
+  var input = document.getElementById("cashflow_category_input").value;
+  var options = document.getElementById("cashflow_categories").options;
+  var found = false;
+  
+  for (var i = 0; i < options.length; i++) {
+    if (options[i].value === input || input === "") {
+    found = true;
+    break;
+    }
+  }
+  
+  if (!found) {
+    document.getElementById("cashflow_category_input").value = "";
+  }
+}
+
+//Code to set category dropdown from header dropdown
+document.addEventListener('DOMContentLoaded', function() {
+  let cashflow_headers = window.cashflow_headers;
+  let cashflow_categories = window.cashflow_categories;
+
+  document.querySelector('#cashflow_header_input').addEventListener('input', function() {
+    let selectedHeader = this.value;
+    let categoriesDatalist = document.querySelector('#cashflow_categories');
+    categoriesDatalist.innerHTML = '';
+    // Find the index of the selected header in cashflow_headers
+    let headerIndex = cashflow_headers.indexOf(selectedHeader);
+    // Get the corresponding categories for the selected header
+    let categories = cashflow_categories[headerIndex];
+    // Add the categories as options to the datalist
+    categories.forEach(function(category) {
+        let option = document.createElement('option');
+        option.value = category;
+        option.text = category;
+        categoriesDatalist.appendChild(option);
+    });
+  });
+});
+
+//Code to clear the cashflow form
+function clearCashflowForm() {
+
+  document.getElementById("cashflow_header_input").value = "";
+  document.getElementById("cashflow_category_input").value = "";
+
+  document.getElementById("cashflow_value").value = "";
+  document.getElementById("cashflow_date").value = "";
+  document.getElementById("cashflow_details").value = "";
 }
