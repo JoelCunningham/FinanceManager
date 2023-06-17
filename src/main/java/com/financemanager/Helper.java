@@ -3,11 +3,15 @@ package com.financemanager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+
+import com.financemanager.type.Category;
+import com.financemanager.type.Header;
 
 public class Helper {
 
@@ -65,8 +69,8 @@ public class Helper {
     public static LocalDate stringToDate(String date_string) {
         String[] tokens = date_string.split("-");
         int year = Integer.parseInt(tokens[0]);
-        int day = Integer.parseInt(tokens[1]);
-        int month = Integer.parseInt(tokens[2]);
+        int month = Integer.parseInt(tokens[1]);
+        int day = Integer.parseInt(tokens[2]);
         return LocalDate.of(year, month, day);
     }
 
