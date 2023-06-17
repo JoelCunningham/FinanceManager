@@ -57,6 +57,9 @@ public class StatementPage extends Page {
         loadCashFlowTable(statement);   
         loadSelectors();
 
+        // Code for adding records
+        addNew();
+
         // Code for saving changes
         // List<String> budget_list = context.formParams("budget_table");
         // if (budget_list.size() != 0) {
@@ -104,6 +107,32 @@ public class StatementPage extends Page {
 
         model.put("cashflow_headers", header_names);
         model.put("cashflow_categories", category_names);
+    }
+
+    private void addNew() {
+        String header = context.formParam("cashflow_header");
+        String category = context.formParam("cashflow_category");
+        String value = context.formParam("cashflow_value");
+        String date = context.formParam("cashflow_date");
+        String details = context.formParam("cashflow_details");
+
+        if (header != "" && header != null && category != "" && category != null && value != "" && value != null && date != "" && date != null) {
+            //TODO: Get to work with Income and Expense
+            Header[] income_headers = jdbc.getHeaderCategories(selected_year, "Incomes");
+            Header[] expense_headers = jdbc.getHeaderCategories(selected_year, "Expenses");
+            Header[] headers = Helper.combineArrays(income_headers, expense_headers);
+            
+            int id = Helper.getCategoryId(header, category, headers);
+            int amount = Integer.parseInt(value);
+
+            StatementItem item = new StatementItem(id, amount, details, date);
+            jdbc.addCashFlowItem(item);
+        }
+
+        Statement statement = new Statement(selected_month, selected_year);
+        TablePanel table_panel = new TablePanel(PAGE_NAME, selected_year, TABLE_COLS, statement, model, jdbc);
+        table_panel.load();
+        loadCashFlowTable(statement);
     }
 
 }
