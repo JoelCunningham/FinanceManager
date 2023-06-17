@@ -54,7 +54,8 @@ public class StatementPage extends Page {
         TablePanel table_panel = new TablePanel(PAGE_NAME, selected_year, TABLE_COLS, statement, model, jdbc);
         table_panel.load();
 
-        loadCashFlowTable(statement);
+        loadCashFlowTable(statement);   
+        loadSelectors();
 
         // Code for saving changes
         // List<String> budget_list = context.formParams("budget_table");
@@ -81,6 +82,28 @@ public class StatementPage extends Page {
             table[i][4] = items[i].date;
         }
         model.put("cashflow_table", table);
+    }
+
+    private void loadSelectors() {
+
+        Header[] income_headers = jdbc.getHeaderCategories(selected_year, "Incomes");
+        Header[] expense_headers = jdbc.getHeaderCategories(selected_year, "Expenses");
+        Header[] headers = Helper.combineArrays(income_headers, expense_headers);
+
+        String[] header_names = new String[headers.length];
+        String[][] category_names = new String[headers.length][];
+
+        for (int i = 0; i < headers.length; i++) {
+            header_names[i] = headers[i].name;
+            String[] categories = new String [headers[i].categories.length];
+            for (int j = 0; j < headers[i].categories.length; j ++) {
+                categories[j] = headers[i].categories[j].name;
+            }
+            category_names[i] = categories;
+        }
+
+        model.put("cashflow_headers", header_names);
+        model.put("cashflow_categories", category_names);
     }
 
 }
