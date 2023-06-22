@@ -493,7 +493,7 @@ public class JDBC {
         List<StatementItem> statement_items = new ArrayList<>();
 
         String query = """
-            SELECT amount, date, details, category_id 
+            SELECT id, category_id, amount, date, details
             FROM cashflow 
             WHERE strftime('%Y', date) = '""" + Integer.toString(year) + "'";
         
@@ -514,12 +514,13 @@ public class JDBC {
 
             while (results.next()) {
 
+                int id = results.getInt("id");
                 int category_id = results.getInt("category_id");
                 float amount = results.getFloat("amount");
                 String details = results.getString("details");
                 String date = results.getString("date");
 
-                statement_items.add(new StatementItem(category_id, amount, details, date));
+                statement_items.add(new StatementItem(id, category_id, amount, details, date));
             }
         } 
         catch (SQLException e) {
@@ -565,7 +566,7 @@ public class JDBC {
         }
     }
 
-    public void addCashFlowItem(StatementItem item) {
+    public void addStatementItem(StatementItem item) {
         
         Connection connection = null;
 
@@ -573,12 +574,15 @@ public class JDBC {
             connection = DriverManager.getConnection(DATABASE);
             Statement statement = connection.createStatement();
             statement.setQueryTimeout(30);
-    
-            String insertQuery = "INSERT INTO cashflow (amount, date, details, category_id) VALUES (" + item.amount + ", '" + item.date + "', '" + item.details + "', " + item.category_id + ");";
-            
-            System.out.println(item.amount + ", '" + item.date + "', '" + item.details + "', " + item.category_id);
-            
-            statement.executeUpdate(insertQuery);
+
+            if (item.id != -1) {
+                String updateQuery = "UPDATE cashflow SET amount = " + item.amount + ", date = '" + item.date + "', details = '" + item.details + "', category_id = " + item.category_id + " WHERE id = " + item.id + ";";
+                statement.executeUpdate(updateQuery);
+            }
+            else {
+                String insertQuery = "INSERT INTO cashflow (amount, date, details, category_id) VALUES (" + item.amount + ", '" + item.date + "', '" + item.details + "', " + item.category_id + ");";            
+                statement.executeUpdate(insertQuery);
+            }
 
         } catch (SQLException e) {
             System.err.println(e.getMessage());
