@@ -66,6 +66,10 @@ public class Helper {
           return Float.parseFloat(s);
     }
 
+    public static String floatToCurrency(float f) {
+        return String.format("$%.02f", f);
+    }
+
     public static LocalDate stringToDate(String date_string) {
         String[] tokens = date_string.split("-");
         int year = Integer.parseInt(tokens[0]);
