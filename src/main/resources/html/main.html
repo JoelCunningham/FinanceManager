@@ -510,6 +510,8 @@
 
                                         <table class="cashflow_table">
                                             <thead>
+                                                <th class="hidden">Id</th>
+                                                <th>Type</th>
                                                 <th>Header</th>
                                                 <th>Category</th>
                                                 <th>Value</th>
@@ -518,7 +520,7 @@
                                             </thead>
                                             <tbody>
                                                 <tr th:each="entry : ${cashflow_table}">
-                                                    <td >
+                                                    <td class="hidden">
                                                         <input name="cashflow_table" th:value="${entry[0]}"></input>
                                                     </td>  
                                                     <td>
@@ -532,6 +534,12 @@
                                                     </td>  
                                                     <td>
                                                         <input name="cashflow_table" th:value="${entry[4]}"></input>
+                                                    </td>  
+                                                    <td>
+                                                        <input name="cashflow_table" th:value="${entry[5]}"></input>
+                                                    </td>  
+                                                    <td>
+                                                        <input name="cashflow_table" th:value="${entry[6]}"></input>
                                                     </td>  
                                                 </tr>
                                             </tbody>
@@ -547,10 +555,16 @@
                             <div class="header" id="cashflow_header">
 
                                 <form action="/#statement" method="post" id="cashflow_form">
+
+                                    <input name="cashflow_type" placeholder="Type" type="text" list="cashflow_types" id="cashflow_type_input" onblur="validateCashflowType()"/>
+                                    <datalist id="cashflow_types">
+                                        <option>Income</option>
+                                        <option>Expense</option>
+                                    </datalist>
                                     
                                     <input name="cashflow_header" placeholder="Header" type="text" list="cashflow_headers" id="cashflow_header_input" onblur="validateCashflowHeader()"/>
                                     <datalist id="cashflow_headers">
-                                        <option th:each="header: ${cashflow_headers}" th:text="${header}" th:value="${header}"></option>
+                                        <option></option>
                                     </datalist>
 
                                     <input name="cashflow_category" placeholder="Category" type="text" list="cashflow_categories" id="cashflow_category_input" onblur="validateCashflowCategory()"/>

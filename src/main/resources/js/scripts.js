@@ -214,6 +214,25 @@ function categoryToolTips() {
   }
 }
 
+//Code to enforce type dropdowns
+function validateCashflowType() {
+  var input = document.getElementById("cashflow_type_input").value;
+  var options = document.getElementById("cashflow_types").options;
+  var found = false;
+  
+  for (var i = 0; i < options.length; i++) {
+    if (options[i].value === input || input === "") {
+    found = true;
+    }
+  }
+  
+  if (!found) {
+    document.getElementById("cashflow_type_input").value = "";
+    document.getElementById("cashflow_header_input").value = "";
+    document.getElementById("cashflow_category_input").value = "";
+  }
+}
+
 //Code to enforce header dropdowns
 function validateCashflowHeader() {
   var input = document.getElementById("cashflow_header_input").value;
@@ -232,7 +251,7 @@ function validateCashflowHeader() {
   }
 }
 
-//Code to enforce header dropdowns
+//Code to enforce category dropdowns
 function validateCashflowCategory() {
   var input = document.getElementById("cashflow_category_input").value;
   var options = document.getElementById("cashflow_categories").options;
@@ -250,19 +269,46 @@ function validateCashflowCategory() {
   }
 }
 
+//Code to set header dropdown from type dropdown
+document.addEventListener('DOMContentLoaded', function() {
+  let cashflow_types = ["Income", "Expense"];
+  let cashflow_headers = window.cashflow_headers;
+
+  document.querySelector('#cashflow_type_input').addEventListener('input', function() {
+    let selectedType = this.value;
+    let headersDatalist = document.querySelector('#cashflow_headers');
+    headersDatalist.innerHTML = '';
+    // Find the index of the selected type in cashflow_types
+    let typeIndex = cashflow_types.indexOf(selectedType);
+    // Get the corresponding headers for the selected type
+    let headers = cashflow_headers[typeIndex];
+    // Add the headers as options to the datalist
+    headers.forEach(function(header) {
+        let option = document.createElement('option');
+        option.value = header;
+        option.text = header;
+        headersDatalist.appendChild(option);
+    });
+  });
+});
+
 //Code to set category dropdown from header dropdown
 document.addEventListener('DOMContentLoaded', function() {
+  let cashflow_types = ["Income", "Expense"];
   let cashflow_headers = window.cashflow_headers;
   let cashflow_categories = window.cashflow_categories;
 
   document.querySelector('#cashflow_header_input').addEventListener('input', function() {
     let selectedHeader = this.value;
+    let selectedType = document.querySelector('#cashflow_type_input').value;
     let categoriesDatalist = document.querySelector('#cashflow_categories');
     categoriesDatalist.innerHTML = '';
+    // Find the index of the selected type in cashflow_types
+    let typeIndex = cashflow_types.indexOf(selectedType);
     // Find the index of the selected header in cashflow_headers
-    let headerIndex = cashflow_headers.indexOf(selectedHeader);
+    let headerIndex = cashflow_headers[typeIndex].indexOf(selectedHeader);
     // Get the corresponding categories for the selected header
-    let categories = cashflow_categories[headerIndex];
+    let categories = cashflow_categories[typeIndex][headerIndex];
     // Add the categories as options to the datalist
     categories.forEach(function(category) {
         let option = document.createElement('option');
