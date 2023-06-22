@@ -66,10 +66,10 @@ public class StatementPage extends Page {
         addNew();
 
         // Code for saving changes
-        // List<String> cashflow_list= context.formParams("cashflow_table");
-        // if (cashflow_list.size() != 0) {
-        //     saveCashFlowTable(statement, cashflow_list);
-        // } 
+        List<String> cashflow_list= context.formParams("cashflow_table");
+        if (cashflow_list.size() != 0) {
+            saveCashFlowTable(statement, cashflow_list);
+        } 
     }
 
     /**
@@ -170,6 +170,52 @@ public class StatementPage extends Page {
         }
 
         Statement statement = new Statement(selected_month, selected_year);
+        TablePanel table_panel = new TablePanel(PAGE_NAME, selected_year, TABLE_COLS, statement, model, jdbc);
+        
+        table_panel.load();
+        loadCashFlowTable(statement);
+    }
+
+    private void saveCashFlowTable(Statement statement, List<String> changes_list) {
+        // Get current stored data
+        String[][] cashflow_table = createFlow(statement);
+
+        int size = CASHFLOW_COLS; // Make member
+
+        Header[] income_headers = jdbc.getHeaderCategories(selected_year, "Incomes");
+        Header[] expense_headers = jdbc.getHeaderCategories(selected_year, "Expenses");
+        Header[] headers = Helper.combineArrays(income_headers, expense_headers);
+        
+        // Loop through the changes list
+        for (int i = 0; i < changes_list.size() - size + 1; i += size) {
+
+            // Check if any felids in the record are changed
+            if (!(changes_list.get(i + 0).equals(cashflow_table[i / size][0]) &&
+                  changes_list.get(i + 1).equals(cashflow_table[i / size][1]) &&
+                  changes_list.get(i + 2).equals(cashflow_table[i / size][2]) && 
+                  changes_list.get(i + 3).equals(cashflow_table[i / size][3]) &&
+                  changes_list.get(i + 4).equals(cashflow_table[i / size][4]) &&
+                  changes_list.get(i + 5).equals(cashflow_table[i / size][5]) &&
+                  changes_list.get(i + 6).equals(cashflow_table[i / size][6]))) {
+
+                int id = Integer.parseInt(changes_list.get(i + 0));
+
+                String type_name = changes_list.get(i + 1);
+                String header_name = changes_list.get(i + 2);
+                String category_name = changes_list.get(i + 3);
+                int category_id = Helper.getCategoryId(type_name, header_name, category_name, headers);
+                
+                float amount = Helper.currencyToFloat(changes_list.get(i + 4));
+                String details = changes_list.get(i + 5);
+                String date = changes_list.get(i + 6);
+                
+                StatementItem item = new StatementItem(id, category_id, amount, details, date); 
+
+                jdbc.addStatementItem(item);
+            }
+        }
+
+        statement = new Statement(selected_month, selected_year);
         TablePanel table_panel = new TablePanel(PAGE_NAME, selected_year, TABLE_COLS, statement, model, jdbc);
         
         table_panel.load();
