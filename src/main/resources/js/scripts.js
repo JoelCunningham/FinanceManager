@@ -271,7 +271,7 @@ function validateCashflowCategory() {
 
 //Code to set header dropdown from type dropdown
 document.addEventListener('DOMContentLoaded', function() {
-  let cashflow_types = ["Income", "Expense"];
+  let cashflow_types = ["Incomes", "Expenses"];
   let cashflow_headers = window.cashflow_headers;
 
   document.querySelector('#cashflow_type_input').addEventListener('input', function() {
@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 //Code to set category dropdown from header dropdown
 document.addEventListener('DOMContentLoaded', function() {
-  let cashflow_types = ["Income", "Expense"];
+  let cashflow_types = ["Incomes", "Expenses"];
   let cashflow_headers = window.cashflow_headers;
   let cashflow_categories = window.cashflow_categories;
 
