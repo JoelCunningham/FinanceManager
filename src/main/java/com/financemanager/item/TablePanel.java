@@ -200,19 +200,26 @@ public class TablePanel {
 
         int past_categories = 0;
 
+        // Loop through the changes list
         for (int i = 0; i < changes_list.size(); i++) {
 
+            // Tack column in 1D representation of 2D array
             int column_index = i % size;
 
+            // If the cell is in the header column and it's not the first row and the header is different from the previous row's header
             if (column_index == 1 && i > size && !changes_list.get(i).equals(changes_list.get(i - size))) { 
+                // Increment position trackers
                 past_categories += reference_table[curr_header].length;
                 curr_header++; 
             }
+            // If the cell is in a data column 
             else if (column_index > 2 && column_index < 15) {
                 
+                // Determine current position
                 curr_category = i / (size) - past_categories;
                 curr_month    = i % (size);
 
+                // If the current value is different from the original value, update the database
                 if (Helper.currencyToFloat(changes_list.get(i)) != Helper.currencyToFloat(reference_table[curr_header][curr_category][curr_month])) {
 
                     int type_id = jdbc.getTypeID(type);
