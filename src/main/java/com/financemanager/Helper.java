@@ -3,6 +3,7 @@ package com.financemanager;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -105,6 +106,14 @@ public class Helper {
             }
         }
         return id;
+    }
+    
+    public static String getMinDate(int year, int month) {
+        return LocalDate.of(year, month + 1, 1).toString();
+    }
+
+    public static String getMaxDate(int year, int month) {
+        return LocalDate.of(year, month + 1, 1).with(TemporalAdjusters.lastDayOfMonth()).toString();
     }
 
     public static <T> T[] combineArrays(T[] array1, T[] array2) {
