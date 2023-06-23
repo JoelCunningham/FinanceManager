@@ -62,6 +62,9 @@ public class StatementPage extends Page {
         loadCashFlowTable(statement);   
         loadSelectors();
 
+        model.put("date_min", Helper.getMinDate(selected_year, selected_month));
+        model.put("date_max", Helper.getMaxDate(selected_year, selected_month));
+
         // Code for adding records
         addNew();
 
@@ -102,7 +105,7 @@ public class StatementPage extends Page {
             table[i][1] = category.type;
             table[i][2] = category.header_name;
             table[i][3] = category.name;
-            table[i][4] = Helper.floatToCurrency(items[i].amount);
+            table[i][4] = String.format("%.2f", items[i].amount);
             table[i][5] = items[i].details;
             table[i][6] = items[i].date;
         }
@@ -156,7 +159,7 @@ public class StatementPage extends Page {
         String details = context.formParam("cashflow_details");
 
         // If they have been correctly filled 
-        if (type != "" && type != null && header != "" && header != null && category != "" && category != null && value != "" && value != null && date != "" && date != null) {
+        if (type != null && header != null && category != null && value != null && date != null) {
 
             Header[] income_headers = jdbc.getHeaderCategories(selected_year, "Incomes");
             Header[] expense_headers = jdbc.getHeaderCategories(selected_year, "Expenses");
@@ -189,14 +192,24 @@ public class StatementPage extends Page {
         // Loop through the changes list
         for (int i = 0; i < changes_list.size() - size + 1; i += size) {
 
+            boolean is_changed = !(
+                changes_list.get(i + 0).equals(cashflow_table[i / size][0]) &&
+                changes_list.get(i + 1).equals(cashflow_table[i / size][1]) &&
+                changes_list.get(i + 2).equals(cashflow_table[i / size][2]) && 
+                changes_list.get(i + 3).equals(cashflow_table[i / size][3]) &&
+                changes_list.get(i + 4).equals(cashflow_table[i / size][4]) &&
+                changes_list.get(i + 5).equals(cashflow_table[i / size][5]) &&
+                changes_list.get(i + 6).equals(cashflow_table[i / size][6])
+            );
+
+            boolean is_valid = !(
+                changes_list.get(i + 1).equals("Type") ||
+                changes_list.get(i + 2).equals("Header") || 
+                changes_list.get(i + 3).equals("Category")
+            );
+
             // Check if any felids in the record are changed
-            if (!(changes_list.get(i + 0).equals(cashflow_table[i / size][0]) &&
-                  changes_list.get(i + 1).equals(cashflow_table[i / size][1]) &&
-                  changes_list.get(i + 2).equals(cashflow_table[i / size][2]) && 
-                  changes_list.get(i + 3).equals(cashflow_table[i / size][3]) &&
-                  changes_list.get(i + 4).equals(cashflow_table[i / size][4]) &&
-                  changes_list.get(i + 5).equals(cashflow_table[i / size][5]) &&
-                  changes_list.get(i + 6).equals(cashflow_table[i / size][6]))) {
+            if (is_changed && is_valid) {
 
                 int id = Integer.parseInt(changes_list.get(i + 0));
 
