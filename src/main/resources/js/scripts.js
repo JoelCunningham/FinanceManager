@@ -19,6 +19,8 @@ window.onload = function() {
   positionHeaders();
   categoryToolTips();
   clearCashflowForm();
+  validateCashflowForm();
+  validateCashflowTable();
 }
 
 // Code for menu selector buttons
@@ -100,7 +102,8 @@ function validateForms() {
   });
 }
 
-// Code for the save button (RIP)
+// Code for the save button 
+// TODO make work with event.preventDefault statements or remove
 function tempChangeText(button, text) {
   curr_text = button.innerHTML;
   button.innerHTML = text;
@@ -269,63 +272,152 @@ function validateCashflowCategory() {
   }
 }
 
-//Code to set header dropdown from type dropdown
 document.addEventListener('DOMContentLoaded', function() {
   let cashflow_types = ["Incomes", "Expenses"];
   let cashflow_headers = window.cashflow_headers;
 
-  document.querySelector('#cashflow_type_input').addEventListener('input', function() {
+  document.querySelector('#cashflow_type_select').addEventListener('change', function() {
     let selectedType = this.value;
-    let headersDatalist = document.querySelector('#cashflow_headers');
-    headersDatalist.innerHTML = '';
+    let headersSelect = document.querySelector('#cashflow_header_select');
+    headersSelect.innerHTML = '<option value="" disabled selected>Header</option>';
     // Find the index of the selected type in cashflow_types
     let typeIndex = cashflow_types.indexOf(selectedType);
     // Get the corresponding headers for the selected type
     let headers = cashflow_headers[typeIndex];
-    // Add the headers as options to the datalist
+    // Add the headers as options to the select
     headers.forEach(function(header) {
         let option = document.createElement('option');
         option.value = header;
         option.text = header;
-        headersDatalist.appendChild(option);
+        headersSelect.appendChild(option);
     });
   });
 });
 
-//Code to set category dropdown from header dropdown
 document.addEventListener('DOMContentLoaded', function() {
   let cashflow_types = ["Incomes", "Expenses"];
   let cashflow_headers = window.cashflow_headers;
   let cashflow_categories = window.cashflow_categories;
 
-  document.querySelector('#cashflow_header_input').addEventListener('input', function() {
+  document.querySelector('#cashflow_header_select').addEventListener('change', function() {
     let selectedHeader = this.value;
-    let selectedType = document.querySelector('#cashflow_type_input').value;
-    let categoriesDatalist = document.querySelector('#cashflow_categories');
-    categoriesDatalist.innerHTML = '';
+    let selectedType = document.querySelector('#cashflow_type_select').value;
+    let categoriesSelect = document.querySelector('#cashflow_category_select');
+    categoriesSelect.innerHTML = '<option value="" disabled selected>Category</option>';
     // Find the index of the selected type in cashflow_types
     let typeIndex = cashflow_types.indexOf(selectedType);
     // Find the index of the selected header in cashflow_headers
     let headerIndex = cashflow_headers[typeIndex].indexOf(selectedHeader);
     // Get the corresponding categories for the selected header
     let categories = cashflow_categories[typeIndex][headerIndex];
-    // Add the categories as options to the datalist
+    // Add the categories as options to the select
     categories.forEach(function(category) {
         let option = document.createElement('option');
         option.value = category;
         option.text = category;
-        categoriesDatalist.appendChild(option);
+        categoriesSelect.appendChild(option);
     });
   });
 });
 
 //Code to clear the cashflow form
 function clearCashflowForm() {
-
-  document.getElementById("cashflow_header_input").value = "";
-  document.getElementById("cashflow_category_input").value = "";
+  document.getElementById("cashflow_type_select").selectedIndex = 0;
+  document.getElementById("cashflow_header_select").selectedIndex = 0;
+  document.getElementById("cashflow_category_select").selectedIndex = 0;
 
   document.getElementById("cashflow_value").value = "";
   document.getElementById("cashflow_date").value = "";
   document.getElementById("cashflow_details").value = "";
 }
+
+//Code for table dropdowns
+document.addEventListener('DOMContentLoaded', function() {
+  let cashflow_types = ["Incomes", "Expenses"];
+  let cashflow_headers = window.cashflow_headers;
+  let cashflow_categories = window.cashflow_categories;
+  document.querySelectorAll('.cashflow_table select[name="cashflow_table"]').forEach(function(select) {
+    if (select.parentElement.cellIndex === 1) { // Type column
+      let selectedType = select.value;
+      let headersSelect = select.parentElement.nextElementSibling.querySelector('select');
+      headersSelect.innerHTML = '<option value="" disabled selected>Header</option>';
+      // Find the index of the selected type in cashflow_types
+      let typeIndex = cashflow_types.indexOf(selectedType);
+      // Get the corresponding headers for the selected type
+      let headers = cashflow_headers[typeIndex];
+      // Add the headers as options to the select
+      headers.forEach(function(header) {
+        let option = document.createElement('option');
+        option.value = header;
+        option.text = header;
+        headersSelect.appendChild(option);
+      });
+      // Set the selected value of the headersSelect
+      headersSelect.value = headersSelect.getAttribute('value');
+
+      let categoriesSelect = headersSelect.parentElement.nextElementSibling.querySelector('select');
+      categoriesSelect.innerHTML = '<option value="" disabled selected>Category</option>';  
+  
+      select.addEventListener('change', function() {
+        let selectedType = this.value;
+        let headersSelect = this.parentElement.nextElementSibling.querySelector('select');
+        headersSelect.innerHTML = '<option value="" disabled selected>Header</option>';
+        // Find the index of the selected type in cashflow_types
+        let typeIndex = cashflow_types.indexOf(selectedType);
+        // Get the corresponding headers for the selected type
+        let headers = cashflow_headers[typeIndex];
+        // Add the headers as options to the select
+        headers.forEach(function(header) {
+          let option = document.createElement('option');
+          option.value = header;
+          option.text = header;
+          headersSelect.appendChild(option);
+        });
+
+        let categoriesSelect = headersSelect.parentElement.nextElementSibling.querySelector('select');
+        categoriesSelect.innerHTML = '<option value="" disabled selected>Category</option>';
+    
+      });
+    } else if (select.parentElement.cellIndex === 2) { // Header column
+      let selectedHeader = select.getAttribute('value');
+      let selectedType = select.parentElement.previousElementSibling.querySelector('select').value;
+      let categoriesSelect = select.parentElement.nextElementSibling.querySelector('select');
+      categoriesSelect.innerHTML = '<option value="" disabled selected>Category</option>';
+      // Find the index of the selected type in cashflow_types
+      let typeIndex = cashflow_types.indexOf(selectedType);
+      // Find the index of the selected header in cashflow_headers
+      let headerIndex = cashflow_headers[typeIndex].indexOf(selectedHeader);
+      // Get the corresponding categories for the selected header
+      let categories = cashflow_categories[typeIndex][headerIndex];
+      // Add the categories as options to the select
+      categories.forEach(function(category) {
+        let option = document.createElement('option');
+        option.value = category;
+        option.text = category;
+        categoriesSelect.appendChild(option);
+      });
+      // Set the selected value of the categoriesSelect
+      categoriesSelect.value = categoriesSelect.getAttribute('value');
+  
+      select.addEventListener('change', function() {
+        let selectedHeader = this.value;
+        let selectedType = this.parentElement.previousElementSibling.querySelector('select').value;
+        let categoriesSelect = this.parentElement.nextElementSibling.querySelector('select');
+        categoriesSelect.innerHTML = '<option value="" disabled selected>Category</option>';
+        // Find the index of the selected type in cashflow_types
+        let typeIndex = cashflow_types.indexOf(selectedType);
+        // Find the index of the selected header in cashflow_headers
+        let headerIndex = cashflow_headers[typeIndex].indexOf(selectedHeader);
+        // Get the corresponding categories for the selected header
+        let categories = cashflow_categories[typeIndex][headerIndex];
+        // Add the categories as options to the select
+        categories.forEach(function(category) {
+          let option = document.createElement('option');
+          option.value = category;
+          option.text = category;
+          categoriesSelect.appendChild(option);
+        });
+      });
+    }
+  });
+});
