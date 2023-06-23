@@ -421,3 +421,64 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 });
+
+// Code to validate cash flow form
+function validateCashflowForm() {
+  document.getElementById("cashflow_form").addEventListener("submit", function(event) {
+    if (document.getElementById("cashflow_type_select").value.trim() === "") {
+      alert("Please choose a Type for the cash flow");
+      event.preventDefault();
+    }
+    else if (document.getElementById("cashflow_header_select").value.trim() === "") {
+      alert("Please choose a Header for the cash flow");
+      event.preventDefault();
+    }
+    else if (document.getElementById("cashflow_category_select").value.trim() === "") {
+      alert("Please choose a Category for the cash flow");
+      event.preventDefault();
+    }
+    else if (document.getElementById("cashflow_value").value.trim() === "") {
+      alert("Please enter a Value for the cash flow");
+      event.preventDefault();
+    }
+    else if (document.getElementById("cashflow_date").value.trim() === "") {
+      alert("Please choose a Date for the cash flow");
+      event.preventDefault();
+    }
+  });
+}
+
+// Code to validate cash flow table
+function validateCashflowTable() {
+  document.getElementById("statement_form").addEventListener("submit", function(event) {
+    let elements = document.querySelectorAll('.cashflow_table select[name="cashflow_table"], .cashflow_table input[name="cashflow_table"]');
+    for (let i = 0; i < elements.length; i++) {
+      let element = elements[i];
+      if (element.parentElement.cellIndex === 1 && element.value.trim() === "") { // Type column
+        alert("Please make sure you have correctly set a Type for all cash flows");
+        event.preventDefault();
+        break;
+      }
+      else if (element.parentElement.cellIndex === 2 && element.value.trim() === "") { // Header column
+        alert("Please make sure you have correctly set a Header for all cash flows");
+        event.preventDefault();
+        break;
+      }
+      else if (element.parentElement.cellIndex === 3 && element.value.trim() === "") { // Category column
+        alert("Please make sure you have correctly set a Category for all cash flows");
+        event.preventDefault();
+        break;
+      }
+      else if (element.parentElement.cellIndex === 4 && element.value.trim() === "") { // Value column
+        alert("Please make sure you have correctly entered a Value for all cash flows");
+        event.preventDefault();
+        break;
+      }
+      else if (element.parentElement.cellIndex === 6 && element.value.trim() === "") { // Date column
+        alert("Please make sure you have correctly set a Date for all cash flows");
+        event.preventDefault();
+        break;
+      }
+    }
+  });
+}
