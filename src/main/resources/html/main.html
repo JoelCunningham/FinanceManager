@@ -380,7 +380,7 @@
 
                 <div class="display">
 
-                    <div class="column">
+                    <div class="column" id="columnSummary">
 
                         <div class="type" th:id="typeIncomes">
 
@@ -498,97 +498,107 @@
 
                     </div>
 
-                    <div class="type" th:id="typeCashflow">
+                    <div class="column" id="columnCashflow">
 
-                        <div class="headers">
+                        <div class="type" th:id="typeCashflow">
 
-                            <div class="header">
+                            <div class="headers">
 
-                                <div class="list" th:id="list">
+                                <div class="header">
 
-                                    <form action="/#statement" method="post" id="statement_form">
+                                    <div class="list" th:id="list">
 
-                                        <table class="cashflow_table">
-                                            <thead>
-                                                <th class="hidden">Id</th>
-                                                <th>Type</th>
-                                                <th>Header</th>
-                                                <th>Category</th>
-                                                <th>Value</th>
-                                                <th>Details</th>
-                                                <th>Date</th>
-                                            </thead>
-                                            <tbody>
-                                                <tr th:each="entry : ${cashflow_table}">
-                                                    <td class="hidden">
-                                                        <input name="cashflow_table" th:value="${entry[0]}"></input>
-                                                    </td>  
-                                                    <td>
-                                                        <input name="cashflow_table" th:value="${entry[1]}"></input>
-                                                    </td>  
-                                                    <td>
-                                                        <input name="cashflow_table" th:value="${entry[2]}"></input>
-                                                    </td>  
-                                                    <td>
-                                                        <input name="cashflow_table" th:value="${entry[3]}"></input>
-                                                    </td>  
-                                                    <td>
-                                                        <input name="cashflow_table" th:value="${entry[4]}"></input>
-                                                    </td>  
-                                                    <td>
-                                                        <input name="cashflow_table" th:value="${entry[5]}"></input>
-                                                    </td>  
-                                                    <td>
-                                                        <input name="cashflow_table" th:value="${entry[6]}"></input>
-                                                    </td>  
-                                                </tr>
-                                            </tbody>
+                                        <form action="/#statement" method="post" id="statement_form">
 
-                                        </table>
-                                        
-                                    </form>
+                                            <table class="cashflow_table">
+                                                <thead>
+                                                    <th class="hidden">Id</th>
+                                                    <th>Type</th>
+                                                    <th>Header</th>
+                                                    <th>Category</th>
+                                                    <th>Value</th>
+                                                    <th>Details</th>
+                                                    <th>Date</th>
+                                                </thead>
+                                                <tbody>
+                                                    <tr th:each="entry : ${cashflow_table}">
+                                                        <td class="hidden">
+                                                            <input name="cashflow_table" th:value="${entry[0]}"></input>
+                                                        </td>
+                                                        <td>
+                                                            <select name="cashflow_table">
+                                                            <option value="" disabled>Type</option>
+                                                            <option value="Incomes" th:selected="${entry[1] == 'Incomes'}">Incomes</option>
+                                                            <option value="Expenses" th:selected="${entry[1] == 'Expenses'}">Expenses</option>
+                                                            </select>
+                                                        </td>  
+                                                        <td>
+                                                            <select name="cashflow_table" th:value="${entry[2]}">
+                                                            <option value="" disabled>Header</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select name="cashflow_table" th:value="${entry[3]}">
+                                                            <option value="" disabled>Category</option>
+                                                            </select>
+                                                        </td>   
+                                                        <td>
+                                                            <span>$</span><input name="cashflow_table" type="number" th:value="${entry[4]}"></input>
+                                                        </td>  
+                                                        <td th:title="${entry[5]}">
+                                                            <input name="cashflow_table" type="text" th:value="${entry[5]}"></input>
+                                                        </td>  
+                                                        <td>
+                                                            <input name="cashflow_table" type="date" th:value="${entry[6]}" th:min="${date_min}" th:max="${date_max}"></input>
+                                                        </td> 
+                                                    </tr>
+                                                </tbody>
+
+                                            </table>
+                                            
+                                        </form>
+
+                                    </div>
 
                                 </div>
 
-                            </div>
+                                <div class="header" id="cashflow_header">
 
-                            <div class="header" id="cashflow_header">
+                                    <form action="/#statement" method="post" id="cashflow_form">
 
-                                <form action="/#statement" method="post" id="cashflow_form">
+                                        <select name="cashflow_type" id="cashflow_type_select">
+                                            <option value="" disabled selected>Type</option>
+                                            <option value="Incomes">Incomes</option>
+                                            <option value="Expenses">Expenses</option>
+                                        </select>
+                                        
+                                        <select name="cashflow_header" id="cashflow_header_select">
+                                            <option value="" disabled selected>Header</option>
+                                        </select>
+                                        
+                                        <select name="cashflow_category" id="cashflow_category_select">
+                                            <option value="" disabled selected>Category</option>
+                                        </select>
 
-                                    <input name="cashflow_type" placeholder="Type" type="text" list="cashflow_types" id="cashflow_type_input" onblur="validateCashflowType()"/>
-                                    <datalist id="cashflow_types">
-                                        <option>Incomes</option>
-                                        <option>Expenses</option>
-                                    </datalist>
-                                    
-                                    <input name="cashflow_header" placeholder="Header" type="text" list="cashflow_headers" id="cashflow_header_input" onblur="validateCashflowHeader()"/>
-                                    <datalist id="cashflow_headers">
-                                        <option></option>
-                                    </datalist>
+                                        <script th:inline="javascript">
+                                            /*<![CDATA[*/
+                                            let cashflow_headers = /*[[${cashflow_headers}]]*/ [];
+                                            let cashflow_categories = /*[[${cashflow_categories}]]*/ [];
+                                            /*]]>*/
+                                            window.cashflow_headers = cashflow_headers;
+                                            window.cashflow_categories = cashflow_categories;
+                                        </script>
 
-                                    <input name="cashflow_category" placeholder="Category" type="text" list="cashflow_categories" id="cashflow_category_input" onblur="validateCashflowCategory()"/>
-                                    <datalist id="cashflow_categories">
-                                        <option ></option>
-                                    </datalist>
+                                        <input placeholder="Value" name="cashflow_value" type="number" id="cashflow_value"></input>  
+                                        <input placeholder="Date" name="cashflow_date" type="date" id="cashflow_date" th:min="${date_min}" th:max="${date_max}"></input> 
+                                        <input placeholder="Details" name="cashflow_details" id="cashflow_details"></input>  
 
-                                    <script th:inline="javascript">
-                                        /*<![CDATA[*/
-                                        let cashflow_headers = /*[[${cashflow_headers}]]*/ [];
-                                        let cashflow_categories = /*[[${cashflow_categories}]]*/ [];
-                                        /*]]>*/
-                                        window.cashflow_headers = cashflow_headers;
-                                        window.cashflow_categories = cashflow_categories;
-                                    </script>
+                                        <button class="save" type="submit" form="cashflow_form" onclick="tempChangeText(this, 'Saved!')"><span>Add</span><span class="material-symbols-outlined">Add</span></button>
 
-                                    <input placeholder="Value" name="cashflow_value" id="cashflow_value"></input>  
-                                    <input placeholder="Date" name="cashflow_date" type="date" id="cashflow_date"></input> 
-                                    <input placeholder="Details" name="cashflow_details" id="cashflow_details"></input>  
+                                    </form>
+                                
+                                </div>
 
-                                    <button class="save" type="submit" form="cashflow_form" onclick="tempChangeText(this, 'Saved!')"><span>Add</span><span class="material-symbols-outlined">Add</span></button>
-
-                                </form>
-                              
                             </div>
 
                         </div>

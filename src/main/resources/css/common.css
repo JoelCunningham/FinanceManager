@@ -436,12 +436,6 @@ select option {
   height: 150px;
 }
 
-input[type=text]:focus {
-  border-color: var(--background-colour);
-  outline: none;
-  background-color: #FFFFFF;
-}
-
 .save:hover {
   border-color: var(--green-colour);
   color: var(--green-colour);
@@ -475,22 +469,66 @@ button.clicked {
 }
 
 #statement .column {
-  width: calc((100% - 170px)/1.9 - 30px);
-  margin-right: 25px;
   float: left;
 }
 
+#statement #columnSummary {
+  width: calc((100% - 170px)/2.0 - 20px);
+  margin-right: 20px;
+}
+
+#statement #columnCashflow {
+  width: calc((100% - 170px)/2.0);
+}
+
 #statement #typeCashflow {
-  width: calc((100% - 170px)/2.1);
   height: calc(100vh - (150px));
 }
 
 #statement #typeCashflow table {
   width: 100%;
+  table-layout: auto;
 }
 
 #statement #typeCashflow .headers {
   width: 100%;
+}
+
+#statement_form .cashflow_table select {
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  padding: none;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  text-indent: 1px;
+  text-overflow: '';
+}
+
+input[type="date"] {
+  color: black;
+}
+
+#statement_form .cashflow_table td {
+  width: calc(100%/6);
+}
+
+#statement_form .cashflow_table td input[type="number"] {
+  width: calc(100% - 9px);
+  text-align: right;
+}
+
+#statement_form .cashflow_table td input[type="text"] {
+  width: calc(100% - 9px);
+  text-align: left;
+}
+
+#statement_form .cashflow_table td input[type="text"]:hover {
+  background-color: transparent;
+  transition: none;
 }
 
 #cashflow_form select, #cashflow_form input, #cashflow_form button {
@@ -523,7 +561,7 @@ button.clicked {
 }
 
 #cashflow_form button {
-  width: calc(25% - 10px);
+  width: calc(20% - 10px);
   margin: 0px;
   padding: 0px 15px;
   text-align: left;
@@ -537,7 +575,7 @@ button.clicked {
 }
 
 #cashflow_form #cashflow_details {
-  width: 75%;
+  width: 80%;
   margin-bottom: 0px;
 }
 
