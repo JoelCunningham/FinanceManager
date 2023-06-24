@@ -5,27 +5,28 @@ import java.util.Map;
 
 import com.financemanager.Helper;
 import com.financemanager.JDBC;
+
 import com.financemanager.type.BudgetItem;
 import com.financemanager.type.CashCollection;
 import com.financemanager.type.Category;
 import com.financemanager.type.Header;
 
-public class TablePanel {
+import io.javalin.http.Context;
 
-    private String name;
-    private int year;
-    private int size;
-    private CashCollection source;
-    private Map<String, Object> model;
-    private JDBC jdbc;
+public class TablePanel<T> extends Table<T> {
 
-    public TablePanel(String name, int year, int size, CashCollection source, Map<String, Object> model, JDBC jdbc) {
-        this.name = name;
-        this.year = year;
-        this.size = size;
-        this.source = source;
-        this.model = model;
-        this.jdbc = jdbc;
+    /**
+     * Constructor for the Table class 
+     * 
+     * @param name The name of the table
+     * @param year The year the table's data will represent
+     * @param size The number of columns in the table
+     * @param source The data source of the table
+     * @param model The model to sumbit the table to
+     * @param jdbc The database connection for the table
+     */
+    public TablePanel(String name, int year, int size, CashCollection<T> source, Map<String, Object> model, JDBC jdbc) {
+        super(name, year, size, source, model, jdbc);
     }
 
     /**
@@ -72,31 +73,31 @@ public class TablePanel {
     /**
      * Fill a row (category) of data in a table
      * 
-     * @param table The table the row belongs to
+     * @param sub_table The sub table the row belongs to
      * @param category The category of the row
      * @param column_total The current total of the current column
      * @param header_total The current total of the current header
      * @param i The current header index
      * @param j The current category index
      */
-    private void fillCellsInRow(String[][][] table, Category category, float[] column_total, float[] header_total, int i, int j) {
+    private void fillCellsInRow(String[][][] sub_table, Category category, float[] column_total, float[] header_total, int i, int j) {
         
-        table[i][j] = new String[size];
+        sub_table[i][j] = new String[size];
 
         // Set row head values
-        table[i][j][0] = category.type;
-        table[i][j][1] = category.header_name;
-        table[i][j][2] = category.name;
+        sub_table[i][j][0] = category.type;
+        sub_table[i][j][1] = category.header_name;
+        sub_table[i][j][2] = category.name;
         
         float category_total = 0;
 
         // Loop through each week and add value
-        for (int k = 3; k < table[i][j].length - 1; k++) {
+        for (int k = 3; k < sub_table[i][j].length - 1; k++) {
             
             float value = 0;
 
             // Normal operation
-            if (j != table[i].length - 1){
+            if (j != sub_table[i].length - 1){
                 value = source.findValue(category.id, k - 2);
                 column_total[k - 3] += value;
             }
@@ -106,20 +107,20 @@ public class TablePanel {
                 header_total[k - 3] += value;
             }
 
-            table[i][j][k] = String.format("$%.02f", value);
+            sub_table[i][j][k] = String.format("$%.02f", value);
             category_total += value;
         }
         // Add category total
-        table[i][j][size - 1] = String.format("$%.02f", category_total);
+        sub_table[i][j][size - 1] = String.format("$%.02f", category_total);
     }
 
     /**
      * Compute the balance of the data in flow tables
      * 
-     * @param incomes_table The table of income flows
-     * @param expenses_table The table of expense flows
+     * @param income_flows The table of income flows
+     * @param expense_flows The table of expense flows
      */
-    private String[][][] createBalance(String[][][] incomes_table, String[][][] expenses_table) {
+    private String[][][] createBalance(String[][][] income_flows, String[][][] expense_flows) {
 
         String[][][] table = new String[1][3][size];
         float[] incomes_total = new float[size - 3];
@@ -129,9 +130,9 @@ public class TablePanel {
         table[0][0][0] = "Balance";
         table[0][0][1] = "Total";
         table[0][0][2] = "Incomes Total";
-        for (int i = 0; i < incomes_table.length; i++) {
+        for (int i = 0; i < income_flows.length; i++) {
             for (int j = 3; j < size; j++) {
-                incomes_total[j - 3] += Helper.currencyToFloat(incomes_table[i][incomes_table[i].length - 1][j]);
+                incomes_total[j - 3] += Helper.currencyToFloat(income_flows[i][income_flows[i].length - 1][j]);
             }
         }
 
@@ -139,9 +140,9 @@ public class TablePanel {
         table[0][1][0] = "Balance";
         table[0][1][1] = "Total";
         table[0][1][2] = "Expenses Total";
-        for (int i = 0; i < expenses_table.length; i++) {
+        for (int i = 0; i < expense_flows.length; i++) {
             for (int j = 3; j < size; j++) {
-                expenses_total[j - 3] += Helper.currencyToFloat(expenses_table[i][expenses_table[i].length - 1][j]);
+                expenses_total[j - 3] += Helper.currencyToFloat(expense_flows[i][expense_flows[i].length - 1][j]);
             }
         }
 
@@ -154,7 +155,6 @@ public class TablePanel {
             table[0][1][i] = String.format("$%.02f", expenses_total[i - 3]);
             table[0][2][i] = String.format("$%.02f", Helper.currencyToFloat(table[0][0][i]) - Helper.currencyToFloat(table[0][1][i]));
         }
-
         return table;
     }
 
@@ -162,33 +162,37 @@ public class TablePanel {
      * Save changes to tables.
      * Only works with TablePanels created from Budget sources
      * 
-     * @param flow_list The income and expense flows in the table
+     * @param context The context to retrive the new data from
      */
-     public void save(List<String> flow_list) {
+     public void save(Context context) {
 
-        // Get current stored data
-        String[][][] incomes_table = createFlow("Incomes");
-        String[][][] expenses_table = createFlow("Expenses");
+        List<String> changes_list = context.formParams("budget_table");
         
-        int incomes_length = Helper.countElementsIn3dArray(incomes_table);
-        int expenses_length = Helper.countElementsIn3dArray(expenses_table);
+        if (changes_list.size() != 0) {
+            // Get current stored data for reference
+            String[][][] incomes_table = createFlow("Incomes");
+            String[][][] expenses_table = createFlow("Expenses");
+            
+            // Separate new data into two flows
+            int incomes_length = Helper.countElementsIn3dArray(incomes_table);
+            int expenses_length = Helper.countElementsIn3dArray(expenses_table);
 
-        // Separate new data
-        List<String> incomes_list = flow_list.subList(0, incomes_length);
-        List<String> expenses_list = flow_list.subList(incomes_length, expenses_length + incomes_length);
+            List<String> incomes_list = changes_list.subList(0, incomes_length);
+            List<String> expenses_list = changes_list.subList(incomes_length, expenses_length + incomes_length);
 
-        saveType(incomes_list, incomes_table, "Incomes");
-        saveType(expenses_list, expenses_table, "Expenses");
+            // Save each flow
+            saveType(incomes_list, incomes_table, "Incomes");
+            saveType(expenses_list, expenses_table, "Expenses");
 
-        source.load();
-        this.load();
+            refresh();
+        }
     }
 
     /**
      * Save changes to a flow.
      * Only works with TablePanels created from Budget sources
      * 
-     * @param changes_list The alterted flow data in the table
+     * @param changes_list The data to be saved in the table
      * @param reference_table The unaltered data
      * @param type The type of flow to save
      */
