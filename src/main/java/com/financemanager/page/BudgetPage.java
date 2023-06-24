@@ -1,14 +1,15 @@
 package com.financemanager.page;
 
 import java.util.Calendar;
-import java.util.List;
 import java.util.Map;
 
+import com.financemanager.JDBC;
+
 import com.financemanager.type.Budget;
+import com.financemanager.type.BudgetItem;
+
 import com.financemanager.item.DropdownYear;
 import com.financemanager.item.TablePanel;
-
-import com.financemanager.JDBC;
 
 import io.javalin.http.Context;
 
@@ -42,14 +43,11 @@ public class BudgetPage extends Page {
 
         // Code for tables
         Budget budget = new Budget(selected_year);
-        TablePanel table_panel = new TablePanel(PAGE_NAME, selected_year, TABLE_COLS, budget, model, jdbc);
-        table_panel.load();
+        TablePanel<BudgetItem> panel_table = new TablePanel<BudgetItem>(PAGE_NAME, selected_year, TABLE_COLS, budget, model, jdbc);
+        panel_table.load();
 
         // Code for saving changes
-        List<String> budget_list = context.formParams("budget_table");
-        if (budget_list.size() != 0) {
-            table_panel.save(budget_list);
-        } 
+        panel_table.save(context);
     }
 
 }
