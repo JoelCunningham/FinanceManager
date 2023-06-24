@@ -13,13 +13,13 @@ public class DropdownMonth extends Dropdown {
     private int selected_month;
 
     /**
-     * Constructor for the DropdownMonth class.
+     * Constructor for the DropdownMonth class
      *
-     * @param context        The context in which the DropdownMonth is being used.
-     * @param model          The model to which the DropdownMonth will add data.
-     * @param jdbc           The JDBC object used to retrieve data from the database.
-     * @param name           The name of the DropdownMonth.
-     * @param selected_month The initially selected month in the DropdownMonth.
+     * @param context        The context in which the DropdownMonth is being used
+     * @param model          The model to which the DropdownMonth will add data
+     * @param jdbc           The JDBC object used to retrieve data from the database
+     * @param name           The name of the DropdownMonth
+     * @param selected_month The initially selected month in the DropdownMonth
      */
     public DropdownMonth(Context context, Map<String, Object> model, JDBC jdbc, String name, int selected_month) {
         super(context, model, jdbc, name);
@@ -27,9 +27,9 @@ public class DropdownMonth extends Dropdown {
     }
 
     /**
-     * Loads data into the month selector and returns the selected month.
+     * Loads data into the month selector and returns the selected month
      *
-     * @return The selected month in the month selector.
+     * @return The selected month in the month selector
      */
     public int load() {
         

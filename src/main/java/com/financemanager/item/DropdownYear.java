@@ -13,13 +13,13 @@ public class DropdownYear extends Dropdown {
     private int selected_year;
 
     /**
-     * Constructor for the DropdownYear class.
+     * Constructor for the DropdownYear class
      *
-     * @param context       The context in which the DropdownYear is being used.
-     * @param model         The model to which the DropdownYear will add data.
-     * @param jdbc          The JDBC object used to retrieve data from the database.
-     * @param name          The name of the DropdownYear.
-     * @param selected_year The initially selected year in the DropdownYear.
+     * @param context       The context in which the DropdownYear is being used
+     * @param model         The model to which the DropdownYear will add data
+     * @param jdbc          The JDBC object used to retrieve data from the database
+     * @param name          The name of the DropdownYear
+     * @param selected_year The initially selected year in the DropdownYear
      */
     public DropdownYear(Context context, Map<String, Object> model, JDBC jdbc, String name, int selected_year) {
         super(context, model, jdbc, name);
@@ -27,9 +27,9 @@ public class DropdownYear extends Dropdown {
     }
 
     /**
-     * Loads data into the year selector and returns the selected year.
+     * Loads data into the year selector and returns the selected year
      *
-     * @return The selected year in the year selector.
+     * @return The selected year in the year selector
      */
     public int load() {
         
