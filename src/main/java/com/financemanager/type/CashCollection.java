@@ -1,6 +1,8 @@
 package com.financemanager.type;
 
-public abstract class CashCollection {
+public abstract class CashCollection<T> {
+
+    public T[] items;
     
     /**
      * Loads budget items from the specified year into the object

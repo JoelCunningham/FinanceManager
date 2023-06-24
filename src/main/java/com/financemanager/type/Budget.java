@@ -5,9 +5,9 @@ import com.financemanager.JDBC;
 /**
  * The Budget class represents a budget
  */
-public class Budget extends CashCollection {
+public class Budget extends CashCollection<BudgetItem> {
+    
     public int year;
-    public BudgetItem[] items;
 
     /**
      * Constructs a new Budget object with the given year

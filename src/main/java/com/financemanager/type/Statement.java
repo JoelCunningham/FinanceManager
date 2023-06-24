@@ -8,10 +8,10 @@ import com.financemanager.JDBC;
 /**
  * The Budget class represents a budget
  */
-public class Statement extends CashCollection {
+public class Statement extends CashCollection<StatementItem> {
+    
     public int month;
     public int year;
-    public StatementItem[] items;
 
     /**
      * Constructs a new Statement object for a given month
