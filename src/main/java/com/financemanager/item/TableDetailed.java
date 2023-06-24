@@ -40,12 +40,17 @@ public class TableDetailed extends Table<StatementItem> {
     }
 
     /**
-     * Create a table for a flow
+     * Create table for the cash flow
+     * 
+     * @return The table of the flow
      */
     private String[][] createFlow() {
+        // Get the items to be added to the 
         StatementItem[] items = source.items;
+        // 2D array represents the list of cashflow items
         String[][] table = new String[items.length][size];
         
+        // Determine headers used in flow
         Header[] income_headers = jdbc.getHeaderCategories(year, "Incomes");
         Header[] expense_headers = jdbc.getHeaderCategories(year, "Expenses");
         Header[] headers = Helper.combineArrays(income_headers, expense_headers);
@@ -53,7 +58,7 @@ public class TableDetailed extends Table<StatementItem> {
         Arrays.sort(items);
 
         for (int i = 0; i < items.length; i++) {
-
+            // Infer category infomation from provided id
             Category category = Helper.idToCategory(items[i].category_id, headers);
 
             table[i][0] = Integer.toString(items[i].id);
@@ -84,14 +89,15 @@ public class TableDetailed extends Table<StatementItem> {
 
         // If they have been correctly filled 
         if (type != null && header != null && category != null && value != null && date != null) {
-
+            // Determine the id of the category
             Header[] income_headers = jdbc.getHeaderCategories(year, "Incomes");
             Header[] expense_headers = jdbc.getHeaderCategories(year, "Expenses");
             Header[] headers = Helper.combineArrays(income_headers, expense_headers);
-            
             int category_id = Helper.getCategoryId(type, header, category, headers);
+            // Parse the amount
             int amount = Integer.parseInt(value);
 
+            // Add the new item to the database
             StatementItem item = new StatementItem(category_id, amount, details, date);
             jdbc.addStatementItem(item);
         }
@@ -138,18 +144,17 @@ public class TableDetailed extends Table<StatementItem> {
                 if (is_changed && is_valid) {
 
                     int id = Integer.parseInt(changes_list.get(i + 0));
-
                     String type_name = changes_list.get(i + 1);
                     String header_name = changes_list.get(i + 2);
                     String category_name = changes_list.get(i + 3);
-                    int category_id = Helper.getCategoryId(type_name, header_name, category_name, headers);
-                    
                     float amount = Helper.currencyToFloat(changes_list.get(i + 4));
                     String details = changes_list.get(i + 5);
                     String date = changes_list.get(i + 6);
-                    
-                    StatementItem item = new StatementItem(id, category_id, amount, details, date); 
 
+                    int category_id = Helper.getCategoryId(type_name, header_name, category_name, headers);
+                    
+                    // Save the item to the database
+                    StatementItem item = new StatementItem(id, category_id, amount, details, date); 
                     jdbc.addStatementItem(item);
                 }
             }

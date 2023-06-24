@@ -15,6 +15,10 @@ import io.javalin.http.Context;
 
 public class TablePanel<T> extends Table<T> {
 
+    // The number of descriptor columns
+    // These are not used in calculations
+    private static final int NUM_DESC = 3; 
+
     /**
      * Constructor for the Table class 
      * 
@@ -43,119 +47,131 @@ public class TablePanel<T> extends Table<T> {
     }
 
     /**
-     * Create a table for a flow
+     * Create sub tables for a flow type
      * 
      * @param type The type of the flow. Either "Incomes" or "Expenses"
+     * @return The sub tables of the flow
      */
     private String[][][] createFlow(String type) {
+        // Get the header for the flow type
         Header[] headers = jdbc.getHeaderCategories(year, type);
-
-        // Create table
+        // 3D array represents a list of sub tables
         String[][][] table = new String[headers.length][][];
-        float[] header_total = new float[size - 3];
 
-        // For each header in the table
-        for (int i = 0; i < table.length; i++) {
-
-            table[i] = new String[headers[i].categories.length + 1][];
-            float[] column_total = new float[size - 3];
-
-            // For each category in the header 
-            for (int j = 0; j < table[i].length - 1; j++) {
-               fillCellsInRow(table, headers[i].categories[j], column_total, header_total, i, j);
-            }
-            Category total_category = new Category(-1, "Total", headers[i].name, headers[i].type);
-            fillCellsInRow(table, total_category, column_total, header_total, i, table[i].length - 1);
+        // Create a sub table for every header
+        for (int i = 0; i < headers.length; i++) {
+            table[i] = createSubTable(headers[i]);
         }
         return table;
     }
 
     /**
-     * Fill a row (category) of data in a table
+     * Create a sub table for a header
+     * 
+     * @param header The header to create the table for
+     * @return The header sub table
+     */
+    private String[][] createSubTable(Header header) {
+        // 2D array represents a sub table
+        String[][] header_table = new String[header.categories.length + 1][];
+        // Total value of each column
+        float[] column_total = new float[size - NUM_DESC];
+
+        // Fill each row for each category of the header
+        for (int i = 0; i < header_table.length - 1; i++) {
+            fillRow(header_table, header.categories[i], column_total, i);
+        }
+        // Create a total row for the header
+        Category total_category = new Category(-1, "Total", header.name, header.type);
+        fillRow(header_table, total_category, column_total, header_table.length - 1);
+
+        return header_table;
+    }
+
+    /**
+     * Fill a row (category) of data in a sub table
      * 
      * @param sub_table The sub table the row belongs to
      * @param category The category of the row
      * @param column_total The current total of the current column
-     * @param header_total The current total of the current header
-     * @param i The current header index
-     * @param j The current category index
+     * @param row_index The current row index
      */
-    private void fillCellsInRow(String[][][] sub_table, Category category, float[] column_total, float[] header_total, int i, int j) {
-        
-        sub_table[i][j] = new String[size];
+    private void fillRow(String[][] sub_table, Category category, float[] column_total, int row_index) {
+        // 1D array represents a category in the sub table
+        sub_table[row_index] = new String[size];
+        // Set the values for the type, header, and category name cells
+        sub_table[row_index][0] = category.type;
+        sub_table[row_index][1] = category.header_name;
+        sub_table[row_index][2] = category.name;
 
-        // Set row head values
-        sub_table[i][j][0] = category.type;
-        sub_table[i][j][1] = category.header_name;
-        sub_table[i][j][2] = category.name;
-        
         float category_total = 0;
-
-        // Loop through each week and add value
-        for (int k = 3; k < sub_table[i][j].length - 1; k++) {
-            
-            float value = 0;
-
-            // Normal operation
-            if (j != sub_table[i].length - 1){
-                value = source.findValue(category.id, k - 2);
-                column_total[k - 3] += value;
-            }
-            // Total row
-            else {
-                value = column_total[k - 3]; 
-                header_total[k - 3] += value;
-            }
-
-            sub_table[i][j][k] = String.format("$%.02f", value);
+        // For each value cell in the category
+        for (int i = NUM_DESC; i < sub_table[row_index].length - 1; i++) {
+            // Determine the value of the cell depending on weather it is a total row or not
+            boolean is_total_row = row_index == sub_table.length - 1;
+            float value = is_total_row ? column_total[i - NUM_DESC] : source.findValue(category.id, i - NUM_DESC + 1) ;
+            // Update the total trackers
+            column_total[i - NUM_DESC] += value;
             category_total += value;
+            // Set the value in the table
+            sub_table[row_index][i] = Helper.floatToCurrency(value);
         }
-        // Add category total
-        sub_table[i][j][size - 1] = String.format("$%.02f", category_total);
+        // Set the category total cell
+        sub_table[row_index][size - 1] = Helper.floatToCurrency(category_total);
     }
 
     /**
-     * Compute the balance of the data in flow tables
+     * Create the balance sub table for the data in flow tables
      * 
      * @param income_flows The table of income flows
      * @param expense_flows The table of expense flows
+     * @return The balance sub table
      */
     private String[][][] createBalance(String[][][] income_flows, String[][][] expense_flows) {
-
+        // 3D array represents the totals for incomes, expenses and the balance
         String[][][] table = new String[1][3][size];
-        float[] incomes_total = new float[size - 3];
-        float[] expenses_total = new float[size - 3];
+        // Get the totals for each flow
+        float[] incomes_total = getTypeTotal(income_flows);
+        float[] expenses_total = getTypeTotal(expense_flows);
 
-        // Get incomes type totals
+        // Set the values for the type, header, and category name cells
         table[0][0][0] = "Balance";
         table[0][0][1] = "Total";
         table[0][0][2] = "Incomes Total";
-        for (int i = 0; i < income_flows.length; i++) {
-            for (int j = 3; j < size; j++) {
-                incomes_total[j - 3] += Helper.currencyToFloat(income_flows[i][income_flows[i].length - 1][j]);
-            }
-        }
 
-        // Get expenses type totals
         table[0][1][0] = "Balance";
         table[0][1][1] = "Total";
         table[0][1][2] = "Expenses Total";
-        for (int i = 0; i < expense_flows.length; i++) {
-            for (int j = 3; j < size; j++) {
-                expenses_total[j - 3] += Helper.currencyToFloat(expense_flows[i][expense_flows[i].length - 1][j]);
-            }
-        }
 
-        // Fill table and calculate balance
         table[0][2][0] = "Balance";
         table[0][2][1] = "Total";
         table[0][2][2] = "Balance";
-        for (int i = 3; i < size; i++) {
-            table[0][0][i] = String.format("$%.02f", incomes_total[i - 3]);
-            table[0][1][i] = String.format("$%.02f", expenses_total[i - 3]);
-            table[0][2][i] = String.format("$%.02f", Helper.currencyToFloat(table[0][0][i]) - Helper.currencyToFloat(table[0][1][i]));
+
+        // For each value cell
+        for (int i = NUM_DESC; i < size; i++) {
+            // Set the value of the income and expense total
+            table[0][0][i] = Helper.floatToCurrency(incomes_total[i - NUM_DESC]);
+            table[0][1][i] = Helper.floatToCurrency(expenses_total[i - NUM_DESC]);
+            // Calculate and set the value of the balance total (incomes - expenses)
+            table[0][2][i] = Helper.floatToCurrency(incomes_total[i - NUM_DESC] - expenses_total[i - NUM_DESC]);
         }
         return table;
+    }
+
+    /**
+     * Determine the totals of each column for a type 
+     * 
+     * @param flows All of the flows of a type
+     * @return An array of total values for the flow
+     */
+    private float[] getTypeTotal(String[][][] flows) {
+        float[] total = new float[size - NUM_DESC];
+        for (int i = 0; i < flows.length; i++) {
+            for (int j = NUM_DESC; j < size; j++) {
+                total[j - NUM_DESC] += Helper.currencyToFloat(flows[i][flows[i].length - 1][j]);
+            }
+        }
+        return total;
     }
 
     /**
@@ -217,7 +233,7 @@ public class TablePanel<T> extends Table<T> {
                 curr_header++; 
             }
             // If the cell is in a data column 
-            else if (column_index > 2 && column_index < 15) {
+            else if (column_index >= NUM_DESC && column_index < size - 1) {
                 
                 // Determine current position
                 curr_category = i / (size) - past_categories;
@@ -229,9 +245,9 @@ public class TablePanel<T> extends Table<T> {
                     int type_id = jdbc.getTypeID(type);
                     int header_id = jdbc.getHeaderID(reference_table[curr_header][curr_category][1], type_id);
                     int category_id = jdbc.getCategoryID(reference_table[curr_header][curr_category][2], header_id);
-
+                    
+                    // Save the item to the database
                     BudgetItem item = new BudgetItem(category_id, curr_month - 2, Helper.currencyToFloat(changes_list.get(i)));
-
                     jdbc.addBudgetItem(item, year);               
                 }
             }
