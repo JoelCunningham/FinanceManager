@@ -349,8 +349,162 @@
             <!-- Summary -->
 
             <section id="summary" class="content">
-                <h1>Summary</h2>
-                <p>We are a company that specializes in web development.</p>
+
+                <div class="panel">
+
+                    <form action="/#summary" method="post">
+
+                        <select name="summary_year_selector" onchange="this.form.submit()">
+                            <option th:each="year: ${summary_years.keySet()}" th:text="${year}" th:value="${year}" th:selected="${summary_years.get(year)}"></option>
+                        </select>
+                                        
+                    </form>
+
+                </div>
+
+                <div class="display">
+
+                    <form action="/#summary" method="post" id="summary_form">
+
+                        <div class="type" th:id="typeIncomes">
+
+                            <h2 th:id="Incomes" th:text="Incomes"></h2>
+
+                            <div class="headers">
+
+                                <div class="header" th:each="header : ${summary_incomes_table}">
+
+                                    <h3 th:text="${header[0][1]}"></h3>
+
+                                    <table class="budget_table">
+                                        <thead>
+                                            <th>Type</th>
+                                            <th>Header</th>
+                                            <th>Category</th>
+                                            <th>Jan</th>
+                                            <th>Feb</th>
+                                            <th>Mar</th>
+                                            <th>Apr</th>
+                                            <th>May</th>
+                                            <th>Jun</th>
+                                            <th>Jul</th>
+                                            <th>Aug</th>
+                                            <th>Sep</th>
+                                            <th>Oct</th>
+                                            <th>Nov</th>
+                                            <th>Dec</th>
+                                            <th>Total</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="category : ${header}">
+                                                <td th:each="value : ${category}">
+                                                    <input name="summary_table" th:value="${value}" readonly></input>
+                                                </td>  
+                                            </tr>
+                                        </tbody>
+                
+                                    </table>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="type" th:id="typeExpenses">
+
+                            <h2 th:id="Expenses" th:text="Expenses"></h2>
+
+                            <div class="headers">
+
+                                <div class="header" th:each="header : ${summary_expenses_table}">
+
+                                    <h3 th:text="${header[0][1]}"></h3>
+
+                                    <table class="budget_table">
+                                        <thead>
+                                            <th>Type</th>
+                                            <th>Header</th>
+                                            <th>Category</th>
+                                            <th>Jan</th>
+                                            <th>Feb</th>
+                                            <th>Mar</th>
+                                            <th>Apr</th>
+                                            <th>May</th>
+                                            <th>Jun</th>
+                                            <th>Jul</th>
+                                            <th>Aug</th>
+                                            <th>Sep</th>
+                                            <th>Oct</th>
+                                            <th>Nov</th>
+                                            <th>Dec</th>
+                                            <th>Total</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="category : ${header}">
+                                                <td th:each="value : ${category}">
+                                                    <input name="summary_table" th:value="${value}" readonly></input>
+                                                </td>  
+                                            </tr>
+                                        </tbody>
+                
+                                    </table>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="type" th:id="typeBalance">
+
+                            <h2 th:id="Balance" th:text="Balance"></h2>
+
+                            <div class="headers">
+
+                                <div class="header" th:each="header : ${summary_balance_table}">
+
+                                    <h3 th:text="${header[0][1]}"></h3>
+
+                                    <table class="budget_table">
+                                        <thead>
+                                            <th>Type</th>
+                                            <th>Header</th>
+                                            <th>Category</th>
+                                            <th>Jan</th>
+                                            <th>Feb</th>
+                                            <th>Mar</th>
+                                            <th>Apr</th>
+                                            <th>May</th>
+                                            <th>Jun</th>
+                                            <th>Jul</th>
+                                            <th>Aug</th>
+                                            <th>Sep</th>
+                                            <th>Oct</th>
+                                            <th>Nov</th>
+                                            <th>Dec</th>
+                                            <th>Total</th>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="category : ${header}">
+                                                <td th:each="value : ${category}">
+                                                    <input name="summary_table" th:value="${value}" readonly></input>
+                                                </td>  
+                                            </tr>
+                                        </tbody>
+                
+                                    </table>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    
+                    </form>
+
+                </div>   
+
             </section>
 
             <!-- Statement -->
