@@ -46,40 +46,24 @@ public class Statement extends CashCollection<StatementItem> {
     }
 
     /**
-     * Finds the week value of a Statement
-     * 
+     * Finds the value of a statement item
+     *
      * @param category_id The id of the category of the statement item
-     * @param week The week to compute
-     * 
-     * @return The total for the category in the given week
+     * @param month The month of the statement item
+     * @param size The size of to spilt into
+     * @return The amount of the statement item
      */
-    public float findValue(int category_id, int week) {
+    public float findValue(int category_id, int span, int size) {
         float total = 0;
         for (StatementItem item : items) {
             LocalDate date = Helper.stringToDate(item.date);
-            if (item.category_id == category_id && date.getDayOfMonth() / 7 + 1 == week) {
+            boolean valid_date = size == 12 ? date.getMonthValue() == span : date.getDayOfMonth() / 7 + 1 == span;
+
+            if (item.category_id == category_id && valid_date) {
                 total += item.amount;
             }
         }    
         return total;
     }
 
-    /**
-     * Finds the month value of a Statement
-     *
-     * @param category_id The id of the category of the statement item
-     * @param week The month to compute
-     * 
-     * @return The total for the category in the given month
-     */
-    public float findMonthValue(int category_id, int month) {
-        float total = 0;
-        for (StatementItem item : items) {
-            LocalDate date = Helper.stringToDate(item.date);
-            if (date.getMonthValue() == month) {
-                total += item.amount;
-            }
-        }    
-        return total;
-    }
 }

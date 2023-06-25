@@ -109,7 +109,7 @@ public class TablePanel<T> extends Table<T> {
         for (int i = NUM_DESC; i < sub_table[row_index].length - 1; i++) {
             // Determine the value of the cell depending on weather it is a total row or not
             boolean is_total_row = row_index == sub_table.length - 1;
-            float value = is_total_row ? column_total[i - NUM_DESC] : source.findValue(category.id, i - NUM_DESC + 1) ;
+            float value = is_total_row ? column_total[i - NUM_DESC] : source.findValue(category.id, i - NUM_DESC + 1, size - NUM_DESC - 1) ;
             // Update the total trackers
             column_total[i - NUM_DESC] += value;
             category_total += value;

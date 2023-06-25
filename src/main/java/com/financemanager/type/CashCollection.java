@@ -5,17 +5,18 @@ public abstract class CashCollection<T> {
     public T[] items;
     
     /**
-     * Loads budget items from the specified year into the object
+     * Loads items into the object
      */
     public abstract void load();
 
     /**
-     * Finds the value of a budget item
+     * Finds the value of an item over a span of time
      * 
-     * @param category_id The id of the category of the budget item
-     * @param span The span of the budget item
+     * @param category_id The id of the category of the item
+     * @param span The span of the item
+     * @param size The size to split into
      * 
      */
-    public abstract float findValue(int category_id, int span);
+    public abstract float findValue(int category_id, int span, int size);
 
 }

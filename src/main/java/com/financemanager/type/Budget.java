@@ -32,10 +32,10 @@ public class Budget extends CashCollection<BudgetItem> {
      *
      * @param category_id The id of the category of the budget item
      * @param month The month of the budget item
-     * 
-     * @return The amount of the budget item.
+     * @param size The size of to spilt into
+     * @return The amount of the budget item
      */
-    public float findValue(int category_id, int month) {
+    public float findValue(int category_id, int month, int size) {
         float value = 0;
         for (BudgetItem item : items) {
             if (item.month == month && item.category_id == category_id) {            
