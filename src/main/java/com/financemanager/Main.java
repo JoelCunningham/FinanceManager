@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.financemanager.page.BudgetPage;
 import com.financemanager.page.StatementPage;
+import com.financemanager.page.SummaryPage;
 import com.financemanager.page.TopnavForms;
 
 import io.javalin.http.Context;
@@ -27,9 +28,11 @@ public class Main implements Handler{
         Helper.verifyDatabase(jdbc);
 
         BudgetPage budget_page = new BudgetPage(context, model, jdbc);
+        SummaryPage summary_page = new SummaryPage(context, model, jdbc);
         StatementPage statement_page = new StatementPage(context, model, jdbc);
 
         budget_page.load();
+        summary_page.load();
         statement_page.load();
 
         TopnavForms.loadAddCategory(context, model, jdbc);
