@@ -41,7 +41,7 @@ public class Helper {
         }
     }
 
-    public static int countElementsIn3dArray(String[][][] array) {
+    public static <T> int countElementsIn3dArray(T[][][] array) {
         int count = 0;
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[i].length; j++) {
