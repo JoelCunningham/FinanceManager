@@ -4,7 +4,8 @@ import java.util.Calendar;
 import java.util.Map;
 
 import com.financemanager.JDBC;
-
+import com.financemanager.type.Budget;
+import com.financemanager.type.BudgetItem;
 import com.financemanager.type.Statement;
 import com.financemanager.type.StatementItem;
 
@@ -55,11 +56,12 @@ public class StatementPage extends Page {
 
         // Code for tables
         Statement statement = new Statement(selected_month, selected_year);
+        Budget reference = new Budget(selected_year);
         
-        TablePanel<StatementItem> panel_table = new TablePanel<StatementItem>(PAGE_NAME, selected_year, TABLE_COLS, statement, model, jdbc);
+        TablePanel<StatementItem, BudgetItem> panel_table = new TablePanel<StatementItem, BudgetItem>(PAGE_NAME, selected_year, TABLE_COLS, statement, reference, model, jdbc);
         panel_table.load();
         
-        TableDetailed detailed_table = new TableDetailed(PAGE_NAME, selected_year, CASHFLOW_COLS, statement, model, jdbc);
+        TableDetailed detailed_table = new TableDetailed(PAGE_NAME, selected_year, CASHFLOW_COLS, statement, reference, model, jdbc);
         detailed_table.load();
         
         // Code for adding and saving changes

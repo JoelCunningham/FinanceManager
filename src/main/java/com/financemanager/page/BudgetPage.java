@@ -7,7 +7,8 @@ import com.financemanager.JDBC;
 
 import com.financemanager.type.Budget;
 import com.financemanager.type.BudgetItem;
-
+import com.financemanager.type.Statement;
+import com.financemanager.type.StatementItem;
 import com.financemanager.item.DropdownYear;
 import com.financemanager.item.TablePanel;
 
@@ -43,7 +44,8 @@ public class BudgetPage extends Page {
 
         // Code for tables
         Budget budget = new Budget(selected_year);
-        TablePanel<BudgetItem> panel_table = new TablePanel<BudgetItem>(PAGE_NAME, selected_year, TABLE_COLS, budget, model, jdbc);
+        Statement reference = new Statement(selected_year);
+        TablePanel<BudgetItem, StatementItem> panel_table = new TablePanel<BudgetItem, StatementItem>(PAGE_NAME, selected_year, TABLE_COLS, budget, reference, model, jdbc);
         panel_table.load();
 
         // Code for saving changes

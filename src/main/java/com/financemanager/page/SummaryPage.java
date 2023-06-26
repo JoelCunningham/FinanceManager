@@ -4,7 +4,8 @@ import java.util.Calendar;
 import java.util.Map;
 
 import com.financemanager.JDBC;
-
+import com.financemanager.type.Budget;
+import com.financemanager.type.BudgetItem;
 import com.financemanager.type.Statement;
 import com.financemanager.type.StatementItem;
 import com.financemanager.item.DropdownYear;
@@ -42,7 +43,8 @@ public class SummaryPage extends Page {
 
         // Code for tables
         Statement statement = new Statement(selected_year);
-        TablePanel<StatementItem> panel_table = new TablePanel<StatementItem>(PAGE_NAME, selected_year, TABLE_COLS, statement, model, jdbc);
+        Budget reference = new Budget(selected_year);
+        TablePanel<StatementItem, BudgetItem> panel_table = new TablePanel<StatementItem, BudgetItem>(PAGE_NAME, selected_year, TABLE_COLS, statement, reference, model, jdbc);
         panel_table.load();
     }
 
