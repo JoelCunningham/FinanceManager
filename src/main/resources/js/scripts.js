@@ -1,15 +1,5 @@
 // On page load, retrieve state from local storage
 window.onload = function() {
-  var active_page = localStorage.getItem('active_page');
-  if (active_page) {
-      showContent(active_page);
-  }
-
-  var active_form = localStorage.getItem('active_form');
-  if (active_form) {
-      showForm(active_form);
-  }
-
   makeColumnsReadonly();
   makeLastRowReadonly();
   makeColumnsHidden();
@@ -21,6 +11,7 @@ window.onload = function() {
   clearCashflowForm();
   validateCashflowForm();
   validateCashflowTable();
+  loadState();
 }
 
 // Code for menu selector buttons
@@ -482,3 +473,53 @@ function validateCashflowTable() {
     }
   });
 }
+
+function loadState() {
+  var active_page = localStorage.getItem('active_page');
+  if (active_page) {
+      showContent(active_page);
+  }
+
+  var active_form = localStorage.getItem('active_form');
+  if (active_form) {
+      showForm(active_form);
+  }
+
+  var budget_year = localStorage.getItem('budget_year');
+  if (budget_year) {
+    console.log(budget_year);
+    document.querySelector('select[name="budget_year_selector"]').value = budget_year;
+  }
+
+  var summary_year = localStorage.getItem('summary_year');
+  if (summary_year) {
+    console.log(summary_year);
+    document.querySelector('select[name="summary_year_selector"]').value = summary_year;
+  }
+
+  var statement_year = localStorage.getItem('statement_year');
+  if (statement_year) {
+    console.log(statement_year);
+    document.querySelector('select[name="statement_year_selector"]').value = statement_year;
+  }
+
+  var statement_month = localStorage.getItem('statement_month');
+  if (statement_month) {
+    console.log(statement_month);
+    document.querySelector('select[name="statement_month_selector"]').value = statement_month;
+  }
+}
+
+function saveState() {
+  var budget_year = document.querySelector('select[name="budget_year_selector"]');
+  localStorage.setItem('budget_year', budget_year.value);
+
+  var summary_year = document.querySelector('select[name="summary_year_selector"]');
+  localStorage.setItem('summary_year', summary_year.value);
+
+  var statement_year = document.querySelector('select[name="statement_year_selector"]');
+  localStorage.setItem('statement_year', statement_year.value);
+
+  var statement_month = document.querySelector('select[name="statement_month_selector"]');
+  localStorage.setItem('statement_month', statement_month.value);
+} 
