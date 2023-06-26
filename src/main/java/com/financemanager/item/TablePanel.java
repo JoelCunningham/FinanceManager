@@ -9,11 +9,12 @@ import com.financemanager.JDBC;
 import com.financemanager.type.BudgetItem;
 import com.financemanager.type.CashCollection;
 import com.financemanager.type.Category;
+import com.financemanager.type.Cell;
 import com.financemanager.type.Header;
 
 import io.javalin.http.Context;
 
-public class TablePanel<T> extends Table<T> {
+public class TablePanel<S, R> extends Table<S, R> {
 
     // The number of descriptor columns
     // These are not used in calculations
@@ -26,20 +27,21 @@ public class TablePanel<T> extends Table<T> {
      * @param year The year the table's data will represent
      * @param size The number of columns in the table
      * @param source The data source of the table
+     * @param reference The data reference of the table
      * @param model The model to sumbit the table to
      * @param jdbc The database connection for the table
      */
-    public TablePanel(String name, int year, int size, CashCollection<T> source, Map<String, Object> model, JDBC jdbc) {
-        super(name, year, size, source, model, jdbc);
+    public TablePanel(String name, int year, int size, CashCollection<S> source, CashCollection<R> reference, Map<String, Object> model, JDBC jdbc) {
+        super(name, year, size, source, reference, model, jdbc);
     }
 
     /**
      * Load each table, and submit it to the model
      */
     public void load() {
-        String[][][] incomes = createFlow("Incomes");
-        String[][][] expenses = createFlow("Expenses");
-        String[][][] balance = createBalance(incomes, expenses);
+        Cell[][][] incomes = createFlow("Incomes");
+        Cell[][][] expenses = createFlow("Expenses");
+        Cell[][][] balance = createBalance(incomes, expenses);
 
         model.put(name + "_incomes_table", incomes);
         model.put(name + "_expenses_table", expenses);
@@ -52,11 +54,11 @@ public class TablePanel<T> extends Table<T> {
      * @param type The type of the flow. Either "Incomes" or "Expenses"
      * @return The sub tables of the flow
      */
-    private String[][][] createFlow(String type) {
+    private Cell[][][] createFlow(String type) {
         // Get the header for the flow type
         Header[] headers = jdbc.getHeaderCategories(year, type);
         // 3D array represents a list of sub tables
-        String[][][] table = new String[headers.length][][];
+        Cell[][][] table = new Cell[headers.length][][];
 
         // Create a sub table for every header
         for (int i = 0; i < headers.length; i++) {
@@ -71,19 +73,20 @@ public class TablePanel<T> extends Table<T> {
      * @param header The header to create the table for
      * @return The header sub table
      */
-    private String[][] createSubTable(Header header) {
+    private Cell[][] createSubTable(Header header) {
         // 2D array represents a sub table
-        String[][] header_table = new String[header.categories.length + 1][];
+        Cell[][] header_table = new Cell[header.categories.length + 1][];
         // Total value of each column
         float[] column_total = new float[size - NUM_DESC];
+        float[] column_tooltip_total = new float[size - NUM_DESC];
 
         // Fill each row for each category of the header
         for (int i = 0; i < header_table.length - 1; i++) {
-            fillRow(header_table, header.categories[i], column_total, i);
+            fillRow(header_table, header.categories[i], column_total, column_tooltip_total, i);
         }
         // Create a total row for the header
         Category total_category = new Category(-1, "Total", header.name, header.type);
-        fillRow(header_table, total_category, column_total, header_table.length - 1);
+        fillRow(header_table, total_category, column_total, column_tooltip_total, header_table.length - 1);
 
         return header_table;
     }
@@ -96,28 +99,33 @@ public class TablePanel<T> extends Table<T> {
      * @param column_total The current total of the current column
      * @param row_index The current row index
      */
-    private void fillRow(String[][] sub_table, Category category, float[] column_total, int row_index) {
+    private void fillRow(Cell[][] sub_table, Category category, float[] column_total, float[] column_tooltip_total, int row_index) {
         // 1D array represents a category in the sub table
-        sub_table[row_index] = new String[size];
+        sub_table[row_index] = new Cell[size];
         // Set the values for the type, header, and category name cells
-        sub_table[row_index][0] = category.type;
-        sub_table[row_index][1] = category.header_name;
-        sub_table[row_index][2] = category.name;
+        sub_table[row_index][0] = new Cell(category.type);
+        sub_table[row_index][1] = new Cell(category.header_name);
+        sub_table[row_index][2] = new Cell(category.name);
 
         float category_total = 0;
+        float category_tooltip_total = 0;
         // For each value cell in the category
         for (int i = NUM_DESC; i < sub_table[row_index].length - 1; i++) {
             // Determine the value of the cell depending on weather it is a total row or not
             boolean is_total_row = row_index == sub_table.length - 1;
-            float value = is_total_row ? column_total[i - NUM_DESC] : source.findValue(category.id, i - NUM_DESC + 1, size - NUM_DESC - 1) ;
+            float value = is_total_row ? column_total[i - NUM_DESC] : source.findValue(category.id, i - NUM_DESC + 1, size - NUM_DESC - 1);
+            float tooltip = is_total_row ? column_tooltip_total[i - NUM_DESC] : reference.findValue(category.id, i - NUM_DESC + 1, size - NUM_DESC - 1);
             // Update the total trackers
             column_total[i - NUM_DESC] += value;
+            column_tooltip_total[i - NUM_DESC] += tooltip;
+
             category_total += value;
+            category_tooltip_total += tooltip;
             // Set the value in the table
-            sub_table[row_index][i] = Helper.floatToCurrency(value);
+            sub_table[row_index][i] = new Cell(Helper.floatToCurrency(value), Helper.floatToCurrency(tooltip));
         }
         // Set the category total cell
-        sub_table[row_index][size - 1] = Helper.floatToCurrency(category_total);
+        sub_table[row_index][size - 1] = new Cell(Helper.floatToCurrency(category_total), Helper.floatToCurrency(category_tooltip_total));
     }
 
     /**
@@ -127,33 +135,33 @@ public class TablePanel<T> extends Table<T> {
      * @param expense_flows The table of expense flows
      * @return The balance sub table
      */
-    private String[][][] createBalance(String[][][] income_flows, String[][][] expense_flows) {
+    private Cell[][][] createBalance(Cell[][][] income_flows, Cell[][][] expense_flows) {
         // 3D array represents the totals for incomes, expenses and the balance
-        String[][][] table = new String[1][3][size];
+        Cell[][][] table = new Cell[1][3][size];
         // Get the totals for each flow
         float[] incomes_total = getTypeTotal(income_flows);
         float[] expenses_total = getTypeTotal(expense_flows);
 
         // Set the values for the type, header, and category name cells
-        table[0][0][0] = "Balance";
-        table[0][0][1] = "Total";
-        table[0][0][2] = "Incomes Total";
+        table[0][0][0] = new Cell("Balance");
+        table[0][0][1] = new Cell("Total");
+        table[0][0][2] = new Cell("Incomes Total");
 
-        table[0][1][0] = "Balance";
-        table[0][1][1] = "Total";
-        table[0][1][2] = "Expenses Total";
+        table[0][1][0] = new Cell("Balance");
+        table[0][1][1] = new Cell("Total");
+        table[0][1][2] = new Cell("Expenses Total");
 
-        table[0][2][0] = "Balance";
-        table[0][2][1] = "Total";
-        table[0][2][2] = "Balance";
+        table[0][2][0] = new Cell("Balance");
+        table[0][2][1] = new Cell("Total");
+        table[0][2][2] = new Cell("Balance");
 
         // For each value cell
         for (int i = NUM_DESC; i < size; i++) {
             // Set the value of the income and expense total
-            table[0][0][i] = Helper.floatToCurrency(incomes_total[i - NUM_DESC]);
-            table[0][1][i] = Helper.floatToCurrency(expenses_total[i - NUM_DESC]);
+            table[0][0][i] = new Cell(Helper.floatToCurrency(incomes_total[i - NUM_DESC]));
+            table[0][1][i] = new Cell(Helper.floatToCurrency(expenses_total[i - NUM_DESC]));
             // Calculate and set the value of the balance total (incomes - expenses)
-            table[0][2][i] = Helper.floatToCurrency(incomes_total[i - NUM_DESC] - expenses_total[i - NUM_DESC]);
+            table[0][2][i] = new Cell(Helper.floatToCurrency(incomes_total[i - NUM_DESC] - expenses_total[i - NUM_DESC]));
         }
         return table;
     }
@@ -164,11 +172,11 @@ public class TablePanel<T> extends Table<T> {
      * @param flows All of the flows of a type
      * @return An array of total values for the flow
      */
-    private float[] getTypeTotal(String[][][] flows) {
+    private float[] getTypeTotal(Cell[][][] flows) {
         float[] total = new float[size - NUM_DESC];
         for (int i = 0; i < flows.length; i++) {
             for (int j = NUM_DESC; j < size; j++) {
-                total[j - NUM_DESC] += Helper.currencyToFloat(flows[i][flows[i].length - 1][j]);
+                total[j - NUM_DESC] += Helper.currencyToFloat(flows[i][flows[i].length - 1][j].value);
             }
         }
         return total;
@@ -186,8 +194,8 @@ public class TablePanel<T> extends Table<T> {
         
         if (changes_list.size() != 0) {
             // Get current stored data for reference
-            String[][][] incomes_table = createFlow("Incomes");
-            String[][][] expenses_table = createFlow("Expenses");
+            Cell[][][] incomes_table = createFlow("Incomes");
+            Cell[][][] expenses_table = createFlow("Expenses");
             
             // Separate new data into two flows
             int incomes_length = Helper.countElementsIn3dArray(incomes_table);
@@ -212,7 +220,7 @@ public class TablePanel<T> extends Table<T> {
      * @param reference_table The unaltered data
      * @param type The type of flow to save
      */
-    private void saveType(List<String> changes_list, String[][][] reference_table, String type) {
+    private void saveType(List<String> changes_list, Cell[][][] reference_table, String type) {
 
         int curr_header = 0;
         int curr_category = 0;
@@ -240,11 +248,11 @@ public class TablePanel<T> extends Table<T> {
                 curr_month    = i % (size);
 
                 // If the current value is different from the original value, update the database
-                if (Helper.currencyToFloat(changes_list.get(i)) != Helper.currencyToFloat(reference_table[curr_header][curr_category][curr_month])) {
+                if (Helper.currencyToFloat(changes_list.get(i)) != Helper.currencyToFloat(reference_table[curr_header][curr_category][curr_month].value)) {
 
                     int type_id = jdbc.getTypeID(type);
-                    int header_id = jdbc.getHeaderID(reference_table[curr_header][curr_category][1], type_id);
-                    int category_id = jdbc.getCategoryID(reference_table[curr_header][curr_category][2], header_id);
+                    int header_id = jdbc.getHeaderID(reference_table[curr_header][curr_category][1].value, type_id);
+                    int category_id = jdbc.getCategoryID(reference_table[curr_header][curr_category][2].value, header_id);
                     
                     // Save the item to the database
                     BudgetItem item = new BudgetItem(category_id, curr_month - 2, Helper.currencyToFloat(changes_list.get(i)));

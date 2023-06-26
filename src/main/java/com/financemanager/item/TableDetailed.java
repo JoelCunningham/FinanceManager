@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.financemanager.Helper;
 import com.financemanager.JDBC;
-
+import com.financemanager.type.BudgetItem;
 import com.financemanager.type.CashCollection;
 import com.financemanager.type.Category;
 import com.financemanager.type.Header;
@@ -14,7 +14,7 @@ import com.financemanager.type.StatementItem;
 
 import io.javalin.http.Context;
 
-public class TableDetailed extends Table<StatementItem> {
+public class TableDetailed extends Table<StatementItem, BudgetItem> {
 
     /**
      * Constructor for the Table class 
@@ -23,11 +23,12 @@ public class TableDetailed extends Table<StatementItem> {
      * @param year The year the table's data will represent
      * @param size The number of columns in the table
      * @param source The data source of the table
+     * @param reference The data reference of the table
      * @param model The model to sumbit the table to
      * @param jdbc The database connection for the table
      */
-    public TableDetailed(String name, int year, int size, CashCollection<StatementItem> source, Map<String, Object> model, JDBC jdbc) {
-        super(name, year, size, source, model, jdbc);
+    public TableDetailed(String name, int year, int size, CashCollection<StatementItem> source, CashCollection<BudgetItem> reference, Map<String, Object> model, JDBC jdbc) {
+        super(name, year, size, source, reference, model, jdbc);
     }
 
     /**

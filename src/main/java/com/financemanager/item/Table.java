@@ -8,12 +8,13 @@ import com.financemanager.type.CashCollection;
 
 import io.javalin.http.Context;
 
-public abstract class Table<T> {
+public abstract class Table<S, R> {
 
     protected String name;
     protected int year;
     protected int size;
-    protected CashCollection<T> source;
+    protected CashCollection<S> source;
+    protected CashCollection<R> reference;
     protected Map<String, Object> model;
     protected JDBC jdbc;
 
@@ -24,14 +25,16 @@ public abstract class Table<T> {
      * @param year The year the table's data will represent
      * @param size The number of columns in the table
      * @param source The data source of the table
+     * @param reference The data reference of the table
      * @param model The model to sumbit the table to
      * @param jdbc The database connection for the table
      */
-    public Table(String name, int year, int size, CashCollection<T> source, Map<String, Object> model, JDBC jdbc) {
+    public Table(String name, int year, int size, CashCollection<S> source, CashCollection<R> reference, Map<String, Object> model, JDBC jdbc) {
         this.name = name;
         this.year = year;
         this.size = size;
         this.source = source;
+        this.reference = reference;
         this.model = model;
         this.jdbc = jdbc;
     }
