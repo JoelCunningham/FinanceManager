@@ -187,7 +187,7 @@
 
                     <form action="/#budget" method="post">
 
-                        <select name="budget_year_selector" onchange="this.form.submit()">
+                        <select name="budget_year_selector" onchange="saveState(); this.form.submit();">
                             <option th:each="year: ${budget_years.keySet()}" th:text="${year}" th:value="${year}" th:selected="${budget_years.get(year)}"></option>
                         </select>
                                         
@@ -213,7 +213,7 @@
 
                                 <div class="header" th:each="header : ${budget_incomes_table}">
 
-                                    <h3 th:text="${header[0][1]}"></h3>
+                                    <h3 th:text="${header[0][1].value}"></h3>
 
                                     <table class="budget_table">
                                         <thead>
@@ -237,7 +237,7 @@
                                         <tbody>
                                             <tr th:each="category : ${header}">
                                                 <td th:each="value : ${category}">
-                                                    <input name="budget_table" th:value="${value}"></input>
+                                                    <input name="budget_table" th:value="${value.value}" th:title="${value.tooltip}"></input>
                                                 </td>  
                                             </tr>
                                         </tbody>
@@ -258,7 +258,7 @@
 
                                 <div class="header" th:each="header : ${budget_expenses_table}">
 
-                                    <h3 th:text="${header[0][1]}"></h3>
+                                    <h3 th:text="${header[0][1].value}"></h3>
 
                                     <table class="budget_table">
                                         <thead>
@@ -282,7 +282,7 @@
                                         <tbody>
                                             <tr th:each="category : ${header}">
                                                 <td th:each="value : ${category}">
-                                                    <input name="budget_table" th:value="${value}"></input>
+                                                    <input name="budget_table" th:value="${value.value}" th:title="${value.tooltip}"></input>
                                                 </td>  
                                             </tr>
                                         </tbody>
@@ -303,7 +303,7 @@
 
                                 <div class="header" th:each="header : ${budget_balance_table}">
 
-                                    <h3 th:text="${header[0][1]}"></h3>
+                                    <h3 th:text="${header[0][1].value}"></h3>
 
                                     <table class="budget_table">
                                         <thead>
@@ -327,7 +327,7 @@
                                         <tbody>
                                             <tr th:each="category : ${header}">
                                                 <td th:each="value : ${category}">
-                                                    <input name="budget_table" th:value="${value}" readonly></input>
+                                                    <input name="budget_table" th:value="${value.value}" th:title="${value.tooltip}" readonly></input>
                                                 </td>  
                                             </tr>
                                         </tbody>
@@ -354,7 +354,7 @@
 
                     <form action="/#summary" method="post">
 
-                        <select name="summary_year_selector" onchange="this.form.submit()">
+                        <select name="summary_year_selector" onchange="saveState(); this.form.submit()">
                             <option th:each="year: ${summary_years.keySet()}" th:text="${year}" th:value="${year}" th:selected="${summary_years.get(year)}"></option>
                         </select>
                                         
@@ -374,7 +374,7 @@
 
                                 <div class="header" th:each="header : ${summary_incomes_table}">
 
-                                    <h3 th:text="${header[0][1]}"></h3>
+                                    <h3 th:text="${header[0][1].value}"></h3>
 
                                     <table class="budget_table">
                                         <thead>
@@ -398,7 +398,7 @@
                                         <tbody>
                                             <tr th:each="category : ${header}">
                                                 <td th:each="value : ${category}">
-                                                    <input name="summary_table" th:value="${value}" readonly></input>
+                                                    <input name="summary_table" th:value="${value.value}" th:title="${value.tooltip}" readonly></input>
                                                 </td>  
                                             </tr>
                                         </tbody>
@@ -419,7 +419,7 @@
 
                                 <div class="header" th:each="header : ${summary_expenses_table}">
 
-                                    <h3 th:text="${header[0][1]}"></h3>
+                                    <h3 th:text="${header[0][1].value}"></h3>
 
                                     <table class="budget_table">
                                         <thead>
@@ -443,7 +443,7 @@
                                         <tbody>
                                             <tr th:each="category : ${header}">
                                                 <td th:each="value : ${category}">
-                                                    <input name="summary_table" th:value="${value}" readonly></input>
+                                                    <input name="summary_table" th:value="${value.value}" th:title="${value.tooltip}" readonly></input>
                                                 </td>  
                                             </tr>
                                         </tbody>
@@ -464,7 +464,7 @@
 
                                 <div class="header" th:each="header : ${summary_balance_table}">
 
-                                    <h3 th:text="${header[0][1]}"></h3>
+                                    <h3 th:text="${header[0][1].value}"></h3>
 
                                     <table class="budget_table">
                                         <thead>
@@ -488,7 +488,7 @@
                                         <tbody>
                                             <tr th:each="category : ${header}">
                                                 <td th:each="value : ${category}">
-                                                    <input name="summary_table" th:value="${value}" readonly></input>
+                                                    <input name="summary_table" th:value="${value.value}" th:title="${value.tooltip}" readonly></input>
                                                 </td>  
                                             </tr>
                                         </tbody>
@@ -515,11 +515,11 @@
 
                     <form action="/#statement" method="post">
 
-                        <select name="statement_year_selector" onchange="this.form.submit()">
+                        <select name="statement_year_selector" onchange="saveState(); this.form.submit()">
                             <option th:each="year: ${statement_years.keySet()}" th:text="${year}" th:value="${year}" th:selected="${statement_years.get(year)}"></option>
                         </select>
 
-                        <select name="statement_month_selector" onchange="this.form.submit()">
+                        <select name="statement_month_selector" onchange="saveState(); this.form.submit()">
                             <option th:each="month: ${statement_months.keySet()}" th:text="${month}" th:value="${month}" th:selected="${statement_months.get(month)}"></option>
                         </select>
                                         
@@ -544,7 +544,7 @@
 
                                 <div class="header" th:each="header : ${statement_incomes_table}">
 
-                                    <h3 th:text="${header[0][1]}"></h3>
+                                    <h3 th:text="${header[0][1].value}"></h3>
 
                                     <table class="budget_table">
                                         <thead>
@@ -561,7 +561,7 @@
                                         <tbody>
                                             <tr th:each="category : ${header}">
                                                 <td th:each="value : ${category}">
-                                                    <input name="budget_table" th:value="${value}" readonly></input>
+                                                    <input name="budget_table" th:value="${value.value}" th:title="${value.tooltip}" readonly></input>
                                                 </td>  
                                             </tr>
                                         </tbody>
@@ -582,7 +582,7 @@
 
                                 <div class="header" th:each="header : ${statement_expenses_table}">
 
-                                    <h3 th:text="${header[0][1]}"></h3>
+                                    <h3 th:text="${header[0][1].value}"></h3>
 
                                     <table class="budget_table">
                                         <thead>
@@ -599,7 +599,7 @@
                                         <tbody>
                                             <tr th:each="category : ${header}">
                                                 <td th:each="value : ${category}">
-                                                    <input name="budget_table" th:value="${value}" readonly></input>
+                                                    <input name="budget_table" th:value="${value.value}" th:title="${value.tooltip}" readonly></input>
                                                 </td>  
                                             </tr>
                                         </tbody>
@@ -620,7 +620,7 @@
 
                                 <div class="header" th:each="header : ${statement_balance_table}">
 
-                                    <h3 th:text="${header[0][1]}"></h3>
+                                    <h3 th:text="${header[0][1].value}"></h3>
 
                                     <table class="budget_table">
                                         <thead>
@@ -637,7 +637,7 @@
                                         <tbody>
                                             <tr th:each="category : ${header}">
                                                 <td th:each="value : ${category}">
-                                                    <input name="budget_table" th:value="${value}" readonly></input>
+                                                    <input name="budget_table" th:value="${value.value}" th:title="${value.tooltip}" readonly></input>
                                                 </td>  
                                             </tr>
                                         </tbody>
