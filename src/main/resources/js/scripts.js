@@ -485,29 +485,35 @@ function loadState() {
       showForm(active_form);
   }
 
-  var budget_year = localStorage.getItem('budget_year');
-  if (budget_year) {
-    console.log(budget_year);
-    document.querySelector('select[name="budget_year_selector"]').value = budget_year;
-  }
+  // This code restores the last selections in dropdown lists.
+  // However, it operates after data is loaded
+  // Therefore, there is a discrepency between the shown year/month
+  // and the data shown.
+  // This issue must be resolved before this functionality can be restored
 
-  var summary_year = localStorage.getItem('summary_year');
-  if (summary_year) {
-    console.log(summary_year);
-    document.querySelector('select[name="summary_year_selector"]').value = summary_year;
-  }
+  // var budget_year = localStorage.getItem('budget_year');
+  // if (budget_year) {
+  //   console.log(budget_year);
+  //   document.querySelector('select[name="budget_year_selector"]').value = budget_year;
+  // }
 
-  var statement_year = localStorage.getItem('statement_year');
-  if (statement_year) {
-    console.log(statement_year);
-    document.querySelector('select[name="statement_year_selector"]').value = statement_year;
-  }
+  // var summary_year = localStorage.getItem('summary_year');
+  // if (summary_year) {
+  //   console.log(summary_year);
+  //   document.querySelector('select[name="summary_year_selector"]').value = summary_year;
+  // }
 
-  var statement_month = localStorage.getItem('statement_month');
-  if (statement_month) {
-    console.log(statement_month);
-    document.querySelector('select[name="statement_month_selector"]').value = statement_month;
-  }
+  // var statement_year = localStorage.getItem('statement_year');
+  // if (statement_year) {
+  //   console.log(statement_year);
+  //   document.querySelector('select[name="statement_year_selector"]').value = statement_year;
+  // }
+
+  // var statement_month = localStorage.getItem('statement_month');
+  // if (statement_month) {
+  //   console.log(statement_month);
+  //   document.querySelector('select[name="statement_month_selector"]').value = statement_month;
+  // }
 }
 
 function saveState() {
