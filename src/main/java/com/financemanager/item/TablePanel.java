@@ -1,5 +1,6 @@
 package com.financemanager.item;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -61,6 +62,7 @@ public class TablePanel<S, R> extends Table<S, R> {
     private Cell[][][] createFlow(Type type) {
         // Get the header for the flow type
         Header[] headers = jdbc.getHeaderCategories(year, type.toString() + "s");
+        Arrays.sort(headers);
         // 3D array represents a list of sub tables
         Cell[][][] flow_table = new Cell[headers.length][][];
 
@@ -83,6 +85,8 @@ public class TablePanel<S, R> extends Table<S, R> {
         // Total value of each column
         float[] column_total = new float[size - NUM_DESC];
         float[] column_tooltip_total = new float[size - NUM_DESC];
+
+        Arrays.sort(header.categories);
 
         // Fill each row for each category of the header
         for (int i = 0; i < header_table.length - 1; i++) {
