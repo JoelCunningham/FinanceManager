@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.financemanager.Helper;
+import com.financemanager.Helper.Type;
 import com.financemanager.JDBC;
+
 import com.financemanager.type.BudgetItem;
 import com.financemanager.type.CashCollection;
 import com.financemanager.type.Category;
@@ -15,6 +17,8 @@ import com.financemanager.type.StatementItem;
 import io.javalin.http.Context;
 
 public class TableDetailed extends Table<StatementItem, BudgetItem> {
+
+    private String[][] cashflows;
 
     /**
      * Constructor for the Table class 
@@ -35,7 +39,7 @@ public class TableDetailed extends Table<StatementItem, BudgetItem> {
      * Load the table, and submit it to the model
      */
     public void load() {
-        String[][] cashflows = createFlow();
+        cashflows = createFlow();
     
         model.put("cashflow_table", cashflows);
     }
@@ -52,8 +56,8 @@ public class TableDetailed extends Table<StatementItem, BudgetItem> {
         String[][] table = new String[items.length][size];
         
         // Determine headers used in flow
-        Header[] income_headers = jdbc.getHeaderCategories(year, "Incomes");
-        Header[] expense_headers = jdbc.getHeaderCategories(year, "Expenses");
+        Header[] income_headers = jdbc.getHeaderCategories(year, Type.Income.toString() + "s");
+        Header[] expense_headers = jdbc.getHeaderCategories(year, Type.Expense.toString() + "s");
         Header[] headers = Helper.combineArrays(income_headers, expense_headers);
 
         Arrays.sort(items);
@@ -112,7 +116,7 @@ public class TableDetailed extends Table<StatementItem, BudgetItem> {
      */
      public void save(Context context) {
         
-        List<String> changes_list= context.formParams("cashflow_table");
+        List<String> changes_list = context.formParams("cashflow_table");
         
         if (changes_list.size() != 0) {
             // Get current stored data
