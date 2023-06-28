@@ -1,44 +1,39 @@
 package com.financemanager.type;
 
-import java.awt.Color;
-
 import com.financemanager.Helper;
+import com.financemanager.Helper.Type;
 
 public class Cell {
     public String value;
     public String tooltip;
-    public Color colour;
+    public String colour;
     public Type type;
-
-    public enum Type {
-        Income,
-        Expense
-    }
 
     public Cell(String value) {
         this.value = value;
     }
 
-    public Cell(String value, String tooltip) {
+    public Cell(Type type, String value, String tooltip) {
+        this.type = type;
         this.value = value;
         this.tooltip = tooltip;
     }
 
-    public void colour(Type type) {      
+    public void setColour() {      
         float value_f = Helper.currencyToFloat(value);
         float tooltip_f = Helper.currencyToFloat(tooltip);
         
         if (value_f < tooltip_f && type == Type.Income) {
-            colour = Color.red;
+            this.colour = "var(--red-colour)";
         }
         if (value_f > tooltip_f && type == Type.Income) {
-            colour = Color.green;
+            this.colour = "var(--green-colour)";
         }
         if (value_f < tooltip_f && type == Type.Expense) {
-            colour = Color.green;
+            this.colour = "var(--green-colour)";
         }
         if (value_f > tooltip_f && type == Type.Expense) {
-            colour = Color.red;
+            this.colour = "var(--red-colour)";
         }
     }
 }
