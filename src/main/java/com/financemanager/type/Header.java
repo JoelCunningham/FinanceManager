@@ -5,7 +5,7 @@ import java.util.Arrays;
 /**
  * The Header class represents a header for categories.
  */
-public class Header {
+public class Header implements Comparable<Header> {
     public String name;
     public String type;
     public Category[] categories;
@@ -55,4 +55,20 @@ public class Header {
         categories = Arrays.copyOf(categories, categories.length + 1);
         categories[categories.length - 1] = new_category;
     } 
+
+    /**
+     * Overloads the compareTo method to enable sorting
+     * 
+     * @param other The item to compare to
+     * @return The result of the comparison
+     */
+    public int compareTo(Header other) {
+        if (this.name.equals("Other")) {
+            return 1;
+        } else if (other.name.equals("Other")) {
+            return -1;
+        } else {
+            return this.name.compareTo(other.name);
+        }
+    }
 }

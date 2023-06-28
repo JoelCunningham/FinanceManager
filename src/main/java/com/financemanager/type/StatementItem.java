@@ -46,6 +46,12 @@ public class StatementItem implements Comparable<StatementItem>{
         this.date = date;
     }
 
+    /**
+     * Overloads the compareTo method to enable sorting
+     * 
+     * @param other The item to compare to
+     * @return The result of the comparison
+     */
     public int compareTo(StatementItem other) {
         return Helper.stringToDate(this.date).compareTo(Helper.stringToDate(other.date));
     }

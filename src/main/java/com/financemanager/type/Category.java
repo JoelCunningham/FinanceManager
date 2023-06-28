@@ -3,7 +3,7 @@ package com.financemanager.type;
 /**
  * The Category class represents a category of incomes or expenses.
  */
-public class Category {
+public class Category implements Comparable<Category> {
     public int id;
     public String name;
     public String header_name;
@@ -26,5 +26,21 @@ public class Category {
         this.name = name;
         this.header_name = header_name;
         this.type = type;
+    }
+
+    /**
+     * Overloads the compareTo method to enable sorting
+     * 
+     * @param other The item to compare to
+     * @return The result of the comparison
+     */
+    public int compareTo(Category other) {
+        if (this.name.equals("Other")) {
+            return 1;
+        } else if (other.name.equals("Other")) {
+            return -1;
+        } else {
+            return this.name.compareTo(other.name);
+        }
     }
 }
