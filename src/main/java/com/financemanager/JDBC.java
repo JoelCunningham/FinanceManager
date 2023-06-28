@@ -442,19 +442,20 @@ public class JDBC {
         return headers_array;
     }
  
-    public BudgetItem[] getBudgetItems(int year) {
+    public BudgetItem[] getBudgetItems(int year, int month) {
     
         List<BudgetItem> budget_items = new ArrayList<>();
 
         String query = """
             SELECT category_id, month, amount
             FROM budget
-            WHERE year =
-            """      
-            + year + 
-            """
-            ;
-            """;
+            WHERE year = '""" + Integer.toString(year) + "'";
+         
+        if (month != -1) { 
+            query += " AND month = '" + String.format("%02d", month + 1) + "'";
+        }
+        
+        query += ";";
 
         Connection connection = null; 
 
@@ -468,10 +469,10 @@ public class JDBC {
             while (results.next()) {
 
                 int category_id = results.getInt("category_id");
-                int month = results.getInt("month");
+                int month_no = results.getInt("month");
                 float amount = results.getFloat("amount");
 
-                budget_items.add(new BudgetItem(category_id, month, amount));
+                budget_items.add(new BudgetItem(category_id, month_no, amount));
             }
         } 
         catch (SQLException e) {
