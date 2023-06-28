@@ -6,12 +6,9 @@ import com.financemanager.Helper;
 import com.financemanager.JDBC;
 
 /**
- * The Budget class represents a budget
+ * The Statement class represents a statement
  */
 public class Statement extends CashCollection<StatementItem> {
-    
-    public int month;
-    public int year;
 
     /**
      * Constructs a new Statement object for a given month
@@ -20,9 +17,7 @@ public class Statement extends CashCollection<StatementItem> {
      * @param year The year of the month
      */
     public Statement(int month, int year) {
-        this.month = month;
-        this.year = year;
-        load();
+        super(month, year);
     }
 
     /**
@@ -31,9 +26,7 @@ public class Statement extends CashCollection<StatementItem> {
      * @param year The year covered by the statement
      */
     public Statement(int year) {
-        this.year = year;
-        this.month = -1;
-        load();
+        super(year);
     }
 
     /**
@@ -49,21 +42,20 @@ public class Statement extends CashCollection<StatementItem> {
      * Finds the value of a statement item
      *
      * @param category_id The id of the category of the statement item
-     * @param month The month of the statement item
-     * @param size The size of to spilt into
+     * @param span The span of the statement item (month or week number)
      * @return The amount of the statement item
      */
-    public float findValue(int category_id, int span, int size) {
-        float total = 0;
+    public float findValue(int category_id, int span) {
+        float value = 0;
+        boolean year_mode = month == -1;
         for (StatementItem item : items) {
             LocalDate date = Helper.stringToDate(item.date);
-            boolean valid_date = size == 12 ? date.getMonthValue() == span : date.getDayOfMonth() / 7 + 1 == span;
-
+            boolean valid_date = year_mode ? date.getMonthValue() == span : date.getDayOfMonth() / 7 + 1 == span;
             if (item.category_id == category_id && valid_date) {
-                total += item.amount;
+                value += item.amount;
             }
         }    
-        return total;
+        return value;
     }
 
 }
