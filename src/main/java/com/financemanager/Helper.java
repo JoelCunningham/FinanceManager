@@ -16,6 +16,11 @@ import com.financemanager.type.Header;
 
 public class Helper {
 
+    public static enum Type {
+        Income,
+        Expense
+    }
+
     private static Map<String, Integer> monthMap = new HashMap<>();
 
     static {
@@ -61,10 +66,13 @@ public class Helper {
     }
     
     public static float currencyToFloat(String s) {
-        if (s.charAt(0) == '$') {
+        if (s == null) {
+            s = "0";
+        }
+        else if (s.charAt(0) == '$') {
             s = s.substring(1);
           }
-          return Float.parseFloat(s);
+        return Float.parseFloat(s);
     }
 
     public static String floatToCurrency(float f) {
