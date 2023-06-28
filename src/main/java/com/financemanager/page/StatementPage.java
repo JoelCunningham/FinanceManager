@@ -56,7 +56,7 @@ public class StatementPage extends Page {
 
         // Code for tables
         Statement statement = new Statement(selected_month, selected_year);
-        Budget reference = new Budget(selected_year);
+        Budget reference = new Budget(selected_month, selected_year);
         
         TablePanel<StatementItem, BudgetItem> panel_table = new TablePanel<StatementItem, BudgetItem>(PAGE_NAME, selected_year, TABLE_COLS, statement, reference, model, jdbc);
         panel_table.load();

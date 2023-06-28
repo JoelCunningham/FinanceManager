@@ -111,15 +111,15 @@ public class TablePanel<S, R> extends Table<S, R> {
         float category_tooltip_total = 0;
         // For each value cell in the category
         for (int i = NUM_DESC; i < sub_table[row_index].length - 1; i++) {
-            // Determine the value of the cell depending on weather it is a total row or not
+            // Determine if the current row is the total row
             boolean is_total_row = row_index == sub_table.length - 1;
-            float value = is_total_row ? column_total[i - NUM_DESC] : source.findValue(category.id, i - NUM_DESC + 1, size - NUM_DESC - 1);
-            float tooltip = is_total_row ? column_tooltip_total[i - NUM_DESC] : reference.findValue(category.id, i - NUM_DESC + 1, size - NUM_DESC - 1);
+            // Set the values based on whether the current row is the total row        
+            float value = is_total_row ? column_total[i - NUM_DESC] : source.findValue(category.id, i - NUM_DESC + 1);
+            float tooltip = is_total_row ? column_tooltip_total[i - NUM_DESC] : reference.findValue(category.id, i - NUM_DESC + 1);
             // Update the total trackers
             column_total[i - NUM_DESC] += value;
-            column_tooltip_total[i - NUM_DESC] += tooltip;
-
             category_total += value;
+            column_tooltip_total[i - NUM_DESC] += tooltip;
             category_tooltip_total += tooltip;
             // Set the value in the table
             sub_table[row_index][i] = new Cell(Helper.floatToCurrency(value), Helper.floatToCurrency(tooltip));
