@@ -398,7 +398,7 @@
                                         <tbody>
                                             <tr th:each="category : ${header}">
                                                 <td th:each="value : ${category}">
-                                                    <input name="summary_table" th:value="${value.value}" th:title="${value.tooltip}" readonly></input>
+                                                    <input name="summary_table" th:value="${value.value}" th:title="${value.tooltip}" th:style="'color:' + ${value.colour}"  readonly></input>
                                                 </td>  
                                             </tr>
                                         </tbody>
@@ -443,7 +443,7 @@
                                         <tbody>
                                             <tr th:each="category : ${header}">
                                                 <td th:each="value : ${category}">
-                                                    <input name="summary_table" th:value="${value.value}" th:title="${value.tooltip}" readonly></input>
+                                                    <input name="summary_table" th:value="${value.value}" th:title="${value.tooltip}" th:style="'color:' + ${value.colour}" readonly></input>
                                                 </td>  
                                             </tr>
                                         </tbody>
@@ -487,8 +487,8 @@
                                         </thead>
                                         <tbody>
                                             <tr th:each="category : ${header}">
-                                                <td th:each="value : ${category}">
-                                                    <input name="summary_table" th:value="${value.value}" th:title="${value.tooltip}" readonly></input>
+                                                <td th:each="value : ${category}" >
+                                                    <input name="summary_table" th:value="${value.value}" th:title="${value.tooltip}" th:style="'color:' + ${value.colour}"  readonly></input>
                                                 </td>  
                                             </tr>
                                         </tbody>

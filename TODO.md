@@ -3,7 +3,7 @@
 ### Urgent
 
 - [x] Statement tooltips
-- [ ] Summary highlighting
+- [x] Summary highlighting
 - [ ] Budget statistics
 - [ ] Summary statistics
 - [ ] Statement statistics
@@ -11,6 +11,7 @@
 ### High
 
 - [ ] Import budget
+- [ ] Put 'other' category at the bottom
 
 ### Medium
 
