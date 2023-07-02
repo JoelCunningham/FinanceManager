@@ -1,17 +1,20 @@
 package com.financemanager.item;
 
+import java.util.List;
 import java.util.Map;
 
 import com.financemanager.JDBC;
 
 import io.javalin.http.Context;
 
-public abstract class Dropdown {
+public abstract class Dropdown<T> {
 
     protected Context context;
     protected Map<String, Object> model;
     protected JDBC jdbc;
     protected String name;
+
+    protected List<T> items;
 
     /**
      * Constructor for the Dropdown class
@@ -32,4 +35,14 @@ public abstract class Dropdown {
      * Loads data into the Dropdown
      */
     public abstract int load();
+
+     /**
+     * Removes an item from the Dropdown
+     * Changes take effect after using load()
+     * 
+     * @param item The item to remove
+     */
+    public void remove(T item) {
+        this.items.remove(item);
+    }
 }
