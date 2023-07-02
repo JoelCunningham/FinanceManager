@@ -21,6 +21,8 @@ public class BudgetPage extends Page {
 
     private int selected_year; // The year to display data for
 
+    private TablePanel<BudgetItem, StatementItem> table;
+
     /**
      * Construct a BudgetPage object with the given context, model and jdbc
      *
@@ -38,18 +40,43 @@ public class BudgetPage extends Page {
      */
     public void load() {
 
-        // Code for selectors
+        // Code for selector
         DropdownYear year_selector = new DropdownYear(context, model, jdbc, PAGE_NAME, selected_year);
         selected_year = year_selector.load();
 
         // Code for tables
         Budget budget = new Budget(selected_year);
         Statement reference = new Statement(selected_year);
-        TablePanel<BudgetItem, StatementItem> panel_table = new TablePanel<BudgetItem, StatementItem>(PAGE_NAME, selected_year, TABLE_COLS, budget, reference, model, jdbc);
-        panel_table.load();
+        table = new TablePanel<BudgetItem, StatementItem>(PAGE_NAME, selected_year, TABLE_COLS, budget, reference, model, jdbc);
+        table.load();
 
         // Code for saving changes
-        panel_table.save(context);
+        table.save(context);
+
+        // Code for importing budgets
+        loadImport();
+    }
+
+    private void loadImport() {
+        Integer current_year = Calendar.getInstance().get(Calendar.YEAR);
+        String name = "import";
+
+        // Code for selector
+        DropdownYear year_select = new DropdownYear(context, model, jdbc, name, -1);
+        year_select.remove(current_year);
+        year_select.load();
+
+        // Code for importing the budget
+        String selected_year = context.formParam("b_year_select");
+        String override = context.formParam("b_override_input");
+        if (override == null) {
+            override = "off";
+        }
+        if (selected_year != null && selected_year != "") {
+           jdbc.importBudget(Integer.parseInt(selected_year), override.equals("on"));
+           table.refresh();
+        }        
+
     }
 
 }
