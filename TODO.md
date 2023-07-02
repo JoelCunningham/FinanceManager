@@ -10,8 +10,8 @@
 
 ### High
 
-- [ ] Import budget
-- [ ] Put 'other' category at the bottom
+- [x] Import budget
+- [x] Put 'other' category at the bottom
 
 ### Medium
 
