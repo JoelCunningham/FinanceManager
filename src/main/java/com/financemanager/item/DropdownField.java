@@ -9,19 +9,19 @@ import com.financemanager.type.Header;
 
 import io.javalin.http.Context;
 
-public class DropdownField extends Dropdown {
+public class DropdownField extends Dropdown<String> {
    
     private int year;
     private int month;
 
     /**
-     * Constructor for the DropdownYear class
+     * Constructor for the DropdownField class
      *
-     * @param context       The context in which the DropdownYear is being used
-     * @param model         The model to which the DropdownYear will add data
+     * @param context       The context in which the DropdownField is being used
+     * @param model         The model to which the DropdownField will add data
      * @param jdbc          The JDBC object used to retrieve data from the database
-     * @param name          The name of the DropdownYear
-     * @param headers The initially selected year in the DropdownYear
+     * @param name          The name of the DropdownField
+     * @param headers       The initially selected header in the DropdownField
      */
     public DropdownField(Context context, Map<String, Object> model, JDBC jdbc, String name, int year, int month) {
         super(context, model, jdbc, name);

@@ -1,16 +1,15 @@
 package com.financemanager.item;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.financemanager.JDBC;
 
 import io.javalin.http.Context;
 
-public class DropdownYear extends Dropdown {
+public class DropdownYear extends Dropdown<Integer> {
    
-    private int selected_year;
+    public int selected_year;
 
     /**
      * Constructor for the DropdownYear class
@@ -24,6 +23,7 @@ public class DropdownYear extends Dropdown {
     public DropdownYear(Context context, Map<String, Object> model, JDBC jdbc, String name, int selected_year) {
         super(context, model, jdbc, name);
         this.selected_year = selected_year;
+        this.items = jdbc.getYears();
     }
 
     /**
@@ -33,19 +33,22 @@ public class DropdownYear extends Dropdown {
      */
     public int load() {
         
-        Map<Integer, String> year_select = new LinkedHashMap<>();
-
         // Fill dictionary of years
-        List<Integer> years = jdbc.getYears();
-        for (int year : years) { year_select.put(year, "False"); }
+        Map<Integer, String> year_select = new LinkedHashMap<>();
+        for (int year : items) { year_select.put(year, "False"); }
 
         // Get selected year
         String year_selector = context.formParam(name + "_year_selector");
+        if (year_selector == null) {
+            year_selector = context.formParam(name + "_year_selector_alt");
+        }
         if (year_selector != null) {
             selected_year = Integer.parseInt(year_selector);
+        } 
+        if (selected_year != -1) {
+            year_select.put(selected_year, "True"); 
         }
-        
-        year_select.put(selected_year, "True");   
+          
         model.put(name + "_years", year_select);
 
         return selected_year;

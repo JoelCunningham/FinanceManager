@@ -1,6 +1,8 @@
 package com.financemanager.item;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.financemanager.Helper;
@@ -8,7 +10,7 @@ import com.financemanager.JDBC;
 
 import io.javalin.http.Context;
 
-public class DropdownMonth extends Dropdown {
+public class DropdownMonth extends Dropdown<String> {
 
     private int selected_month;
 
@@ -24,6 +26,7 @@ public class DropdownMonth extends Dropdown {
     public DropdownMonth(Context context, Map<String, Object> model, JDBC jdbc, String name, int selected_month) {
         super(context, model, jdbc, name);
         this.selected_month = selected_month;
+        this.items = new ArrayList<>(List.of("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"));
     }
 
     /**
@@ -33,11 +36,9 @@ public class DropdownMonth extends Dropdown {
      */
     public int load() {
         
-        Map<String, String> month_select = new LinkedHashMap<>();
-
         // Fill dictionary of months
-        String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};        
-        for (String month : months) { month_select.put(month, "False"); }
+        Map<String, String> month_select = new LinkedHashMap<>();
+        for (String month : items) { month_select.put(month, "False"); }
 
         // Get selected month
         String month_selector = context.formParam(name + "_month_selector");
@@ -45,7 +46,7 @@ public class DropdownMonth extends Dropdown {
             selected_month = Helper.monthToInt(month_selector);
         }
         
-        month_select.put(months[selected_month], "True");   
+        month_select.put(items.get(selected_month), "True");   
         model.put(name + "_months", month_select);
 
         return selected_month;
