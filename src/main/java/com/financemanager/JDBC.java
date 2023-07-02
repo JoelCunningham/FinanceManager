@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import com.financemanager.type.BudgetItem;
@@ -612,6 +613,37 @@ public class JDBC {
             try { if (connection != null) { connection.close(); } }  //Code cleanup
             catch (SQLException e) { System.err.println(e.getMessage()); }//Connection close failed
         }
+    }
+
+    public void importBudget(int year, boolean override) {
+        
+        int current_year = Calendar.getInstance().get(Calendar.YEAR);
+
+        String query = override ? "REPLACE " : "INSERT OR IGNORE ";
+        query += """
+            INTO budget (year, month, amount, category_id)
+            SELECT """ + " " + current_year + """ 
+            , month, amount, category_id
+            FROM budget
+            WHERE year = """ + " " + year + ";";
+
+        Connection connection = null; 
+
+        try {
+            connection = DriverManager.getConnection(DATABASE); //Connect to JDBC data base         
+            Statement statement = connection.createStatement();  //Prepare a new SQL Query 
+            statement.setQueryTimeout(30);
+
+            statement.executeQuery(query);
+        } 
+        catch (SQLException e) {
+            System.err.println(e.getMessage()); //If there is an error, spring it
+        } 
+        finally {
+            try { if (connection != null) { connection.close(); } }  //Code cleanup
+            catch (SQLException e) { System.err.println(e.getMessage()); }//Connection close failed
+        }
+
     }
 
 }
