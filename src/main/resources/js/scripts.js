@@ -545,3 +545,19 @@ function setBudgetAlt() {
   budgetYearSelectorAlt.add(newOption);
   budgetYearSelectorAlt.value = budgetYearSelector.value;
 }
+
+// Code to hide overlaid forms
+function hideForms() {
+  var elements = document.querySelectorAll('.util_page');
+  for (var i = 0; i < elements.length; i++) {
+      elements[i].classList.remove('visible');
+  }
+  document.getElementById("page").classList.remove('overlay');
+}
+
+// Code to hide forms on escape key press
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+      hideForms();
+  }
+});
