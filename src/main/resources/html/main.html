@@ -116,6 +116,34 @@
         
     </div>
 
+    <div class="util_page" id="import_budget">
+
+        <div class="util_form">
+
+            <h2>Import Budget</h2>
+
+            <div id="add_category_error" th:class="${categories_available}">
+                <p>Import a previous year's budget into this year. Select <b>override</b> to replace all values in this year's budget. You may need to reload the page after completeing this operation</p>  
+            </div>
+        
+            <form id="import_budget_form" method="post">
+            
+                <label for="b_year_select">Year:</label>
+                <select id="b_year_select" name="b_year_select">
+                    <option th:each="year: ${import_years.keySet()}" th:text="${year}" th:value="${year}" th:selected="${import_years.get(year)}"></option>
+                </select>
+
+                <label for="b_override_input">Override:</label>
+                <input id="b_override_input" name="b_override_input" type="checkbox">
+
+                <button type="button" class="cancel" onclick="hideForm()">Cancel</button>
+                <button type="submit" class="save">Import</button>
+            </form>
+
+        </div>
+        
+    </div>
+
     <!-- Topnav -->
 
     <div class="topnav">
@@ -195,7 +223,7 @@
 
                     <div class=buttons>
                         
-                        <button class="util" type="submit" form="budget_form" onclick="tempChangeText(this, 'Imported!')"><span>Import</span><span class="material-symbols-outlined">upload</span></button>
+                        <button class="util" type="button" onclick="showForm('import_budget')"><span>Import</span><span class="material-symbols-outlined">upload</span></button>
                         <button class="save" type="submit" form="budget_form" onclick="tempChangeText(this, 'Saved!')"><span>Save</span><span class="material-symbols-outlined">save</span></button>
                     
                     </div>
@@ -204,6 +232,8 @@
                 <div class="display">
 
                     <form action="/#budget" method="post" id="budget_form">
+
+                        <select class="hidden" name="budget_year_selector_alt" id=""></select>
 
                         <div class="type" th:id="typeIncomes">
 

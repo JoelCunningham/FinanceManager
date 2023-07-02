@@ -397,6 +397,12 @@ table {
   overflow: hidden
 }
 
+.util_form input[type=checkbox] {
+  margin: 5px 0px 25px 0px;
+  width: auto;
+  display: block;
+}
+
 .util_form button {
   width: 120px;
   text-align: center;
