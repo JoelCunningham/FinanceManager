@@ -12,6 +12,8 @@ window.onload = function() {
   validateCashflowForm();
   validateCashflowTable();
   loadState();
+  setBudgetAlt();
+  hideForms();
 }
 
 // Code for menu selector buttons
@@ -474,6 +476,7 @@ function validateCashflowTable() {
   });
 }
 
+// Code to load the state of the app when it was last used
 function loadState() {
   var active_page = localStorage.getItem('active_page');
   if (active_page) {
@@ -516,6 +519,7 @@ function loadState() {
   // }
 }
 
+// Code to save the state of the app
 function saveState() {
   var budget_year = document.querySelector('select[name="budget_year_selector"]');
   localStorage.setItem('budget_year', budget_year.value);
@@ -529,3 +533,15 @@ function saveState() {
   var statement_month = document.querySelector('select[name="statement_month_selector"]');
   localStorage.setItem('statement_month', statement_month.value);
 } 
+
+// Code to set value of the alternate budget year selector
+// Used to allow multiple forms to access the year
+function setBudgetAlt() {
+  var budgetYearSelector = document.getElementsByName("budget_year_selector")[0];
+  var budgetYearSelectorAlt = document.getElementsByName("budget_year_selector_alt")[0];
+  var newOption = document.createElement("option");
+  newOption.value = budgetYearSelector.value;
+  newOption.text = budgetYearSelector.value;
+  budgetYearSelectorAlt.add(newOption);
+  budgetYearSelectorAlt.value = budgetYearSelector.value;
+}
