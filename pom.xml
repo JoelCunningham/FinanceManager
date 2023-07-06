@@ -12,7 +12,7 @@
     <properties>
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.source>17</maven.compiler.source>
-        <mainClass>app.App</mainClass>
+        <mainClass>com.financemanager.App</mainClass>
         <!-- <h2.version>1.4.200</h2.version> -->
     </properties>
 
