@@ -4,24 +4,26 @@
 
 - [x] Statement tooltips
 - [x] Summary highlighting
-- [ ] Budget statistics
-- [ ] Summary statistics
-- [ ] Statement statistics
+- [x] Log out
 
 ### High
 
 - [x] Import budget
 - [x] Put 'other' category at the bottom
+- [ ] Dashboard
+- [ ] Budget statistics
+- [ ] Summary statistics
+- [ ] Statement statistics
 
 ### Medium
 
-- [ ] Log out
-- [ ] Change theme
-- [ ] Make available offline
+- [x] Make available offline
+- [ ] Format currency in the thousands correctly
+- [ ] Optimise for laptops
 ### Low
 
+- [ ] Change theme
 - [ ] Edit profile
 - [ ] Header custom colour coding
 - [ ] Header custom ordering
-- [ ] Format currency in the thousands correctly
 - [ ] Restore dropdown values

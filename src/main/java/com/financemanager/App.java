@@ -3,6 +3,8 @@ package com.financemanager;
 import io.javalin.Javalin;
 import io.javalin.core.util.RouteOverviewPlugin;
 
+import java.net.URI;
+import java.awt.Desktop;
 /**
  * Main Application Class.
  * <p>
@@ -31,14 +33,42 @@ public class App {
             config.addStaticFiles(IMAGE_DIR);
         }).start(JAVALIN_PORT);
 
+        // Create a new instance of the Main class
+        Main main = new Main();
+
         // Configure Web Routes
-        configureRoutes(app);
+        configureRoutes(app, main);
+
+        // Create a new thread to monitor the value of the main.quit variable
+        new Thread(() -> {
+            while (true) {
+                if (main.quit) {
+                    app.stop();
+                    break;
+                }
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+        // Open the website in the default browser
+        if (Desktop.isDesktopSupported() && Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {     
+            try {
+                Desktop.getDesktop().browse(new URI("http://localhost:" + JAVALIN_PORT));
+            } 
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        
     }
 
-    public static void configureRoutes(Javalin app) {
-        app.get(Main.URL, new Main());
-      
-        app.post(Main.URL, new Main());
+    public static void configureRoutes(Javalin app, Main main) {
+        app.get(Main.URL, main);
+        app.post(Main.URL, main);
     }
-    
+
 }

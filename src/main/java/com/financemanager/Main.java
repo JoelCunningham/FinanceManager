@@ -19,6 +19,8 @@ public class Main implements Handler{
     public  static final String     URL         = "/";
     private static final String     TEMPLATE    = "html/main.html";
 
+    public boolean quit = false;
+
     @Override
     public void handle(Context context) throws Exception {
 
@@ -38,6 +40,11 @@ public class Main implements Handler{
         TopnavForms.loadAddCategory(context, model, jdbc);
         TopnavForms.loadCreateCategory(context, model, jdbc);
         TopnavForms.loadCreateHeader(context, model, jdbc);
+
+        String quit_value = context.formParam("quit");
+        if (quit_value != null && quit_value != "" && quit_value != "0") {
+            quit = true;
+        }
 
         context.render(TEMPLATE, model); //Make Javalin render the webpage
     }

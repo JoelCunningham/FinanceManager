@@ -121,7 +121,7 @@
 
             <h2>Import Budget</h2>
 
-            <div id="add_category_error" th:class="${categories_available}">
+            <div id="add_category_error">
                 <p>Import a previous year's budget into this year. Select <b>override</b> to replace all values in this year's budget. You may need to reload the page after completeing this operation</p>  
             </div>
         
@@ -138,6 +138,20 @@
                 <button type="button" class="cancel" onclick="hideForm()">Cancel</button>
                 <button type="submit" class="save">Import</button>
             </form>
+
+        </div>
+        
+    </div>
+
+    <div class="util_page" id="logged_out">
+
+        <div class="util_form">
+
+            <h2>Logged Out!</h2>
+
+            <div id="add_category_error">
+                <p>You can now close this tab</p>  
+            </div>
 
         </div>
         
@@ -170,12 +184,16 @@
                 <button class="dropbtn"> <span class="material-symbols-outlined">account_circle</span> </button>
                 <div class="dropdown-content">
                     <a href="#">Edit Profile</a>
-                    <a href="#">Log Out</a>
+                    <a href="#" onclick="quit()">Log Out</a>
                 </div>
             </div>
 
         </div>
     
+        <form method="post">
+            <input class="hidden" name="quit" id="quit" value="0">
+        </form>
+
     </div>
 
     <!-- Body -->

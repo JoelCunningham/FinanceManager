@@ -14,6 +14,7 @@ window.onload = function() {
   loadState();
   setBudgetAlt();
   hideForms();
+  isServerDisconnected(1);
 }
 
 // Code for menu selector buttons
@@ -561,3 +562,29 @@ document.addEventListener('keydown', function(event) {
       hideForms();
   }
 });
+
+function quit() {
+  var quit = document.getElementById('quit');
+  quit.value = "1";
+  quit.parentElement.submit();
+}
+
+function isServerDisconnected(waitTime) {
+  setTimeout(function() {
+    let xhr = new XMLHttpRequest();
+    xhr.open('HEAD', '/', true);
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === XMLHttpRequest.DONE) {
+        if (xhr.status === 0) {
+          console.log('Server connection is severed');
+          showForm('logged_out');
+          return true;
+        } else {
+          console.log('Server connection is active');
+          return false;
+        }
+      }
+    };
+    xhr.send();
+  }, waitTime * 1000);
+}
