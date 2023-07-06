@@ -22,7 +22,7 @@ import com.financemanager.type.Category;
 */
 public class JDBC {
 
-    private static final String DATABASE = "jdbc:sqlite:database/FinanceManagerDatabase.db";
+    private static final String DATABASE = "jdbc:sqlite::resource:database/FinanceManagerDatabase.db";
 
     // Create a JDBC Object to communicate with the database
     public JDBC() {}
