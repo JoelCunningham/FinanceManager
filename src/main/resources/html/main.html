@@ -250,7 +250,7 @@
 
                     <form action="/#budget" method="post" id="budget_form">
 
-                        <select class="hidden" name="budget_year_selector_alt" id=""></select>
+                        <select class="hidden" name="budget_year_selector_alt"></select>
 
                         <div class="type" th:id="typeIncomes">
 
@@ -766,6 +766,9 @@
                                 <div class="header" id="cashflow_header">
 
                                     <form action="/#statement" method="post" id="cashflow_form">
+
+                                        <select class="hidden" name="statement_year_selector_alt"></select>
+                                        <select class="hidden" name="statement_month_selector_alt"></select>
 
                                         <select name="cashflow_type" id="cashflow_type_select">
                                             <option value="" disabled selected>Type</option>

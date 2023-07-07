@@ -12,7 +12,9 @@ window.onload = function() {
   validateCashflowForm();
   validateCashflowTable();
   loadState();
-  setBudgetAlt();
+  setAlt('budget_year_selector');
+  setAlt('statement_year_selector');
+  setAlt('statement_month_selector');
   hideForms();
   isServerDisconnected(1);
 }
@@ -535,16 +537,16 @@ function saveState() {
   localStorage.setItem('statement_month', statement_month.value);
 } 
 
-// Code to set value of the alternate budget year selector
-// Used to allow multiple forms to access the year
-function setBudgetAlt() {
-  var budgetYearSelector = document.getElementsByName("budget_year_selector")[0];
-  var budgetYearSelectorAlt = document.getElementsByName("budget_year_selector_alt")[0];
+// Code to set value of the alternate year and month selector
+// Used to allow multiple forms to access the month/year
+function setAlt(selectorName) {
+  var selector = document.getElementsByName(selectorName)[0];
+  var selectorAlt = document.getElementsByName(selectorName + "_alt")[0];
   var newOption = document.createElement("option");
-  newOption.value = budgetYearSelector.value;
-  newOption.text = budgetYearSelector.value;
-  budgetYearSelectorAlt.add(newOption);
-  budgetYearSelectorAlt.value = budgetYearSelector.value;
+  newOption.value = selector.value;
+  newOption.text = selector.value;
+  selectorAlt.add(newOption);
+  selectorAlt.value = selector.value;
 }
 
 // Code to hide overlaid forms
