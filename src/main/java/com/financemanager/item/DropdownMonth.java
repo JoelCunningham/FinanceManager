@@ -45,6 +45,9 @@ public class DropdownMonth extends Dropdown<String> {
         if (month_selector == null) {
             month_selector = context.formParam(name + "_month_selector_alt");
         }
+        if (month_selector == null) {
+            month_selector = context.formParam(name + "_month_selector_alt_alt");
+        }
         if (month_selector != null) {
             selected_month = Helper.monthToInt(month_selector);
         } 

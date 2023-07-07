@@ -42,6 +42,9 @@ public class DropdownYear extends Dropdown<Integer> {
         if (year_selector == null) {
             year_selector = context.formParam(name + "_year_selector_alt");
         }
+        if (year_selector == null) {
+            year_selector = context.formParam(name + "_year_selector_alt_alt");
+        }
         if (year_selector != null) {
             selected_year = Integer.parseInt(year_selector);
         } 

@@ -711,6 +711,9 @@
 
                                         <form action="/#statement" method="post" id="statement_form">
 
+                                            <select class="hidden" name="statement_year_selector_alt_alt"></select>
+                                            <select class="hidden" name="statement_month_selector_alt_alt"></select>
+
                                             <table class="cashflow_table">
                                                 <thead>
                                                     <th class="hidden">Id</th>
@@ -744,7 +747,7 @@
                                                             </select>
                                                         </td>   
                                                         <td>
-                                                            <span>$</span><input name="cashflow_table" type="number" th:value="${entry[4]}"></input>
+                                                            <span>$</span><input name="cashflow_table" type="number" th:value="${entry[4]}" min="0" step="0.01"></input>
                                                         </td>  
                                                         <td th:title="${entry[5]}">
                                                             <input name="cashflow_table" type="text" th:value="${entry[5]}"></input>

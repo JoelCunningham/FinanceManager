@@ -12,9 +12,7 @@ window.onload = function() {
   validateCashflowForm();
   validateCashflowTable();
   loadState();
-  setAlt('budget_year_selector');
-  setAlt('statement_year_selector');
-  setAlt('statement_month_selector');
+  setAlts();
   hideForms();
   isServerDisconnected(1);
 }
@@ -539,6 +537,13 @@ function saveState() {
 
 // Code to set value of the alternate year and month selector
 // Used to allow multiple forms to access the month/year
+function setAlts() {
+  setAlt('budget_year_selector');
+  setAlt('statement_year_selector');
+  setAlt('statement_month_selector');
+  setAlt('statement_year_selector_alt');
+  setAlt('statement_month_selector_alt');
+}
 function setAlt(selectorName) {
   var selector = document.getElementsByName(selectorName)[0];
   var selectorAlt = document.getElementsByName(selectorName + "_alt")[0];
