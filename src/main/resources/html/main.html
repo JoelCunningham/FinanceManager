@@ -790,7 +790,7 @@
                                             window.cashflow_categories = cashflow_categories;
                                         </script>
 
-                                        <input placeholder="Value" name="cashflow_value" type="number" id="cashflow_value"></input>  
+                                        <input placeholder="Value" name="cashflow_value" type="number" id="cashflow_value" min="0" step="0.01"></input>  
                                         <input placeholder="Date" name="cashflow_date" type="date" id="cashflow_date" th:min="${date_min}" th:max="${date_max}"></input> 
                                         <input placeholder="Details" name="cashflow_details" id="cashflow_details"></input>  
 

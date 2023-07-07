@@ -100,7 +100,7 @@ public class TableDetailed extends Table<StatementItem, BudgetItem> {
             Header[] headers = Helper.combineArrays(income_headers, expense_headers);
             int category_id = Helper.getCategoryId(type, header, category, headers);
             // Parse the amount
-            int amount = Integer.parseInt(value);
+            float amount = Float.parseFloat(value);
 
             // Add the new item to the database
             StatementItem item = new StatementItem(category_id, amount, details, date);
