@@ -5,6 +5,8 @@
 - [x] Statement tooltips
 - [x] Summary highlighting
 - [x] Log out
+- [ ] Export data
+- [x] Limit colours
 
 ### High
 

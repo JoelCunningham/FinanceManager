@@ -1,6 +1,7 @@
 package com.financemanager.item;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -216,7 +217,14 @@ public class TablePanel<S, R> extends Table<S, R> {
         for (int i = 0; i < table.length; i++) {
             for (int j = 0; j < table[i].length; j++) {
                 for (int k = NUM_DESC; k < table[i][j].length; k++) {
-                    table[i][j][k].setColour();
+                    // Only colour past and current month
+                    // Colour row totals in december only
+                    if (year != Calendar.getInstance().get(Calendar.YEAR) ||
+                        k - NUM_DESC <= Calendar.getInstance().get(Calendar.MONTH) ||
+                        Calendar.getInstance().get(Calendar.MONTH) == Calendar.DECEMBER) {
+                        
+                            table[i][j][k].setColour();
+                    }
                 }
             }
         }
