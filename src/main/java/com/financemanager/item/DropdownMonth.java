@@ -40,7 +40,7 @@ public class DropdownMonth extends Dropdown<String> {
         Map<String, String> month_select = new LinkedHashMap<>();
         for (String month : items) { month_select.put(month, "False"); }
 
-         // Get selected month
+        // Get selected month
         String month_selector = context.formParam(name + "_month_selector");
         if (month_selector == null) {
             month_selector = context.formParam(name + "_month_selector_alt");
