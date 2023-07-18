@@ -248,7 +248,9 @@ h2#Balance {
   margin: 0px;
   font-size: 14px;
   width: 0px;
-  transform: rotate(-90deg);
+  transform: rotate(-90deg) translateX(calc(50%));
+  transform-origin: center;
+  text-align: center;
   top: 50%;
   position: absolute;
 }

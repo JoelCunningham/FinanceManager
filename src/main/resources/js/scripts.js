@@ -5,8 +5,8 @@ window.onload = function() {
   makeColumnsHidden();
   changeHeaderSelector();
   validateForms();
+  formatHeaderText();
   toggleCheckboxes();
-  positionHeaders();
   categoryToolTips();
   clearCashflowForm();
   validateCashflowForm();
@@ -165,6 +165,37 @@ function makeColumnsHidden() {
   
 }
 
+function formatHeaderText () {
+  const text_elements = document.querySelectorAll('h3');
+
+  text_elements.forEach((text_element) => {
+    var text = text_element.textContent;
+
+    var tempTextSpan = document.createElement('span');
+    tempTextSpan.style.fontSize = window.getComputedStyle(text_element, null).getPropertyValue('font-size');
+    tempTextSpan.style.fontFamily = window.getComputedStyle(text_element, null).getPropertyValue('font-family');
+    tempTextSpan.textContent = text;
+    document.body.appendChild(tempTextSpan);
+
+    var parentDiv = text_element.parentElement;
+    var originalDisplayValues = [];
+    while (parentDiv) {
+      originalDisplayValues.push(parentDiv.style.display);
+      parentDiv.style.display = 'block';
+      parentDiv = parentDiv.parentElement;
+    }
+    parentDiv = text_element.parentElement;
+
+    text_element.style.top = `calc(${parentDiv.offsetHeight}px/2 + ${tempTextSpan.offsetWidth}px/2.2)`;
+    
+    document.body.removeChild(tempTextSpan);
+    while (parentDiv) {
+      parentDiv.style.display = originalDisplayValues.shift();
+      parentDiv = parentDiv.parentElement;
+    }
+  });
+}
+
 // Code for checkbox column
 function toggleCheckboxes() {
   var headerCheckbox = document.querySelector('thead input[name="select_all"]');
@@ -182,17 +213,6 @@ function uncheckAll() {
   for (var i = 0; i < checkboxes.length; i++) {
       checkboxes[i].checked = false;
   }
-}
-
-// Code to position table titles
-function positionHeaders() {
-  let header = document.querySelectorAll('.header h3');
-    header.forEach(function(header) {
-      let text_length = header.textContent.length;
-      let curr_length = parseInt(getComputedStyle(header).top);
-      header.style.top = (curr_length + text_length * 3) + 'px';
-    }
-  );
 }
 
 //Code to add tooltips to categories in tables
@@ -266,6 +286,7 @@ function validateCashflowCategory() {
   }
 }
 
+//Code to set dropdowns based on other dropdowns
 document.addEventListener('DOMContentLoaded', function() {
   let cashflow_types = ["Incomes", "Expenses"];
   let cashflow_headers = window.cashflow_headers;
@@ -416,7 +437,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-// Code to validate cash flow form
+// Code to validate cashflow form
 function validateCashflowForm() {
   document.getElementById("cashflow_form").addEventListener("submit", function(event) {
     if (document.getElementById("cashflow_type_select").value.trim() === "") {
@@ -442,7 +463,7 @@ function validateCashflowForm() {
   });
 }
 
-// Code to validate cash flow table
+// Code to validate cashflow table
 function validateCashflowTable() {
   document.getElementById("statement_form").addEventListener("submit", function(event) {
     let elements = document.querySelectorAll('.cashflow_table select[name="cashflow_table"], .cashflow_table input[name="cashflow_table"]');
@@ -570,12 +591,14 @@ document.addEventListener('keydown', function(event) {
   }
 });
 
+//Code to close the app
 function quit() {
   var quit = document.getElementById('quit');
   quit.value = "1";
   quit.parentElement.submit();
 }
 
+//Code to check if the app is closed
 function isServerDisconnected(waitTime) {
   setTimeout(function() {
     let xhr = new XMLHttpRequest();
