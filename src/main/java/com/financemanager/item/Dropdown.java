@@ -45,4 +45,14 @@ public abstract class Dropdown<T> {
     public void remove(T item) {
         this.items.remove(item);
     }
+
+    /**
+     * Add an item to the Dropdown
+     * Changes take effect after using load()
+     * 
+     * @param item The item to add
+     */
+    public void add(T item) {
+        this.items.add(item);
+    }
 }
