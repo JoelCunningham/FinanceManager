@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -36,6 +37,7 @@ public class Helper {
         monthMap.put("October", 9);
         monthMap.put("November", 10);
         monthMap.put("December", 11);
+        monthMap.put("All", -1);
     }
     
     public static String getGitVersion() throws IOException{
@@ -114,6 +116,14 @@ public class Helper {
             }
         }
         return id;
+    }
+
+    public static List<String> intToStringList(List<Integer> integers) {
+        List<String> strings = new ArrayList<>();
+        for (Integer integer : integers) {
+            strings.add(integer.toString());
+        }
+        return strings;
     }
     
     public static String getMinDate(int year, int month) {
