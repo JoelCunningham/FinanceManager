@@ -610,9 +610,8 @@ input[type="date"] {
 }
 
 #cashflow_header {
-  position: absolute;
+  position: relative;
   bottom: 0;
-  width: calc(100% - 30px);
 }
 
 #statement .material-symbols-outlined {
