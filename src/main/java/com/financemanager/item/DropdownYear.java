@@ -1,6 +1,5 @@
 package com.financemanager.item;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.financemanager.Helper;
@@ -33,29 +32,7 @@ public class DropdownYear extends Dropdown<String> {
      * @return The selected year in the year selector
      */
     public int load() {
-        
-        // Fill dictionary of years
-        Map<String, String> year_select = new LinkedHashMap<>();
-        for (String year : items) { year_select.put(year, "False"); }
-
-        // Get selected year
-        String year_selector = context.formParam(name + "_year_selector");
-        if (year_selector == null) {
-            year_selector = context.formParam(name + "_year_selector_alt");
-        }
-        if (year_selector == null) {
-            year_selector = context.formParam(name + "_year_selector_alt_alt");
-        }
-        if (year_selector != null) {
-            selected_year = Integer.parseInt(year_selector);
-        } 
-        if (selected_year != -1) {
-            year_select.put(Integer.toString(selected_year), "True"); 
-        }
-          
-        model.put(name + "_years", year_select);
-
-        return selected_year;
+        return load("year", items, selected_year);
     }
     
 }

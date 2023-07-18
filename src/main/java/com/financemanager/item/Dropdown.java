@@ -1,8 +1,10 @@
 package com.financemanager.item;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.financemanager.Helper;
 import com.financemanager.JDBC;
 
 import io.javalin.http.Context;
@@ -32,9 +34,39 @@ public abstract class Dropdown<T> {
     }
 
     /**
-     * Loads data into the Dropdown
+     * Loads data into the dropdown and returns the selected value
+     * Used by year and month dropdowns 
+     *
+     * @param type The type of dropdown (year or month)
+     * @param items The items to be loaded into the dropdown
+     * @param selected The selected value in the dropdown
+     * @return The selected value in the dropdown
      */
-    public abstract int load();
+    public int load(String type, List<String> items, int selected) {
+        
+        // Fill dictionary of items
+        Map<String, String> select = new LinkedHashMap<>();
+        for (String item : items) { select.put(item, "False"); }
+
+        // Get selected value
+        String selector = context.formParam(name + "_" + type + "_selector");
+        if (selector == null) {
+            selector = context.formParam(name + "_" + type + "_selector_alt");
+        }
+        if (selector == null) {
+            selector = context.formParam(name + "_" + type + "_selector_alt_alt");
+        }
+        if (selector != null) {
+            selected = type.equals("year") ? Integer.parseInt(selector) : Helper.monthToInt(selector);
+        } 
+        if (selected != -1) {
+            select.put(type.equals("year") ? Integer.toString(selected) : items.get(selected), "True"); 
+        }
+        
+        model.put(name + "_" + type + "s", select);
+
+        return selected;
+    }
 
      /**
      * Removes an item from the Dropdown

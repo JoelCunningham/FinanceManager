@@ -1,11 +1,9 @@
 package com.financemanager.item;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.financemanager.Helper;
 import com.financemanager.JDBC;
 
 import io.javalin.http.Context;
@@ -34,30 +32,8 @@ public class DropdownMonth extends Dropdown<String> {
      *
      * @return The selected month in the month selector
      */
-    public int load() {
-        
-        // Fill dictionary of months
-        Map<String, String> month_select = new LinkedHashMap<>();
-        for (String month : items) { month_select.put(month, "False"); }
-
-        // Get selected month
-        String month_selector = context.formParam(name + "_month_selector");
-        if (month_selector == null) {
-            month_selector = context.formParam(name + "_month_selector_alt");
-        }
-        if (month_selector == null) {
-            month_selector = context.formParam(name + "_month_selector_alt_alt");
-        }
-        if (month_selector != null) {
-            selected_month = Helper.monthToInt(month_selector);
-        } 
-        if (selected_month != -1) {
-            month_select.put(items.get(selected_month), "True"); 
-        }
-        
-        model.put(name + "_months", month_select);
-
-        return selected_month;
+    public int load() {  
+        return load("month", items, selected_month);
     }
 
 }
