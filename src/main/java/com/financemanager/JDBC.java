@@ -376,16 +376,16 @@ public class JDBC {
             JOIN category ON category_year.category_id = category.id 
             JOIN header ON category.header_id = header.id 
             JOIN type ON header.type_id = type.id 
-            WHERE category_year.year = 
-            """      
-            + year + " " +
-            """
-            AND type.id =
-            """
-            + type_id + " " +
-            """
-            ORDER BY type.name, header.name, category.name;
-            """;
+            WHERE type.id = '""" + type_id + "'";
+
+            if (year != -1) {
+                query += " AND category_year.year = '" + year + "'";
+            }
+            else {
+                query += " GROUP BY category.id, category.name, type.name, header.name";
+            }
+            query += " ORDER BY type.name, header.name, category.name;";
+
         Connection connection = null; 
 
         try {
@@ -451,10 +451,17 @@ public class JDBC {
         String query = """
             SELECT category_id, month, amount
             FROM budget
-            WHERE year = '""" + Integer.toString(year) + "'";
+            """;
          
-        if (month != -1) { 
-            query += " AND month = '" + String.format("%02d", month + 1) + "'";
+        if (year != -1 && month != -1) {
+            query += " WHERE year = '" + Integer.toString(year) + "'" + " AND month = '" + String.format("%02d", month + 1) + "'";
+        }
+        else if (year != -1) { 
+            query += " WHERE year = '" + Integer.toString(year) + "'";
+        }
+
+        else if (month != -1) { 
+            query += " WHERE month = '" + String.format("%02d", month + 1) + "'";
         }
         
         query += ";";
@@ -498,10 +505,17 @@ public class JDBC {
         String query = """
             SELECT id, category_id, amount, date, details
             FROM cashflow 
-            WHERE strftime('%Y', date) = '""" + Integer.toString(year) + "'";
+            """;
+
+        if (year != -1 && month != -1) {
+            query += " WHERE strftime('%Y', date) = '" + Integer.toString(year) + "'" + " AND strftime('%m', date) = '" + String.format("%02d", month + 1) + "'";
+        }
+        else if (year != -1) { 
+            query += " WHERE strftime('%Y', date) = '" + Integer.toString(year) + "'";
+        }
         
-        if (month != -1) { 
-            query += " AND strftime('%m', date) = '" + String.format("%02d", month + 1) + "'";
+        else if (month != -1) { 
+            query += " WHERE strftime('%m', date) = '" + String.format("%02d", month + 1) + "'";
         }
         
         query += ";";
