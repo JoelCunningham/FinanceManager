@@ -82,11 +82,9 @@ public class StatementPage extends Page {
 
         // Code for selectors
         DropdownYear year_select = new DropdownYear(context, model, jdbc, name, selected_year);
-        year_select.add("All");
         year_select.load();
 
         DropdownMonth month_select = new DropdownMonth(context, model, jdbc, name, selected_month);
-        month_select.add("All");
         month_select.load();
 
         // Code for exporting a statement

@@ -65,6 +65,7 @@ public class BudgetPage extends Page {
         // Code for selector
         DropdownYear year_select = new DropdownYear(context, model, jdbc, name, -1);
         year_select.remove(Integer.toString(current_year));
+        year_select.remove("All");
         year_select.load();
 
         // Code for importing the budget
@@ -85,7 +86,6 @@ public class BudgetPage extends Page {
 
         // Code for selectors
         DropdownYear year_select = new DropdownYear(context, model, jdbc, name, selected_year);
-        year_select.add("All");
         year_select.load();
 
         // Code for exporting a summary

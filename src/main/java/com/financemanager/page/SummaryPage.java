@@ -59,7 +59,6 @@ public class SummaryPage extends Page {
 
         // Code for selectors
         DropdownYear year_select = new DropdownYear(context, model, jdbc, name, selected_year);
-        year_select.add("All");
         year_select.load();
 
         // Code for exporting a summary
