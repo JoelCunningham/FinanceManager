@@ -34,13 +34,12 @@ public abstract class Dropdown<T> {
     }
 
     /**
-     * Loads data into the dropdown and returns the selected value
-     * Used by year and month dropdowns 
+     * Loads data into the selector and returns the selected value
      *
-     * @param type The type of dropdown (year or month)
-     * @param items The items to be loaded into the dropdown
-     * @param selected The selected value in the dropdown
-     * @return The selected value in the dropdown
+     * @param type The type of selector (year or month)
+     * @param items The items to be loaded into the selector
+     * @param selected The selected value in the selector
+     * @return The selected value in the selector
      */
     public int load(String type, List<String> items, int selected) {
         
@@ -57,10 +56,16 @@ public abstract class Dropdown<T> {
             selector = context.formParam(name + "_" + type + "_selector_alt_alt");
         }
         if (selector != null) {
-            selected = type.equals("year") ? Integer.parseInt(selector) : Helper.monthToInt(selector);
+            if (selector.equals("All")) {
+                selected = -1;
+            } else {
+                selected = type.equals("year") ? Integer.parseInt(selector) : Helper.monthToInt(selector);
+            }
         } 
         if (selected != -1) {
             select.put(type.equals("year") ? Integer.toString(selected) : items.get(selected), "True"); 
+        } else {
+            select.put("All", "True");
         }
         
         model.put(name + "_" + type + "s", select);

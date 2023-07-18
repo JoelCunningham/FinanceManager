@@ -24,6 +24,7 @@ public class DropdownYear extends Dropdown<String> {
         super(context, model, jdbc, name);
         this.selected_year = selected_year;
         this.items = Helper.intToStringList(jdbc.getYears());
+        this.items.add("All");
     }
 
     /**

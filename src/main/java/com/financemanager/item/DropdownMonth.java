@@ -25,6 +25,7 @@ public class DropdownMonth extends Dropdown<String> {
         super(context, model, jdbc, name);
         this.selected_month = selected_month;
         this.items = new ArrayList<>(List.of("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"));
+        this.items.add("All");
     }
 
     /**
