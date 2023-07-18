@@ -127,16 +127,96 @@
         
             <form id="import_budget_form" method="post">
             
-                <label for="b_year_select">Year:</label>
-                <select id="b_year_select" name="b_year_select">
-                    <option th:each="year: ${import_years.keySet()}" th:text="${year}" th:value="${year}" th:selected="${import_years.get(year)}"></option>
+                <label for="import_budget_year_select">Year:</label>
+                <select id="import_budget_year_select" name="import_budget_year_select">
+                    <option th:each="year: ${import_budget_years.keySet()}" th:text="${year}" th:value="${year}" th:selected="${import_budget_years.get(year)}"></option>
                 </select>
 
-                <label for="b_override_input">Override:</label>
-                <input id="b_override_input" name="b_override_input" type="checkbox">
+                <label for="import_budget_checkbox">Override:</label>
+                <input id="import_budget_checkbox" name="import_budget_checkbox" type="checkbox">
 
                 <button type="button" class="cancel" onclick="hideForm()">Cancel</button>
                 <button type="submit" class="save">Import</button>
+            </form>
+
+        </div>
+        
+    </div>
+
+    <div class="util_page" id="export_budget">
+
+        <div class="util_form">
+
+            <h2>Export Statement</h2>
+
+            <div id="add_category_error">
+                <p>Export a budget to a csv file. Set the year field to <b>All</b> to export from every year.</p>  
+            </div>
+        
+            <form id="export_budget_form" method="post">
+            
+                <label for="export_budget_year_select">Year:</label>
+                <select id="export_budget_year_select" name="export_budget_year_select">
+                    <option th:each="year: ${export_budget_years.keySet()}" th:text="${year}" th:value="${year}" th:selected="${export_budget_years.get(year)}"></option>
+                </select>
+
+                <button type="button" class="cancel" onclick="hideForm()">Cancel</button>
+                <button type="submit" class="save">Export</button>
+            </form>
+
+        </div>
+        
+    </div>
+
+    <div class="util_page" id="export_summary">
+
+        <div class="util_form">
+
+            <h2>Export Statement</h2>
+
+            <div id="add_category_error">
+                <p>Export a summary to a csv file. Set the year field to <b>All</b> to export from every year.</p>  
+            </div>
+        
+            <form id="export_summary_form" method="post">
+            
+                <label for="export_summary_year_select">Year:</label>
+                <select id="export_summary_year_select" name="export_summary_year_select">
+                    <option th:each="year: ${export_summary_years.keySet()}" th:text="${year}" th:value="${year}" th:selected="${export_summary_years.get(year)}"></option>
+                </select>
+
+                <button type="button" class="cancel" onclick="hideForm()">Cancel</button>
+                <button type="submit" class="save">Export</button>
+            </form>
+
+        </div>
+        
+    </div>
+
+    <div class="util_page" id="export_statement">
+
+        <div class="util_form">
+
+            <h2>Export Statement</h2>
+
+            <div id="add_category_error">
+                <p>Export a statement to a csv file. Set the month or year field to <b>All</b> to export from every month/year.</p>  
+            </div>
+        
+            <form id="export_statement_form" method="post">
+            
+                <label for="export_statement_year_select">Year:</label>
+                <select id="export_statement_year_select" name="export_statement_year_select">
+                    <option th:each="year: ${export_statement_years.keySet()}" th:text="${year}" th:value="${year}" th:selected="${export_statement_years.get(year)}"></option>
+                </select>
+
+                <label for="export_statement_month_select">Month:</label>
+                <select id="export_statement_month_select" name="export_statement_month_select">
+                    <option th:each="month: ${export_statement_months.keySet()}" th:text="${month}" th:value="${month}" th:selected="${export_statement_months.get(year)}"></option>
+                </select>
+
+                <button type="button" class="cancel" onclick="hideForm()">Cancel</button>
+                <button type="submit" class="save">Export</button>
             </form>
 
         </div>
@@ -241,6 +321,7 @@
                     <div class=buttons>
                         
                         <button class="util" type="button" onclick="showForm('import_budget')"><span>Import</span><span class="material-symbols-outlined">upload</span></button>
+                        <button class="util" type="button" onclick="showForm('export_budget')"><span>Export</span><span class="material-symbols-outlined">download</span></button>
                         <button class="save" type="submit" form="budget_form" onclick="tempChangeText(this, 'Saved!')"><span>Save</span><span class="material-symbols-outlined">save</span></button>
                     
                     </div>
@@ -406,6 +487,10 @@
                         </select>
                                         
                     </form>
+
+                    <div class=buttons>
+                        <button class="util" type="button" onclick="showForm('export_summary')"><span>Export</span><span class="material-symbols-outlined">download</span></button>                    
+                    </div>
 
                 </div>
 
@@ -573,10 +658,10 @@
                     </form>
 
                     <div class=buttons>
-                        
+                        <button class="util" type="button" onclick="showForm('export_statement')"><span>Export</span><span class="material-symbols-outlined">download</span></button>
                         <button class="save" type="submit" form="statement_form" onclick="tempChangeText(this, 'Saved!')"><span>Save</span><span class="material-symbols-outlined">save</span></button>
-                    
                     </div>
+               
                 </div>
 
                 <div class="display">
