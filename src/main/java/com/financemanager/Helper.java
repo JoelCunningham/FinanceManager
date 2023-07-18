@@ -127,10 +127,16 @@ public class Helper {
     }
     
     public static String getMinDate(int year, int month) {
+        // Handle all months/years
+        if (month == -1) { month = 0;}
+        if (year == -1) { year = 0; }
         return LocalDate.of(year, month + 1, 1).toString();
     }
 
     public static String getMaxDate(int year, int month) {
+        // Handle all months/years
+        if (month == -1) { month = 11;}
+        if (year == -1) { year = 9999; }
         return LocalDate.of(year, month + 1, 1).with(TemporalAdjusters.lastDayOfMonth()).toString();
     }
 
