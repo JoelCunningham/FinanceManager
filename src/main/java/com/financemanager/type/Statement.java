@@ -30,6 +30,14 @@ public class Statement extends CashCollection<StatementItem> {
     }
 
     /**
+     * Constructs a new Statement object
+     * 
+     */
+    public Statement() {
+        super();
+    }
+
+    /**
      * Loads statement items from the specified year into the object
      *
      */

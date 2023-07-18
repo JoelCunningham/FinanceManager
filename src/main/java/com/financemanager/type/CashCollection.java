@@ -31,6 +31,16 @@ public abstract class CashCollection<T> {
     }
     
     /**
+     * Constructs a new CashCollection object
+     * 
+     */
+    public CashCollection() {
+        this.year = -1;
+        this.month = -1;
+        load();
+    }
+    
+    /**
      * Loads items into the object
      */
     public abstract void load();

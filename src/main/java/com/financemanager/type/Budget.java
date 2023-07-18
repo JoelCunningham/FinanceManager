@@ -26,6 +26,14 @@ public class Budget extends CashCollection<BudgetItem> {
     }
 
     /**
+     * Constructs a new Budget object
+     * 
+     */
+    public Budget() {
+        super();
+    }
+
+    /**
      * Loads budget items from the specified year into the object
      */
     public void load() {
@@ -46,8 +54,7 @@ public class Budget extends CashCollection<BudgetItem> {
         for (BudgetItem item : items) {
             boolean valid_date = year_mode ? item.month == span : true;
             if (item.category_id == category_id && valid_date) {            
-                value = year_mode ? item.amount : item.amount / 5;
-                break;
+                value += year_mode ? item.amount : item.amount / 5;
             }
         }
         return value;
