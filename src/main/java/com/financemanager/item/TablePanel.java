@@ -1,5 +1,6 @@
 package com.financemanager.item;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -30,15 +31,14 @@ public class TablePanel<S, R> extends Table<S, R> {
      * Constructor for the Table class 
      * 
      * @param name The name of the table
-     * @param year The year the table's data will represent
      * @param size The number of columns in the table
      * @param source The data source of the table
      * @param reference The data reference of the table
      * @param model The model to sumbit the table to
      * @param jdbc The database connection for the table
      */
-    public TablePanel(String name, int year, int size, CashCollection<S> source, CashCollection<R> reference, Map<String, Object> model, JDBC jdbc) {
-        super(name, year, size, source, reference, model, jdbc);
+    public TablePanel(String name, int size, CashCollection<S> source, CashCollection<R> reference, Map<String, Object> model, JDBC jdbc) {
+        super(name, size, source, reference, model, jdbc);
     }
 
     /**
@@ -62,7 +62,7 @@ public class TablePanel<S, R> extends Table<S, R> {
      */
     private Cell[][][] createFlow(Type type) {
         // Get the header for the flow type
-        Header[] headers = jdbc.getHeaderCategories(year, type.toString() + "s");
+        Header[] headers = jdbc.getHeaderCategories(source.year, type.toString() + "s");
         Arrays.sort(headers);
         // 3D array represents a list of sub tables
         Cell[][][] flow_table = new Cell[headers.length][][];
@@ -219,7 +219,7 @@ public class TablePanel<S, R> extends Table<S, R> {
                 for (int k = NUM_DESC; k < table[i][j].length; k++) {
                     // Only colour past and current month
                     // Colour row totals in december only
-                    if (year != Calendar.getInstance().get(Calendar.YEAR) ||
+                    if (source.year != Calendar.getInstance().get(Calendar.YEAR) ||
                         k - NUM_DESC <= Calendar.getInstance().get(Calendar.MONTH) ||
                         Calendar.getInstance().get(Calendar.MONTH) == Calendar.DECEMBER) {
                         
@@ -305,10 +305,31 @@ public class TablePanel<S, R> extends Table<S, R> {
                     
                     // Save the item to the database
                     BudgetItem item = new BudgetItem(category_id, curr_month - 2, Helper.currencyToFloat(changes_list.get(i)));
-                    jdbc.addBudgetItem(item, year);               
+                    jdbc.addBudgetItem(item, source.year);               
                 }
             }
         }
+    }
+
+    public void export() {
+        Cell[][][] data = Helper.combineArrays(incomes, expenses);
+        // Convert the 3D Cell array to a 2D String array
+        List<List<String>> string_data_list = new ArrayList<>();
+        for (int i = 0; i < data.length; i++) {
+            for (int j = 0; j < data[i].length - 1; j++) {
+                List<String> row = new ArrayList<>();
+                for (int k = 0; k < data[i][j].length - 1; k++) {
+                    row.add(data[i][j][k].value);
+                }
+                string_data_list.add(row);
+            }
+            string_data_list.add(new ArrayList<>());
+        }
+        String[][] string_data = new String[string_data_list.size()][];
+        for (int i = 0; i < string_data_list.size(); i++) {
+            string_data[i] = string_data_list.get(i).toArray(new String[0]);
+        }
+        exportData(string_data, name, -1);
     }
 
 }

@@ -24,15 +24,14 @@ public class TableDetailed extends Table<StatementItem, BudgetItem> {
      * Constructor for the Table class 
      * 
      * @param name The name of the table
-     * @param year The year the table's data will represent
      * @param size The number of columns in the table
      * @param source The data source of the table
      * @param reference The data reference of the table
      * @param model The model to sumbit the table to
      * @param jdbc The database connection for the table
      */
-    public TableDetailed(String name, int year, int size, CashCollection<StatementItem> source, CashCollection<BudgetItem> reference, Map<String, Object> model, JDBC jdbc) {
-        super(name, year, size, source, reference, model, jdbc);
+    public TableDetailed(String name, int size, CashCollection<StatementItem> source, CashCollection<BudgetItem> reference, Map<String, Object> model, JDBC jdbc) {
+        super(name, size, source, reference, model, jdbc);
     }
 
     /**
@@ -56,8 +55,8 @@ public class TableDetailed extends Table<StatementItem, BudgetItem> {
         String[][] table = new String[items.length][size];
         
         // Determine headers used in flow
-        Header[] income_headers = jdbc.getHeaderCategories(year, Type.Income.toString() + "s");
-        Header[] expense_headers = jdbc.getHeaderCategories(year, Type.Expense.toString() + "s");
+        Header[] income_headers = jdbc.getHeaderCategories(source.year, Type.Income.toString() + "s");
+        Header[] expense_headers = jdbc.getHeaderCategories(source.year, Type.Expense.toString() + "s");
         Header[] headers = Helper.combineArrays(income_headers, expense_headers);
 
         Arrays.sort(items);
@@ -95,8 +94,8 @@ public class TableDetailed extends Table<StatementItem, BudgetItem> {
         // If they have been correctly filled 
         if (type != null && header != null && category != null && value != null && date != null) {
             // Determine the id of the category
-            Header[] income_headers = jdbc.getHeaderCategories(year, "Incomes");
-            Header[] expense_headers = jdbc.getHeaderCategories(year, "Expenses");
+            Header[] income_headers = jdbc.getHeaderCategories(source.year, "Incomes");
+            Header[] expense_headers = jdbc.getHeaderCategories(source.year, "Expenses");
             Header[] headers = Helper.combineArrays(income_headers, expense_headers);
             int category_id = Helper.getCategoryId(type, header, category, headers);
             // Parse the amount
@@ -122,8 +121,8 @@ public class TableDetailed extends Table<StatementItem, BudgetItem> {
             // Get current stored data
             String[][] cashflow_table = createFlow();
 
-            Header[] income_headers = jdbc.getHeaderCategories(year, "Incomes");
-            Header[] expense_headers = jdbc.getHeaderCategories(year, "Expenses");
+            Header[] income_headers = jdbc.getHeaderCategories(source.year, "Incomes");
+            Header[] expense_headers = jdbc.getHeaderCategories(source.year, "Expenses");
             Header[] headers = Helper.combineArrays(income_headers, expense_headers);
             
             // Loop through the changes list
@@ -165,6 +164,10 @@ public class TableDetailed extends Table<StatementItem, BudgetItem> {
             }
             refresh();
         }
+    }
+
+    public void export() {
+        exportData(cashflows, name, 0);
     }
     
 }
