@@ -5,13 +5,14 @@
 - [x] Statement tooltips
 - [x] Summary highlighting
 - [x] Log out
-- [ ] Export data
+- [x] Export data
 - [x] Limit colours
 
 ### High
 
 - [x] Import budget
 - [x] Put 'other' category at the bottom
+- [ ] Add 'All' to year and month selectors
 - [ ] Dashboard
 - [ ] Budget statistics
 - [ ] Summary statistics

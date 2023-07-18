@@ -3,6 +3,7 @@ package com.financemanager.page;
 import java.util.Calendar;
 import java.util.Map;
 
+import com.financemanager.Helper;
 import com.financemanager.JDBC;
 import com.financemanager.type.Budget;
 import com.financemanager.type.BudgetItem;
@@ -25,6 +26,9 @@ public class StatementPage extends Page {
 
     private int selected_year; // The year to display data for
     private int selected_month; // The month to display data for
+
+    private TablePanel<StatementItem, BudgetItem> panel_table;
+    private TableDetailed detailed_table;
 
     /**
      * Construct a StatementPage object with the given context, model and jdbc
@@ -58,15 +62,54 @@ public class StatementPage extends Page {
         Statement statement = new Statement(selected_month, selected_year);
         Budget reference = new Budget(selected_month, selected_year);
         
-        TablePanel<StatementItem, BudgetItem> panel_table = new TablePanel<StatementItem, BudgetItem>(PAGE_NAME, selected_year, TABLE_COLS, statement, reference, model, jdbc);
+        panel_table = new TablePanel<StatementItem, BudgetItem>(PAGE_NAME, TABLE_COLS, statement, reference, model, jdbc);
         panel_table.load();
         
-        TableDetailed detailed_table = new TableDetailed(PAGE_NAME, selected_year, CASHFLOW_COLS, statement, reference, model, jdbc);
+        detailed_table = new TableDetailed(PAGE_NAME, CASHFLOW_COLS, statement, reference, model, jdbc);
         detailed_table.load();
         
         // Code for adding and saving changes
         detailed_table.add(context);
         detailed_table.save(context);
+        panel_table.refresh();
+
+        loadExport();
+    }
+
+    private void loadExport() {
+
+        String name = "export_" + PAGE_NAME;
+
+        // Code for selectors
+        DropdownYear year_select = new DropdownYear(context, model, jdbc, name, selected_year);
+        year_select.add("All");
+        year_select.load();
+
+        DropdownMonth month_select = new DropdownMonth(context, model, jdbc, name, selected_month);
+        month_select.add("All");
+        month_select.load();
+
+        // Code for exporting a statement
+        String selected_year = context.formParam(name + "_year_select");
+        String selected_month = context.formParam(name + "_month_select");
+
+        if (selected_year != null && selected_year != "" && selected_month != null && selected_month != "") {
+
+            if (selected_year.equals("All")) { selected_year = "-1"; }
+            int year = Integer.parseInt(selected_year);
+            int month = Helper.monthToInt(selected_month);
+
+            // Create table to export
+            Statement statement = new Statement(month, year);
+            Budget reference = new Budget(month, year);
+            TableDetailed export_table = new TableDetailed(PAGE_NAME, CASHFLOW_COLS, statement, reference, model, jdbc);
+            export_table.load();
+
+            // Export table
+            export_table.export();
+        }
+
+        detailed_table.refresh();
         panel_table.refresh();
     }
 

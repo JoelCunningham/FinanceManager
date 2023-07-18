@@ -20,6 +20,8 @@ public class SummaryPage extends Page {
 
     private int selected_year; // The year to display data for
 
+    private TablePanel<StatementItem, BudgetItem> table;
+
     /**
      * Construct a BudgetPage object with the given context, model and jdbc
      *
@@ -44,9 +46,41 @@ public class SummaryPage extends Page {
         // Code for tables
         Statement statement = new Statement(selected_year);
         Budget reference = new Budget(selected_year);
-        TablePanel<StatementItem, BudgetItem> panel_table = new TablePanel<StatementItem, BudgetItem>(PAGE_NAME, selected_year, TABLE_COLS, statement, reference, model, jdbc); 
-        panel_table.load();
-        panel_table.colour();
+        table = new TablePanel<StatementItem, BudgetItem>(PAGE_NAME, TABLE_COLS, statement, reference, model, jdbc); 
+        
+        table.load();
+        table.colour();
+
+        loadExport();
+    }
+    
+    private void loadExport() {
+        String name = "export_" + PAGE_NAME;
+
+        // Code for selectors
+        DropdownYear year_select = new DropdownYear(context, model, jdbc, name, selected_year);
+        year_select.add("All");
+        year_select.load();
+
+        // Code for exporting a summary
+        String selected_year = context.formParam(name + "_year_select");
+
+        if (selected_year != null && selected_year != "") {
+
+            if (selected_year.equals("All")) { selected_year = "-1"; }
+            int year = Integer.parseInt(selected_year);
+
+            // Create table to export
+            Statement statement = new Statement(year);
+            Budget reference = new Budget(year);
+            TablePanel<StatementItem, BudgetItem> export_table = new TablePanel<StatementItem, BudgetItem>(PAGE_NAME, TABLE_COLS, statement, reference, model, jdbc);
+            export_table.load();
+
+            // Export table
+            export_table.export();
+        }
+
+        table.refresh();
     }
 
 }

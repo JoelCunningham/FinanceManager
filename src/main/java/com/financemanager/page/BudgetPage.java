@@ -47,28 +47,29 @@ public class BudgetPage extends Page {
         // Code for tables
         Budget budget = new Budget(selected_year);
         Statement reference = new Statement(selected_year);
-        table = new TablePanel<BudgetItem, StatementItem>(PAGE_NAME, selected_year, TABLE_COLS, budget, reference, model, jdbc);
+        table = new TablePanel<BudgetItem, StatementItem>(PAGE_NAME, TABLE_COLS, budget, reference, model, jdbc);
         table.load();
 
         // Code for saving changes
         table.save(context);
 
-        // Code for importing budgets
+        // Code for importing and exporting budgets
         loadImport();
+        loadExport();
     }
 
     private void loadImport() {
         Integer current_year = Calendar.getInstance().get(Calendar.YEAR);
-        String name = "import";
+        String name = "import_" + PAGE_NAME;
 
         // Code for selector
         DropdownYear year_select = new DropdownYear(context, model, jdbc, name, -1);
-        year_select.remove(current_year);
+        year_select.remove(Integer.toString(current_year));
         year_select.load();
 
         // Code for importing the budget
-        String selected_year = context.formParam("b_year_select");
-        String override = context.formParam("b_override_input");
+        String selected_year = context.formParam(name + "_year_select");
+        String override = context.formParam(name + "checkbox");
         if (override == null) {
             override = "off";
         }
@@ -77,6 +78,35 @@ public class BudgetPage extends Page {
            table.refresh();
         }        
 
+    }
+
+    private void loadExport() {
+        String name = "export_" + PAGE_NAME;
+
+        // Code for selectors
+        DropdownYear year_select = new DropdownYear(context, model, jdbc, name, selected_year);
+        year_select.add("All");
+        year_select.load();
+
+        // Code for exporting a summary
+        String selected_year = context.formParam(name + "_year_select");
+
+        if (selected_year != null && selected_year != "") {
+
+            if (selected_year.equals("All")) { selected_year = "-1"; }
+            int year = Integer.parseInt(selected_year);
+
+            // Create table to export
+            Budget budget = new Budget(year);
+            Statement reference = new Statement(year);
+            TablePanel<BudgetItem, StatementItem> export_table = new TablePanel<BudgetItem, StatementItem>(PAGE_NAME, TABLE_COLS, budget, reference, model, jdbc);
+            export_table.load();
+
+            // Export table
+            export_table.export();
+        }
+
+        table.refresh();
     }
 
 }
